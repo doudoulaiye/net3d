@@ -1,0 +1,276 @@
+	typename-blue
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="8" viewBox="0 0 8 8">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: aqua;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="0" y="0" width="8" height="8" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="0" y="0" width="8" height="8" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBvcGFjaXR5OiAwLjY7CiAgICAgICAgZmlsbDogdXJsKCNyYWRpYWwtZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJyYWRpYWwtZ3JhZGllbnQiIGN4PSI0IiBjeT0iNCIgcj0iNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxLjUiIHN0b3AtY29sb3I9IiM4MjgyODIiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IGNsYXNzPSJjbHMtMSIgd2lkdGg9IjgiIGhlaWdodD0iOCIvPgo8L3N2Zz4K"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" mode="multiply" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <circle id="blue" class="cls-1" cx="4" cy="4" r="4"/>
+</svg>
+
+		    
+	typename-green
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="7.88" viewBox="0 0 8 7.88">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00ff73;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="2270" y="1196.06" width="8" height="7.88" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="2270" y="1196.06" width="8" height="7.88" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOCIgaGVpZ2h0PSI3Ljg4IiB2aWV3Qm94PSIwIDAgOCA3Ljg4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBvcGFjaXR5OiAwLjY7CiAgICAgICAgZmlsbDogdXJsKCNyYWRpYWwtZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJyYWRpYWwtZ3JhZGllbnQiIGN4PSI0IiBjeT0iMy45NCIgcj0iMy45NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxLjUiIHN0b3AtY29sb3I9IiM4MjgyODIiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IGNsYXNzPSJjbHMtMSIgd2lkdGg9IjgiIGhlaWdodD0iNy44OCIvPgo8L3N2Zz4K"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" mode="multiply" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="green" class="cls-1" d="M2274,1196.05a3.95,3.95,0,1,1-4,3.95A3.976,3.976,0,0,1,2274,1196.05Z" transform="translate(-2270 -1196.06)"/>
+</svg>
+	
+	typename-yellow
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="7.91" viewBox="0 0 8 7.91">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffba00;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="2270" y="1164" width="8" height="7.91" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="2270" y="1164" width="8" height="7.91" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOCIgaGVpZ2h0PSI3LjkxIiB2aWV3Qm94PSIwIDAgOCA3LjkxIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBvcGFjaXR5OiAwLjY7CiAgICAgICAgZmlsbDogdXJsKCNyYWRpYWwtZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJyYWRpYWwtZ3JhZGllbnQiIGN4PSI0IiBjeT0iMy45NTUiIHI9IjMuOTU1IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmZiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEuNSIgc3RvcC1jb2xvcj0iIzgyODI4MiIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iOCIgaGVpZ2h0PSI3LjkxIi8+Cjwvc3ZnPgo="/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" mode="multiply" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="yellow" class="cls-1" d="M2274,1164a3.945,3.945,0,1,1-4,3.95A3.976,3.976,0,0,1,2274,1164Z" transform="translate(-2270 -1164)"/>
+</svg>
+		
+	typename-red
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="7.91" viewBox="0 0 8 7.91">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ff401d;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="0" y="0" width="8" height="7.91" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="0" y="0" width="8" height="7.91" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOCIgaGVpZ2h0PSI3LjkxIiB2aWV3Qm94PSIwIDAgOCA3LjkxIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBvcGFjaXR5OiAwLjY7CiAgICAgICAgZmlsbDogdXJsKCNyYWRpYWwtZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJyYWRpYWwtZ3JhZGllbnQiIGN4PSI0IiBjeT0iMy45NTUiIHI9IjMuOTU1IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmZiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEuNSIgc3RvcC1jb2xvcj0iIzgyODI4MiIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iOCIgaGVpZ2h0PSI3LjkxIi8+Cjwvc3ZnPgo="/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" mode="multiply" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <circle id="red" class="cls-1" cx="4" cy="3.955" r="4"/>
+</svg>
+		    
+	typename-pink
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8" height="8" viewBox="0 0 8 8">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #9949ea;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="0" y="0" width="8" height="8" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="0" y="0" width="8" height="8" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBvcGFjaXR5OiAwLjY7CiAgICAgICAgZmlsbDogdXJsKCNyYWRpYWwtZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJyYWRpYWwtZ3JhZGllbnQiIGN4PSI0IiBjeT0iNCIgcj0iNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxLjUiIHN0b3AtY29sb3I9IiM4MjgyODIiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IGNsYXNzPSJjbHMtMSIgd2lkdGg9IjgiIGhlaWdodD0iOCIvPgo8L3N2Zz4K"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" mode="multiply" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <circle id="pink" class="cls-1" cx="4" cy="4" r="4"/>
+</svg>
+		    
+	typename-btn_anlysis
+
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="48px" height="48px" viewBox="-8 -11 48 48" enable-background="new -8 -11 48 48" xml:space="preserve">
+<path id="btn_anlysis" d="M29.33,8.666c-1.435-0.039-2.568-1.234-2.529-2.669c0.039-1.435,1.233-2.568,2.669-2.529
+	C30.878,3.506,32,4.658,32,6.066c-0.016,1.452-1.207,2.617-2.66,2.6C29.337,8.666,29.333,8.666,29.33,8.666z M17.78,15.6
+	c-1.215-0.002-2.392-0.417-3.34-1.176l-5.76,4.494c0.603,1.35-0.002,2.933-1.352,3.536c-1.35,0.603-2.933-0.002-3.536-1.352
+	c-0.603-1.35,0.002-2.933,1.352-3.536c0.339-0.151,0.705-0.231,1.076-0.233c0.455,0.002,0.902,0.12,1.3,0.341l5.76-4.5
+	c-0.543-0.825-0.834-1.79-0.84-2.778c0.009-0.548,0.107-1.091,0.29-1.608l-6.12-3.58C5.963,6.279,4.801,6.932,3.55,6.929
+	C1.635,6.878,0.124,5.285,0.175,3.37s1.644-3.426,3.559-3.375C5.613,0.045,7.11,1.583,7.11,3.462v0.04l6.43,3.765
+	c1.017-1.308,2.583-2.073,4.24-2.071c2.872,0,5.2,2.33,5.2,5.202C22.98,13.27,20.652,15.598,17.78,15.6L17.78,15.6z M20.44,20.8
+	c1.436,0.033,2.573,1.224,2.539,2.659c-0.033,1.436-1.224,2.572-2.659,2.539c-1.412-0.033-2.54-1.186-2.54-2.599
+	C17.798,21.948,18.988,20.785,20.44,20.8L20.44,20.8z"/>
+</svg>
+
+	      typename-btn_autoplay
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="48px" height="48px" viewBox="-9.48 -10 48 48" enable-background="new -9.48 -10 48 48" xml:space="preserve">
+<path id="btn_autoplay" d="M19.77,26.629c-8.54,3.756-18.04-0.471-19.58-9.474c-1.43-8.365,5.05-15.824,13.12-17
+	c6.94-1.009,13.32,2.988,15.16,9.1C30.41,15.713,26.98,23.455,19.77,26.629z M27.55,10.314c-0.547-1.826-1.556-3.479-2.93-4.8
+	c-2.896-2.755-6.914-3.998-10.86-3.357C6.48,3.257,0.72,8.933,2.03,16.345c1.41,7.936,8.9,11.724,16.58,8.476
+	C25.16,22.045,29.3,16.128,27.55,10.314L27.55,10.314z M9.61,8.99l11.19,1.643l-9.25,8.347L9.61,8.99z"/>
+</svg>
+	      
+	      typename-btn_map
+	      
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="22" viewBox="0 0 25 22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="btn_map" class="cls-1" d="M2278,806.5l7.14-1.834v16.5L2278,823V806.5Zm17.86-1.834L2303,801v16.5l-7.14,3.666v-16.5Zm-8.93-1.833,7.14,1.833v16.5l-7.14-1.833v-16.5Z" transform="translate(-2278 -801)"/>
+</svg>
+	      
+	typename-map_small
+<svg id="map_small" xmlns="http://www.w3.org/2000/svg" width="72" height="40" viewBox="0 0 72 40">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        opacity: 0.4;
+      }
+
+      .cls-2 {
+        opacity: 0.2;
+      }
+    </style>
+  </defs>
+  <path id="b" class="cls-1" d="M3935,608v-1h72v1h-72Zm0-28v-1h72v1h-72Zm15,9v-1h42v1h-42Zm0-20v-1h42v1h-42Zm0,19h1l-15,20h-1Zm0-20h1l-15,12h-1Zm0,0h1v20h-1V568Zm-15,12h1v28h-1V580Zm57,8h-1l15,20h1Zm0-20h-1l15,12h1Zm0,0h-1v20h1V568Zm15,12h-1v28h1V580Z" transform="translate(-3935 -568)"/>
+  <path id="b-2" data-name="b" class="cls-2" d="M3936,607l15-19h40l15,19h-70Z" transform="translate(-3935 -568)"/>
+</svg>
+
+	      typename-sparta
+	     	<svg xmlns="http://www.w3.org/2000/svg" width="91" height="39" viewBox="0 0 91 39">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="sparta" class="cls-1" d="M3929.23,402.02c0-3.79-.52-6.095-3.48-7.267l-2.92-1.172c-2.83-1.133-3.31-2.227-3.31-5.743a5.965,5.965,0,0,1,1.4-4.415,3.727,3.727,0,0,1,2.67-.938,3.628,3.628,0,0,1,2.84,1.094c0.92,1.016,1.2,2.188,1.2,4.1h1.6c0-2.306-.24-3.79-1.6-5.158a5.546,5.546,0,0,0-4-1.445,5.325,5.325,0,0,0-3.91,1.445,7.259,7.259,0,0,0-1.8,5.353c0,4.141.76,5.743,3.67,6.915l2.92,1.172c2.52,1.016,3.12,2.423,3.12,6.1,0,2.422-.2,3.79-1.28,4.845a3.834,3.834,0,0,1-2.92,1.016,3.966,3.966,0,0,1-2.87-1.016c-0.96-.938-1.24-2.149-1.24-4.532h-1.6c0,3.086.4,4.376,1.64,5.626a5.518,5.518,0,0,0,4.07,1.367,5.457,5.457,0,0,0,4.04-1.367C3928.71,406.748,3929.23,404.989,3929.23,402.02Zm15.62-13.2c0-6.759-2.96-7.5-5.75-7.5h-5.04v27.818h1.6V396.316h3.44C3942.65,396.316,3944.85,394.753,3944.85,388.815Zm-1.6,0c0,4.063-1.04,6.094-4.03,6.094h-3.56V382.72h3.56C3942.21,382.72,3943.25,384.751,3943.25,388.815Zm17.3,20.316-5.99-27.818h-1.44l-6.11,27.818h1.76l1.68-8.361h6.63l1.72,8.361h1.75Zm-3.75-9.768h-6.03l2.99-14.846Zm18.5,9.768-4.52-13.088c2.24-.665,3.6-2.618,3.6-7.228,0-6.759-2.96-7.5-5.75-7.5h-5.04v27.818h1.6V396.277h4.08l4.27,12.854h1.76Zm-2.52-20.316c0,4.063-1.04,6.094-4.03,6.094h-3.56V382.72h3.56C3971.74,382.72,3972.78,384.751,3972.78,388.815Zm16.51-6.095v-1.407h-11.11v1.407h4.75v26.411h1.6V382.72h4.76Zm14.58,26.411-5.99-27.818h-1.44l-6.11,27.818h1.75l1.68-8.361h6.63l1.72,8.361h1.76Zm-3.75-9.768h-6.04l3-14.846Zm3.72-22.835c0-1.313-.09-1.535-0.33-1.852a1.3,1.3,0,0,0-.47-0.363,1.084,1.084,0,0,0,.48-0.422,2.479,2.479,0,0,0,.24-1.452,2.163,2.163,0,0,0-.4-1.723,1.443,1.443,0,0,0-1.9.012,1.435,1.435,0,0,0-.38,1.113v0.6h0.46v-0.6a0.9,0.9,0,0,1,.87-1.078,0.838,0.838,0,0,1,.6.235,2.037,2.037,0,0,1,.3,1.441,1.977,1.977,0,0,1-.31,1.452,0.79,0.79,0,0,1-.59.223h-0.52v0.4h0.52a0.82,0.82,0,0,1,.63.257c0.27,0.27.34,0.492,0.34,1.758a2.341,2.341,0,0,1-.34,1.71,0.807,0.807,0,0,1-.63.258,0.947,0.947,0,0,1-.94-1.078v-0.6h-0.45v0.6a1.44,1.44,0,0,0,.41,1.113,1.47,1.47,0,0,0,1.96-.023C4003.74,378.144,4003.84,377.758,4003.84,376.528Zm4.89-1.9c0-2.847-.09-3.269-0.59-3.773a1.58,1.58,0,0,0-1.13-.4h-1.6V378.8h1.6a1.58,1.58,0,0,0,1.13-.4C4008.64,377.9,4008.73,377.477,4008.73,374.63Zm-0.48,0c0,2.718-.06,3.081-0.47,3.479a1.124,1.124,0,0,1-.8.27h-1.09v-7.5h1.09a1.124,1.124,0,0,1,.8.27C4008.19,371.548,4008.25,371.911,4008.25,374.63Z" transform="translate(-3917.72 -370.375)"/>
+</svg>
+
+	      typename-p
+	      <svg id="p" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="33" height="33" viewBox="0 0 33 33">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-opacity: 0.2;
+        stroke: aqua;
+        stroke-width: 1px;
+        fill: url(#radial-gradient);
+      }
+
+      .cls-2 {
+        fill: aqua;
+        fill-rule: evenodd;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="16.5" cy="16.5" r="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#042d31"/>
+      <stop offset="1" stop-color="#17ecff"/>
+    </radialGradient>
+  </defs>
+  <circle id="_120" data-name="120" class="cls-1" cx="16.5" cy="16.5" r="16"/>
+  <path id="Contacts_Icon" data-name="Contacts Icon" class="cls-2" d="M3176,649h-6.4c0.23-.825,3.16-1.239,3.74-1.636,0.67-.4.45-2.649,0.45-2.649l-0.45-.4a4.63,4.63,0,0,0-.31-1.369c-0.36-.618-0.89-1.471-0.89-1.471a1.09,1.09,0,0,1,0-1.765,14.564,14.564,0,0,1-.36-2.649c0-2.472,1.92-3.531,4.51-3.531s4.05,1.236,4.05,3.531c0,1.1-.17,2.649-0.17,2.649a1.105,1.105,0,0,1,0,1.765,15.384,15.384,0,0,0-.9,1.471,7.2,7.2,0,0,0-.31,1.369l-0.44.4s-0.23,2.251.44,2.649c0.58,0.353,2.94.783,3.44,1.636C3182.38,649.038,3179.79,649,3176,649Z" transform="translate(-3159.5 -624.5)"/>
+</svg>
+		  
+		  
+	typename-p_bg
+	<svg xmlns="http://www.w3.org/2000/svg" width="34.78" height="34.687" viewBox="0 0 34.78 34.687">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #17ecff;
+        fill-opacity: 0.2;
+        stroke: aqua;
+        stroke-width: 1px;
+        opacity: 0.4;
+      }
+    </style>
+  </defs>
+  <circle id="p_bg" class="cls-1" cx="17.39" cy="17.344" r="16.89"/>
+</svg>
+		  
+		  
+		  
+		  typename-p_center
+<svg id="p_center" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="49" height="48" viewBox="0 0 49 48">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-opacity: 0.4;
+        stroke: aqua;
+        stroke-width: 2px;
+        fill: url(#radial-gradient);
+      }
+
+      .cls-2 {
+        font-size: 9.974px;
+        text-anchor: middle;
+        font-family: Roboto;
+        font-weight: 700;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill-rule: evenodd;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="25" cy="17" r="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#042d31"/>
+      <stop offset="1" stop-color="#17ecff"/>
+    </radialGradient>
+  </defs>
+  <circle id="_120" data-name="120" class="cls-1" cx="25" cy="17" r="16"/>
+  <text id="Nevrton" class="cls-2" transform="translate(24.826 46.638) scale(1.407 1.404)">Nevrton</text>
+  <path id="Contacts_Icon" data-name="Contacts Icon" class="cls-3" d="M3253,596h-6.4c0.23-.825,3.16-1.239,3.74-1.636,0.67-.4.45-2.649,0.45-2.649l-0.45-.4a4.63,4.63,0,0,0-.31-1.369c-0.36-.618-0.89-1.471-0.89-1.471a1.09,1.09,0,0,1,0-1.765,14.548,14.548,0,0,1-.36-2.649c0-2.472,1.92-3.531,4.51-3.531s4.06,1.235,4.06,3.531c0,1.1-.18,2.649-0.18,2.649a1.105,1.105,0,0,1,0,1.765,15.384,15.384,0,0,0-.9,1.471,7.2,7.2,0,0,0-.31,1.369l-0.44.4s-0.23,2.251.44,2.649c0.58,0.353,2.94.783,3.44,1.636C3259.38,596.038,3256.79,596,3253,596Z" transform="translate(-3228 -571)"/>
+</svg>
+		  
+		  
+	typename-p_red
+<svg id="p_red" xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: red;
+      }
+
+      .cls-1 {
+        fill-opacity: 0.2;
+        stroke: red;
+        stroke-width: 1px;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <circle id="_48_r" data-name="48 r" class="cls-1" cx="16.5" cy="16.5" r="16"/>
+  <path id="Contacts_Icon_r" data-name="Contacts Icon r" class="cls-2" d="M3371.02,618.176c-3.91,0-6.64-.093-6.69-0.14,0.64-.371,3.23-0.883,3.82-1.3,0.69-.418.46-2.788,0.46-2.788l-0.46-.419a5.085,5.085,0,0,0-.31-1.44c-0.37-.651-0.92-1.55-0.92-1.55a1.184,1.184,0,0,1,0-1.858,16.08,16.08,0,0,1-.36-2.789c0-2.6,1.96-3.717,4.6-3.717s4.14,1.3,4.14,3.717c0,1.162-.18,2.789-0.18,2.789a1.184,1.184,0,0,1,0,1.858,15.16,15.16,0,0,0-.91,1.55,6.651,6.651,0,0,0-.32,1.44l-0.46.419s-0.22,2.37.46,2.788c0.59,0.372,3.14.883,3.77,1.255C3377.66,618.036,3374.89,618.176,3371.02,618.176Z" transform="translate(-3354.5 -593.5)"/>
+</svg>
