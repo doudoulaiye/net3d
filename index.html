@@ -15,10 +15,11 @@
             #timeContent{
                 position: absolute;
                 left:80px;
-                top:10px;/*位置待确定 80*/
+                top:80px;/*位置待确定 80*/
                 z-index: 10000;
                 width:160px;
-                height:108px;
+                height:240px;
+                border-left:1px solid rgba(255,255,255,0.1);
             }
             .btnbg{
                 border-width: 1px;
@@ -29,6 +30,7 @@
                 font-size:18px !important;
                 font-weight: bold !important;
                 color:#ffffff !important;
+                opacity: 1 !important;
             }
             .basetime{
                 text-align:center;/*横向居中*/
@@ -43,7 +45,7 @@
             #btnBody{
                 position: absolute;
                 left:70px;
-                top:218px; /*位置待确定 396*/
+                top:396px; /*位置待确定 396*/
                 z-index: 10000;
                 width:118px;
                 height:68px;
@@ -89,13 +91,74 @@
                 height:180px;
                 position: absolute;
                 left:120px;
-                bottom:0px;/*位置待确定*/
+                bottom:20px;/*位置待确定*/
             }
             .eventMsg{
                 opacity: 0.4;
                 font-size: 12px;
                 color:#ffffff;
                 margin-bottom: 24px;
+            }
+
+
+            #cpMsg{
+                position: absolute;;
+                right: 72px;
+                top:64px;
+                float:right;
+                width:20px;
+            }
+            #sparta{
+                position: relative;
+                float:right;
+                width:92px;
+                height: 40px;
+                margin-bottom: 16px;
+            }
+            #mapboxImg{
+                position: relative;
+                float:right;
+                width:72px;
+                height: 40px;
+                margin-top: 12px;
+            }
+            #cpMsgline{
+                position: relative;
+                float:right;
+                height:32px;
+                width:186px;
+            }
+            #cpMsglineDiv{
+                position: absolute;
+                left:0px;
+                top:16px;
+                width:186px;
+                height:1px;
+                border-bottom: 1px solid #FFFFFF;
+                opacity: 0.4;
+            }
+            .font10{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 10px;
+                white-space: nowrap;
+            }
+            .font12{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 12px;
+                margin-bottom:12px;
+                white-space: nowrap;
+            }
+            .font14{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 14px;
+                margin-bottom:12px;
+                white-space: nowrap;
             }
         </style>
     </head>
@@ -106,7 +169,7 @@
                 <div class="basetime">
                     2017.10-12
                 </div>
-                <div class="basetime btnbgSelect">
+                <div class="basetime btnbg">
                     2017.7-9
                 </div>
                 <div class="basetime">
@@ -157,20 +220,29 @@
                     <span><object  data="res/blue.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;抓拍</span>
                 </div>
                 <div class="eventMsg">
-                    <span><object  data="res/pink.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;住院</span>
+                    <span><object  data="res/pink.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;住宿</span>
                 </div>
                 <div class="eventMsg">
-                    <span><object  data="res/yellow.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;吃饭</span>
+                    <span><object  data="res/yellow.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;进餐</span>
                 </div>
                 <div class="eventMsg">
-                    <span><object  data="res/green.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;外卖</span>
+                    <span><object  data="res/green.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;快递</span>
                 </div>
                 <div class="eventMsg">
                     <span><object  data="res/red.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;案件</span>
                 </div>
             </div>
         </div>
-
+        <div id='cpMsg'>
+            <div id="sparta"><img src="res/sparta.png"/></div>
+            <div class="font10" style="font-style: italic;margin-bottom: 8px">HIKVISION</div>
+            <div class="font10">杭州海康威视系统公司版权所有</div>
+            <div id="cpMsgline"><div id="cpMsglineDiv"></div></div>
+            <div class="font14">地图信息</div>
+            <div class="font12">舟山，宁波，浙江，中国</div>
+            <div class="font12">2017/10/16</div>
+            <div id="mapboxImg"><img src="res/map_small.png"/></div>
+        </div>
     </body>
     <script src="three.min.js"></script>
     <script src="lib/loaders/SVGLoader.js"></script>
@@ -222,9 +294,10 @@
         //设置中心经纬度 
         //var centerLng = 120.215, centerLat = 30.211666;//杭州
         //var centerLng = 122.201691, centerLat = 30.037876;//舟山
-        var centerLng = 122.211464, centerLat = 30.003853;//舟山
-
-
+        //var centerLng = 122.211464, centerLat = 30.003853;//舟山
+        //let centerLng = 122.136151, centerLat = 30.04688;
+        let centerLng = 122.136151, centerLat = 30.084887;
+        //122.152823,
         //let duration = [500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
         let duration = [500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000];
         let stats;
@@ -232,8 +305,10 @@
         let INTERSECTED;
         let raycaster;
         let radius = 11;//设置地图的图片数量行列 中间点一个50的图片，10半径左侧宽度是525,11半径左侧宽度是575
-        let radiusX = 21;
+        let radiusX = 17;
         let radiusY = 13; 
+
+        let TIMELINEH = (radiusY+0.5) * tileSize *2 /2;
         //地图层级默认
         let level = 15;
         
@@ -254,7 +329,7 @@
         //svgManger.load('res/p.svg',svgloaderPerson,function(){console.log('loading svg....')},function(){console.log('Error loading SVG')});
         let personCImg,personCSelectImg,personCRedImg;
         personCImg = new Image();
-        personCImg.src='res/p_red.png';
+        personCImg.src='res/p.png';
         personCRedImg = new Image();
         personCRedImg.src='res/p_red.png';
         let personTexture =  new THREE.TextureLoader().load(personImg);
@@ -391,7 +466,7 @@
 
         let rightGroup = new THREE.Group();
         rightGroup.rotation.x = -Math.PI/3;
-        rightGroup.position.set(50,150,0);
+        rightGroup.position.set(180,150,0);
         scene.add(leftGroup);
         scene.add(rightGroup);
         let leftControls = new THREE.ObjectTrackballControls(leftGroup,camera,renderer.domElement);
@@ -459,8 +534,8 @@
         */
 
         //创建坐标轴并加入到scene  
-        var axes = new THREE.AxisHelper(50);
-        scene.add(axes);
+        //var axes = new THREE.AxisHelper(50);
+        //scene.add(axes);
 
         bodyDom=new $$.Body();
         bodyDom.distanceFromCamera=20;
@@ -470,6 +545,7 @@
         scene.add(light);
 
         //加入一个白光
+        
         var directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
         directionalLight.position.set(0, 1, 0);
         scene.add(directionalLight);
@@ -571,7 +647,7 @@
         function initTween()
         {
             //镜头移动到地图200米上
-            addEntities();
+            //addEntities();
             addEvents();
             new TWEEN.Tween( camera.position).delay(2000).to( { z: mapZValue+200 }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ //应当计算出范围展示的中心点才好
                 //镜头跟随实体冒泡
@@ -721,6 +797,8 @@
             //var url = serverURL + level + "/" + xno + "/" + yno + ".png";
 
             let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj81gnx0e7hod2snqhk8wxjof/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8r3a8ncb6nf2rqowyp27wfi/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8smxtzfbjx22rs5nwfb7srz/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             var loader = new THREE.TextureLoader();
             //跨域加载图片
             loader.crossOrigin = true;
@@ -1019,7 +1097,7 @@
             rightGroup.add(helper3);
             */
             addTimeLine();
-            addBtns();
+            //addBtns();
             personImgObj.onload = function(){
                 createGraph();
             }
@@ -1120,17 +1198,40 @@
                 var currentWebGLPos = LonLat2WebGL(x,y);
                 x = currentWebGLPos.x;
                 y = currentWebGLPos.y;
+                //eventtype 抓拍 0x00C2C2 住院 7237AF 饮食 BE8B00 快递 00B954 案件B42D15
+                let random = randomFromTo(1, 10);
+                let color = 0x00C2C2;
+                if(random==4){
+                    color = 0x7237AF;
+                }else if(random==5){
+                    color = 0xBE8B00;
+                }else if(random ==6 || random==7){
+                    color = 0x00B954;
+                }else if(random ==8 || random==9){
+                    color = 0xB42D15;
+                }
+                /*
                 var sprite = new THREE.Sprite(materialEvent);
                 sprite.scale.set(20, 20, 1);
-                let z = randomNumBoth(mapZValue+10,entityZValue-10);
+                */
+                let geo = new THREE.SphereGeometry( 15, 150, 150 );
+                let sprite = new THREE.Mesh(
+                    geo,
+                    //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
+                    new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:color,ambient:0xFFFFFF})
+                    );
+                let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
                 obj.x=x;
                 obj.y=y;
                 obj.z=z;
                 sprite.attr = obj;
                 sprite.position.set(x, y, z);
+                
+                
 
                 rightGroup.add(sprite);
                 events.push(sprite);
+                /*
                 sprite.onEnter = function(obj){
                     obj.object.scale.set(40, 40, 1);
                     //显示信息
@@ -1139,6 +1240,7 @@
                 sprite.onLeave = function(obj){
                     obj.object.scale.set(20, 20, 1);
                 }
+                */
                 /*
                 sprite.onClick = function(obj){
                     console.log('OO***',obj);
@@ -1210,7 +1312,7 @@
             let girdW = (radiusX+0.5) * tileSize *2;
             let girdH = (radiusY+0.5) * tileSize *2;//entityZValue-mapZValue;
             //时间线的高度 暂时设定为地图高度的一部分
-            let lineHeight = girdH*1/2;
+            let lineHeight = TIMELINEH;//girdH*1/2;
             let timeLineGroup = new THREE.Group();
             rightGroup.add(timeLineGroup);
 
@@ -1721,15 +1823,19 @@
             let textObj = new THREE.Object3D();
             textObj.position.set(x,y,z);
             node.data.draw_object = textObj;
-
+            let imagetype = randomFromTo(1,10);
+            let img = personCImg;
+            if(imagetype>8){
+                img = personCRedImg;
+            }
             let param = {
-                img:personCImg,//personCImg,//必填，图片url
+                img:img,//personCImg,//必填，图片url
                 txt:NAMES[randomFromTo(1,NAMES.length)],//必填，文字内容
                 layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
                 distanceImgTxt:40,//可选 文字和图片的距离 横向或竖向
                 imgParam:{
-                    width:200,//可不传，图片宽度，默认使用图片的高度
-                    height:200,//可不传，图片高度，默认使用图片的宽度
+                    width:220,//可不传，图片宽度，默认使用图片的高度
+                    height:220,//可不传，图片高度，默认使用图片的宽度
                     //scale:1//可不传，图片等比例缩放
                 },
                 txtParam:{
@@ -1738,7 +1844,7 @@
                     //font-style||font-variant||font-weight||font-size||line-height||font-family
                     fontStyle:'bold',//
                     fontVariant:null,
-                    fontWeight:'normal',
+                    fontWeight:'bold',//normal
                     fontSize:'120px',
                     //lineHeight:
                     fontFamily:'Microsoft YaHei',

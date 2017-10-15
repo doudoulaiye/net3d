@@ -167,6 +167,7 @@ datas.events = [
 		relations:['r3','r2'],
 		position:'122.091882 30.01974'
 	},
+	/*
 	{
 		id:'ev16',
 		type:'事件',
@@ -194,6 +195,7 @@ datas.events = [
 		relations:['r3','r2'],
 		position:'122.10029 30.024056'
 	},
+	*/
 	{
 		id:'ev19',
 		type:'事件',
@@ -202,7 +204,9 @@ datas.events = [
 		entities:['e3','e2'],
 		relations:['r3','r2'],
 		position:'122.101799 30.021054'
-	},
+	}
+	/*
+	,
 	{
 		id:'ev20',
 		type:'事件',
@@ -220,7 +224,9 @@ datas.events = [
 		entities:['e3','e2'],
 		relations:['r3','r2'],
 		position:'122.116028 30.01849'
-	},
+	}
+	
+	,
 	{
 		id:'ev22',
 		type:'事件',
@@ -239,6 +245,7 @@ datas.events = [
 		relations:['r3','r2'],
 		position:'122.127527 30.016363'
 	}
+	*/
 ];
 
 
