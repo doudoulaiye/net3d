@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34.78" height="34.687" viewBox="0 0 34.78 34.687">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #17ecff;
+        fill-opacity: 0.2;
+        stroke: aqua;
+        stroke-width: 1px;
+        opacity: 0.4;
+      }
+    </style>
+  </defs>
+  <circle id="p_bg" class="cls-1" cx="17.39" cy="17.344" r="16.89"/>
+</svg>

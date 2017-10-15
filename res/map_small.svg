@@ -1,0 +1,20 @@
+<svg id="map_small" xmlns="http://www.w3.org/2000/svg" width="72" height="40" viewBox="0 0 72 40">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        opacity: 0.4;
+      }
+
+      .cls-2 {
+        opacity: 0.2;
+      }
+    </style>
+  </defs>
+  <path id="b" class="cls-1" d="M3935,608v-1h72v1h-72Zm0-28v-1h72v1h-72Zm15,9v-1h42v1h-42Zm0-20v-1h42v1h-42Zm0,19h1l-15,20h-1Zm0-20h1l-15,12h-1Zm0,0h1v20h-1V568Zm-15,12h1v28h-1V580Zm57,8h-1l15,20h1Zm0-20h-1l15,12h1Zm0,0h-1v20h1V568Zm15,12h-1v28h1V580Z" transform="translate(-3935 -568)"/>
+  <path id="b-2" data-name="b" class="cls-2" d="M3936,607l15-19h40l15,19h-70Z" transform="translate(-3935 -568)"/>
+</svg>
