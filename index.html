@@ -473,7 +473,7 @@
         let rightControls = new THREE.ObjectTrackballControls(rightGroup,camera,renderer.domElement);
 
         var gui = new dat.GUI();
-	gui.toggleHide();
+	gui.closed = true;
         rightControls.enabled = false;
         rightControls.noZoom = true;
         gui.add(rightControls, 'enabled');
