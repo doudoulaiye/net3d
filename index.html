@@ -14,12 +14,20 @@
             }
             #timeContent{
                 position: absolute;
-                left:80px;
-                top:80px;/*位置待确定 80*/
+                left:20px;/*位置待确定 80*/
+                top:20px;/*位置待确定 80*/
                 z-index: 10000;
-                width:160px;
+                width:180px;
                 height:240px;
+                cursor: pointer;
+                overflow: hidden;
                 border-left:1px solid rgba(255,255,255,0.1);
+            }
+            #time_ul{
+                height: 100%;  
+                width: 200px;  
+                overflow-y: auto;  
+                overflow-x: hidden;  
             }
             .btnbg{
                 border-width: 1px;
@@ -44,11 +52,12 @@
             }
             #btnBody{
                 position: absolute;
-                left:70px;
-                top:396px; /*位置待确定 396*/
+                left:30px; /*位置待确定 70*/
+                top:300px; /*位置待确定 396*/
                 z-index: 10000;
                 width:118px;
                 height:68px;
+                cursor: pointer;
             }
             .btnbgSelect{
                 border-width: 1px;
@@ -90,7 +99,7 @@
                 width:48px;
                 height:180px;
                 position: absolute;
-                left:120px;
+                left:60px;/*位置待确定120*/
                 bottom:20px;/*位置待确定*/
             }
             .eventMsg{
@@ -166,17 +175,19 @@
 
         <div id="main">
             <div id="timeContent">
-                <div class="basetime">
-                    2017.10-12
-                </div>
-                <div class="basetime btnbg">
-                    2017.7-9
-                </div>
-                <div class="basetime">
-                    2017.4-6
-                </div>
-                <div class="basetime">
-                    2017.1-3
+                <div id="time_ul">
+                    <div class="basetime">2017.10-12</div>
+                    <div class="basetime btnbg">2017.7-9</div>
+                    <div class="basetime">2017.4-6</div>
+                    <div class="basetime">2017.1-3</div>
+                    <div class="basetime">2016.10-12</div>
+                    <div class="basetime">2016.7-9</div>
+                    <div class="basetime">2016.4-6</div>
+                    <div class="basetime">2016.1-3</div>
+                    <div class="basetime">2015.10-12</div>
+                    <div class="basetime">2015.7-9</div>
+                    <div class="basetime">2015.4-6</div>
+                    <div class="basetime">2015.1-3</div>
                 </div>
             </div>
             <div id ="btnBody">
@@ -244,6 +255,7 @@
             <div id="mapboxImg"><img src="res/map_small.png"/></div>
         </div>
     </body>
+    <script src="lib/jquery-3.2.1.min.js"></script>
     <script src="three.min.js"></script>
     <script src="lib/loaders/SVGLoader.js"></script>
     <script src="lib/stats.min.js"></script>
@@ -266,7 +278,9 @@
 
     <script src="data/test.js"></script>
     <script src="data/name.js"></script>
+    <script src="domevent.js"></script>
     <script>
+        let currentTime='2017.7-9';
         //关系网络绘制
         let nodeGeo = new THREE.SphereGeometry( 20, 150, 150 );
         let that = {
@@ -284,8 +298,6 @@
             that.numEdges= 10;//边最大数量
         let graph = new Graph({limit: 20});
         let geometries = [];
-
-
 
          //切图在scene中的大小
         var tileSize = 50;
