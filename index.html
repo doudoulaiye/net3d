@@ -279,6 +279,7 @@
     <script src="data/test.js"></script>
     <script src="data/name.js"></script>
     <script src="domevent.js"></script>
+    <script src="myutil.js"></script>
     <script>
         let currentTime='2017.7-9';
         //关系网络绘制
@@ -298,6 +299,9 @@
             that.numEdges= 10;//边最大数量
         let graph = new Graph({limit: 20});
         let geometries = [];
+        let selectObj;
+
+        let timeLineGroup;
 
          //切图在scene中的大小
         var tileSize = 50;
@@ -330,10 +334,12 @@
         //实体层的z值
         let entityZValue =100;  //let girdH = (radius+0.5) * 500 *2 + mapZValue; //
         let events = new Array();
+        let eventGroup = new THREE.Group();
+        let eventMapGroup = new THREE.Group();
         let entities = new Array();
         let entitiesText = new Array();
         let personImg = 'images/person.png';//'images/person.png';//200*200
-        let localImg = 'images/local.png';//200*200
+        let localImg = 'res/green.png';//'images/local.png';//200*200
         let personImgObj = new Image();
             personImgObj.src=personImg;
         let svgManger = new THREE.SVGLoader();
@@ -344,6 +350,13 @@
         personCImg.src='res/p.png';
         personCRedImg = new Image();
         personCRedImg.src='res/p_red.png';
+        let eventsTexture ={
+            'red':draw2Circle('rgba(190,138,0,0.2)','rgba(190,138,0,0.8)'),
+            'yellow':draw2Circle('rgba(206,151,0,0.2)','rgba(206,151,0,0.8)'),
+            'blue':draw2Circle('rgba(19,176,176,0.2)','rgba(19,176,176,0.8)'),
+            'green':draw2Circle('rgba(20,186,95,0.2)','rgba(20,186,95,0.8)'),
+            'pink':draw2Circle('rgba(124,69,179,0.2)','rgba(124,69,179,0.8)')
+        } 
         let personTexture =  new THREE.TextureLoader().load(personImg);
         let localTexture = new THREE.TextureLoader().load(localImg);
         function svgloaderPerson(doc){
@@ -388,8 +401,15 @@
             //transparent: true,
             //useScreenCoordinates: false,
             //sizeAttenuation:false, 缩放大小不变，发现不好使
-            color:0xffffff,
+            color:0x0000ff,
             map: localTexture
+            /*
+            transparent:false,
+            blending:THREE.AdditiveBlending,
+            //alignment:THREE.SpriteAlignment.center,
+            useScreenCoordinates:false,
+            fog:true
+            */
         });
         var div = document.getElementById("main");
         var width = window.innerWidth
@@ -479,13 +499,15 @@
         let rightGroup = new THREE.Group();
         rightGroup.rotation.x = -Math.PI/3;
         rightGroup.position.set(180,150,0);
+        rightGroup.add(eventGroup);
+        rightGroup.add(eventMapGroup);
         scene.add(leftGroup);
         scene.add(rightGroup);
         let leftControls = new THREE.ObjectTrackballControls(leftGroup,camera,renderer.domElement);
         let rightControls = new THREE.ObjectTrackballControls(rightGroup,camera,renderer.domElement);
 
         var gui = new dat.GUI();
-	gui.closed = true;
+	   gui.closed = true;
         rightControls.enabled = false;
         rightControls.noZoom = true;
         gui.add(rightControls, 'enabled');
@@ -661,7 +683,7 @@
         {
             //镜头移动到地图200米上
             //addEntities();
-            addEvents();
+            //addEvents();
             new TWEEN.Tween( camera.position).delay(2000).to( { z: mapZValue+200 }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ //应当计算出范围展示的中心点才好
                 //镜头跟随实体冒泡
                 new TWEEN.Tween( camera.position).to( { z: entityZValue+100 }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(
@@ -1008,197 +1030,8 @@
             }
             
         }
-        function main() {
-            let position = {coords:{longitude:centerLng,latitude:centerLat}};
-            var lng = position.coords.longitude;
-            var lat = position.coords.latitude;
-            console.log("current position in world", lat, lng);
-            centerLat = lat;
-            centerLng = lng;
-
-            var webMercator = LonLat2WebMercator(lng, lat);
-    		var tilePos = WebMercator2Tileimage(webMercator.x,webMercator.y);
-    			
-    		//以centerLng所在点tile中心点为中心，加载tile
-            loadMap(tilePos.tileinfo.x, tilePos.tileinfo.y);
-            //loadMap2(tilePos.tileinfo.x, tilePos.tileinfo.y);
-            
-            //addPersons();
-            
-            
-/*
-            var options = {
-                size: 10,
-                height: 0,
-                weight: 'normal',
-                font: 'STHupo',
-                style: 'normal',
-                bevelThickness: 1,
-                bevelSize: 1,
-                bevelSegments: 1,
-                curveSegments: 50,
-                steps: 1
-           };
-           scene.add(new THREE.Mesh(
-                new THREE.TextGeometry("hello",options),
-                new THREE.MeshBasicMaterial({color:0xcccccc})
-                ))
-
-*/
-//
-/*
-           loader.load( 'STHupo_Regular.js', function ( font ) {
-
-                var textGeo = new THREE.TextGeometry( "你好哈", {
-
-                    font: font,
-
-                    size: 30,
-                    height: 5,
-                    curveSegments: 2,
-
-                    bevelThickness: 2,
-                    bevelSize: 1,
-                    bevelEnabled: true
-
-                } );
-
-                var textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
-
-                var mesh = new THREE.Mesh( textGeo, textMaterial );
-                mesh.position.set( 0,0,0 );
-
-                scene.add( mesh );
-
-            } );
-            */
-            //实际地图的宽度和高度
-            let girdW = (radiusX+0.5) * tileSize *2;
-            let girdH = (radiusY+0.5) * tileSize *2;//entityZValue-mapZValue;
-            /*
-            //左侧的网格
-            let helper = new THREE.GridHelper(girdH,4);
-            helper.rotation.z = Math.PI/2;
-            helper.position.x = -girdH/2;
-            helper.position.z = mapZValue+girdH/2;//z轴上的中心
-            scene.add(helper);
-
-            //下侧的网格
-            let helper4 = new THREE.GridHelper(girdH,4);
-            helper4.position.y = -girdH/2;
-            helper4.position.z = mapZValue+girdH/2;
-            scene.add(helper4);
-
-            //顶侧的网格
-            let helper5 = new THREE.GridHelper(girdH,4);
-            helper5.rotation.x = Math.PI/2;
-            helper5.position.z = girdH+ mapZValue;
-            scene.add(helper5);
-            */
-            /*
-            //右侧的网格长宽相等时
-            let helper2 = new THREE.GridHelper(girdH,4);
-            helper2.rotation.z = Math.PI/2;
-            helper2.position.x = girdH/2;
-            helper2.position.z = mapZValue+girdH/2;
-            rightGroup.add(helper2);
-
-            //上侧的网格长宽相等时
-            let helper3 = new THREE.GridHelper(girdH,4);
-            helper3.position.y = girdH/2;
-            helper3.position.z = mapZValue+girdH/2;
-            rightGroup.add(helper3);
-            */
-            addTimeLine();
-            //addBtns();
-            personImgObj.onload = function(){
-                createGraph();
-            }
-            
-        }
-        function randomNumBoth(min,max){
-            let range = max - min;
-            let rand = Math.random();
-            let num = min + Math.round(rand*range);
-            return num;
-        }
-        function randomNumBothXY(min,max){
-            let range = max - min;
-            let rand = Math.random();
-            let num = min + rand*range;
-            return num.toFixed(6);
-        }
-        main();
-        function addEntities(){
         
-            for(var i=0;i<datas.entities.length;i++){
-                /*
-                //标记当前位置
-                let persons=[
-                    
-                    {xy:[120.215,30.211666],name:'张三'},
-                    //下沙多蓝水岸
-                    {xy:[120.381111,30.299444],name:'多蓝水岸'},
-                    {xy:[120.197697,30.2581],name:'王五'},
-                    {xy:[120.086307,30.161973],name:'刘六'},
-                    {xy:[120.219113,30.170966],name:'猴七'},
-                    
-                    {xy:[120.211199,30.263497],name:'小八'}
-                    
-                ];
-                */
-                let obj = datas.entities[i];
-                let person = {xy:[obj.position.split(' ')[0]-0,obj.position.split(' ')[1]-0],name:obj.name};
-                addPerson(person);
-                
-            }
-            window.setTimeout(function(){
-                for(let i=0;i<entities.length;i++){
-                    new TWEEN.Tween( entities[i].position).to( { z: entityZValue }, duration[7] ).easing( TWEEN.Easing.Linear.None).onComplete(
-                            function(){ 
-                                addRelations();
-                            }
-                        ).start();
-                    //new TWEEN.Tween( geometry.position).to( { z: entityZValue }, 7000 ).easing( TWEEN.Easing.Exponential.InOut ).start();
-                    //不再需要绘制线了
-                    // new TWEEN.Tween( entitiesText[i].position).to( { z: entityZValue-10 }, duration[7] ).easing( TWEEN.Easing.Linear.None).start();
-                }
-            },3000);
-        }
 
-        function addRelations(){
-
-            for(var i=0;i<datas.relations.length;i++){
-                let rel = datas.relations[i];
-                let id = rel.id;
-                let name = rel.name;
-                let entities = rel.entities;
-                let fromE = getEntity(entities[0]);
-                fromE = setXY(fromE);
-                let toE = getEntity(entities[1]);
-                toE = setXY(toE);
-                console.log('xyxyxyxy:   ',fromE.x,fromE.y,toE.x,toE.y);
-                geometry.vertices.push(new THREE.Vector3(fromE.x, fromE.y, entityZValue));
-                geometry.vertices.push(new THREE.Vector3(toE.x, toE.y, entityZValue));
-                
-                let texture = new THREE.TextTexture({
-                  text: rel.name,
-                  fontStyle: 'bold',
-                  fontSize: 12,
-                  fontFamily: '"Microsoft YaHei", SimSun, SimHei',
-                });
-                let materialText = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
-                let spriteText = new THREE.Sprite(materialText);
-                spriteText.scale.setX(texture.aspect).multiplyScalar(10);
-                //spriteText.scale.set(10, 10, 10);
-                spriteText.position.set((fromE.x+toE.x)/2, (fromE.y+toE.y)/2,  entityZValue-10);
-                rightGroup.add(spriteText);
-            }
-           
-            //添加关系线
-            let line = new THREE.Line(geometry,materialLine);//,THREE.LinePieces
-            rightGroup.add(line);
-        }
         /**
          * 添加事件
          * 通过计算高度设定
@@ -1214,24 +1047,32 @@
                 //eventtype 抓拍 0x00C2C2 住院 7237AF 饮食 BE8B00 快递 00B954 案件B42D15
                 let random = randomFromTo(1, 10);
                 let color = 0x00C2C2;
+                let colorName = 'blue';
                 if(random==4){
                     color = 0x7237AF;
+                    colorName = 'pink';
                 }else if(random==5){
                     color = 0xBE8B00;
+                    colorName = 'yellow';
                 }else if(random ==6 || random==7){
                     color = 0x00B954;
+                    colorName = 'green';
                 }else if(random ==8 || random==9){
                     color = 0xB42D15;
+                    colorName = 'red';
                 }
                 /*
                 var sprite = new THREE.Sprite(materialEvent);
                 sprite.scale.set(20, 20, 1);
                 */
+                
                 let geo = new THREE.SphereGeometry( 15, 150, 150 );
                 let sprite = new THREE.Mesh(
-                    geo,
-                    //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
-                    new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:color,ambient:0xFFFFFF})
+                        geo,
+                        //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
+                        new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:color
+                            //,ambient:0xFFFFFF
+                        })
                     );
                 let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
                 obj.x=x;
@@ -1241,20 +1082,48 @@
                 sprite.position.set(x, y, z);
                 
                 
+                eventGroup.add(sprite);
 
-                rightGroup.add(sprite);
                 events.push(sprite);
-                /*
-                sprite.onEnter = function(obj){
-                    obj.object.scale.set(40, 40, 1);
-                    //显示信息
 
+                //添加地图的图片
+                //暂时不能使用
+                //let eventTexture =   new THREE.CanvasTexture(draw2Circle())//eventsTexture[colorName]);
+
+                let egeo = new THREE.PlaneBufferGeometry(40,40,1,1);
+                let ematerial = new THREE.MeshBasicMaterial({
+                    map:localTexture
+                    ,transparent: true
+                });
+                let eventmesh = new THREE.Mesh(egeo,ematerial);
+                eventmesh.position.set(x, y,mapZValue+2);
+                eventMapGroup.add(eventmesh);
+                sprite.mapMapUuid = eventmesh.uuid;
+
+                
+                sprite.onEnter = function(obj){
+                    obj.object.scale.set(1.2, 1.2, 1.2);
+                    //显示信息
+                    for(var i=0;i<eventMapGroup.children.length;i++){
+                        let event = eventMapGroup.children[i];
+                        if(event.uuid==obj.object.mapMapUuid){
+                            event.scale.set(1.2, 1.2, 1.2);
+                        }
+                    }
                 }
                 sprite.onLeave = function(obj){
-                    obj.object.scale.set(20, 20, 1);
+                    obj.object.scale.set(1, 1, 1);
+                    //显示信息
+                    for(var i=0;i<eventMapGroup.children.length;i++){
+                        let event = eventMapGroup.children[i];
+                        if(event.uuid==obj.object.mapMapUuid){
+                            event.scale.set(1, 1, 1);
+                        }
+                    }
                 }
-                */
+                
                 /*
+                //玻璃气泡详情
                 sprite.onClick = function(obj){
                     console.log('OO***',obj);
                     obj.object.material.emissive.setHex(0x999900);
@@ -1289,35 +1158,9 @@
             return obj;
         }
 
-        $$.actionInjections.push(function(){
-                //stats.begin();
-                leftControls.update();
-                rightControls.update();
-                //cameraControls.update();
-                TWEEN.update();
-                //锁死标签内容
-                bodyDom.lockToScreen();
-                // Generate layout if not finished
-                if(!graph.layout.finished) {
-                  graph.layout.generate();
-                } else {
-                    //有一定的完成时间
-                    
-                }
-                if(ROTATION.isRotation){
-                        leftGroup.rotation.x +=0.01;
-                        leftGroup.rotation.y +=0.02;
-                    }
-                // Update position of lines (edges)
-                for(i=0; i<geometries.length; i++) {
-                  geometries[i].verticesNeedUpdate = true;
-                }
-
-                rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
-                //stats.end();
-            });
+        
         /**
-         *
+         * 绘制时间线
          *
          */
         function addTimeLine(){
@@ -1326,7 +1169,7 @@
             let girdH = (radiusY+0.5) * tileSize *2;//entityZValue-mapZValue;
             //时间线的高度 暂时设定为地图高度的一部分
             let lineHeight = TIMELINEH;//girdH*1/2;
-            let timeLineGroup = new THREE.Group();
+            timeLineGroup = new THREE.Group();
             rightGroup.add(timeLineGroup);
 
             //0-12的横线 包含左、前、右
@@ -1400,6 +1243,10 @@
             timeLineGroup.add(lineRF);
             timeLineGroup.add(lineRB);
         }
+        /**
+         * 添加按钮及事件
+         * 
+         */
         function addBtns(){
             let tableBtn=new $$.Txt("事件时空",{
                 backgroundColor: "rgba(255,0,0,0.5)",
@@ -1479,274 +1326,6 @@
                 isOnCameraMap = !isOnCameraMap;
             }
         }
-        //createSpriteText();
-        function createSpriteText(){
-            //先用画布将文字画出
-            let canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
-            ctx.fillStyle = "#ffff00";
-            ctx.font = "Bold 100px Arial";
-            ctx.lineWidth = 4;
-            ctx.fillText("ABCDRE",4,104);
-            let texture = new THREE.Texture(canvas);
-            texture.needsUpdate = true;
-
-            //使用Sprite显示文字
-            let material = new THREE.SpriteMaterial({map:texture});
-            let textObj = new THREE.Sprite(material);
-            textObj.scale.set(0.5 * 100, 0.25 * 100, 0.75 * 100);
-            textObj.position.set(0,0,0);
-            rightGroup.add(textObj);
-            return textObj;
-        }
-        /**
-         * 图片和文字的canvas组合
-         * 
-         */
-        function canvasTextImg(param){
-            let param = {
-                img:'images/person.png',//必填，图片url
-                txt:'海康威视海康威视海康威视',//必填，文字内容
-                layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
-                distanceImgTxt:5,//可选 文字和图片的距离 横向或竖向
-                imgParam:{
-                    width:20,//可不传，图片宽度，默认使用图片的高度
-                    height:20,//可不传，图片高度，默认使用图片的宽度
-                    //scale:1//可不传，图片等比例缩放
-                },
-                txtParam:{
-                    fillStyle:'#ff0000',//可选，文字颜色，默认颜色红色，或者渐变色gradient类型
-                    font:'Bold 100px Arial',//可选，字体粗细 字体大小 字体类型
-                    //font-style||font-variant||font-weight||font-size||line-height||font-family
-                    
-                    fontStyle:'bold',//
-                    fontVariant:null,
-                    fontWeight:'bold',
-                    fontSize:'25px',
-                    //lineHeight:
-                    //fontFamily:'',
-                    
-                    lineWidth: 2,//可选，字体粗度
-                    maxWidth:1000,//可选，最大宽度
-                }
-            };
-        }
-        function canvasTextImgTest(param){
-            param = {
-                img:'images/person.png',//必填，图片url
-                txt:'海康威视海康威视',//必填，文字内容
-                layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
-                distanceImgTxt:20,//可选 文字和图片的距离 横向或竖向
-                imgParam:{
-                    width:50,//可不传，图片宽度，默认使用图片的高度
-                    height:50,//可不传，图片高度，默认使用图片的宽度
-                    //scale:1//可不传，图片等比例缩放
-                },
-                txtParam:{
-                    fillStyle:'#ff0000',//可选，文字颜色，默认颜色红色，或者渐变色gradient类型
-                    //font:'Bold 100px Arial',//可选，字体粗细 字体大小 字体类型
-                    //font-style||font-variant||font-weight||font-size||line-height||font-family
-                    
-                    fontStyle:'bold',//
-                    fontVariant:null,
-                    fontWeight:'bold',
-                    fontSize:'30px',
-                    //lineHeight:
-                    fontFamily:'Arial',
-                    
-                    lineWidth: 4,//可选，字体粗度
-                    maxWidth:1000,//可选，最大宽度
-                }
-            };
-
-            let canvas = document.createElement("canvas"),
-            ctx = canvas.getContext('2d'),
-            img = new Image();
-            img.src=param.img;
-            img.onload = function(){
-                ctx.fillStyle = param.txtParam.fillStyle;
-                ctx.font = param.txtParam.fontWeight+' '+param.txtParam.fontSize +' '+param.txtParam.fontFamily;//"bold 100px Arial";////
-                ctx.lineWidth = param.txtParam.lineWidth;
-
-                let measure = ctx.measureText(param.txt);
-                console.log('measure',measure);
-                let txtWidth = measure.width;
-                //let txtHeight = measure.height;//没有高度
-                console.log(img.width,img.height,txtWidth);
-                //使用图片的缩放高度或宽度，没有则使用原始高宽
-                let imgWidth = param.imgParam.width? param.imgParam.width:img.width;
-                let imgHeight = param.imgParam.height?param.imgParam.height:img.height;
-                let fontSize = parseInt(param.txtParam.fontSize);
-                let imageLeft,imageTop;//图片位置
-                let txtLeft,txtTop;//文字位置
-                //改变canvas 的长和宽度
-                if(param.layout=='tb'|| param.layout=='bt'){//上下结构
-                    
-                    canvas.width = imgWidth>txtWidth? imgWidth :txtWidth;
-                    canvas.height = imgHeight+ param.distanceImgTxt +fontSize;
-                    //计算位置
-                    if(param.layout=='tb'){
-                        imageLeft = (canvas.width-imgWidth)/2;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = 0;
-                        txtLeft = (canvas.width-txtWidth)/2;
-                        //文字居中显示
-                        txtTop = imgHeight+ param.distanceImgTxt+fontSize/2;
-                    }else if(param.layout=='bt'){
-                        txtLeft = (canvas.width-txtWidth)/2;
-                        txtTop = fontSize/2;
-                        imageLeft = (canvas.width-imageWidth)/2;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = fontSize+ param.distanceImgTxt;
-                        
-                    }
-                }else{//左右结构
-                    canvas.width = imgWidth + param.distanceImgTxt +txtWidth;
-                    canvas.height = fontSize>imgHeight?fontSize:imgHeight;
-                    //计算位置
-                    if(param.layout=='lr'){
-                        imageLeft = 0;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = (canvas.height-imgHeight)/2;
-                        txtLeft = imgWidth + param.distanceImgTxt;
-                        //文字居中显示
-                        txtTop = (canvas.height-fontSize)/2+fontSize;
-                    }else if(param.layout=='rl'){
-                        txtLeft = 0;
-                        txtTop = (canvas.height-fontSize)/2+fontSize;
-                        imageLeft = txtWidth + param.distanceImgTxt;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = (canvas.height-imgHeight)/2;
-                        
-                    }
-
-                }
-                ctx.drawImage(img,0,0,img.width,img.height,imageLeft,imageTop,imgWidth,imgHeight);
-
-                ctx.fillStyle = param.txtParam.fillStyle;
-                ctx.font = param.txtParam.fontWeight+' '+param.txtParam.fontSize +' '+param.txtParam.fontFamily;//"bold 100px Arial";////
-                ctx.lineWidth = param.txtParam.lineWidth;
-                ctx.fillText(param.txt,txtLeft,txtTop);
-                let texture = new THREE.CanvasTexture(canvas);
-                //texture.offset = new THREE.Vector2(-0.3,0);
-                texture.needsUpdate = true;
-                
-                //console.log('canvas.width',canvas.width);
-                //使用Sprite显示文字
-                let material = new THREE.SpriteMaterial({map:texture});
-                let textObj = new THREE.Sprite(material);
-                let xScale = 0.5;
-                //保证等比例缩放
-                let yScale = xScale *canvas.height /canvas.width;
-                //let zScale = 0.75 * 
-                textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*canvas.width);
-                //textObj.scale.setX(1.4).multiplyScalar(yScale * 100);
-                //textObj.scale.setZ(1.4).multiplyScalar(7);
-                //textObj.scale.setZ(0.1).multiplyScalar(xScale * 100);
-
-                //textObj.scale.set(10, 10,  10);
-                textObj.position.set(0,0,entityZValue);
-                //textObj.translateX(-100);
-                rightGroup.add(textObj);
-            }
-            
-            
-            
-        }
-
-        //canvasTextImgTest();
-        /**
-         * 提供字体和图片，以及绘制的参数
-         * 返回纹理对象 图片的宽度和高度 和对应的缩放
-         */
-        function imgTxtDraw(param,fun,x,y,z){
-            let canvas = document.createElement("canvas"),
-            ctx = canvas.getContext('2d'),
-            //img = new Image();
-            //img.src=param.img;
-            img = param.img;
-            //img.onload = function(){
-                let imgRWidth = 200;
-                let imgRHeight = 200;
-                //let imgRWidth = img.width;
-                //let imgRHeight = img.height;
-                ctx.fillStyle = param.txtParam.fillStyle;
-                ctx.font = param.txtParam.fontWeight+' '+param.txtParam.fontSize +' '+param.txtParam.fontFamily;//"bold 100px Arial";////
-                ctx.lineWidth = param.txtParam.lineWidth;
-
-                let measure = ctx.measureText(param.txt);
-                let txtWidth = measure.width;
-                //let txtHeight = measure.height;//没有高度
-                console.log(imgRWidth,imgRHeight,txtWidth);
-                //使用图片的缩放高度或宽度，没有则使用原始高宽
-                let imgWidth = param.imgParam.width? param.imgParam.width:imgRWidth;
-                let imgHeight = param.imgParam.height?param.imgParam.height:imgRHeight;
-                let fontSize = parseInt(param.txtParam.fontSize);
-                let imageLeft,imageTop;//图片位置
-                let txtLeft,txtTop;//文字位置
-                //改变canvas 的长和宽度
-                if(param.layout=='tb'|| param.layout=='bt'){//上下结构
-                    
-                    canvas.width = imgWidth>txtWidth? imgWidth :txtWidth;
-                    canvas.height = imgHeight+ param.distanceImgTxt +fontSize;
-                    //计算位置
-                    if(param.layout=='tb'){
-                        imageLeft = (canvas.width-imgWidth)/2;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = 0;
-                        txtLeft = (canvas.width-txtWidth)/2;
-                        //文字居中显示
-                        txtTop = imgHeight+ param.distanceImgTxt+fontSize/2;
-                    }else if(param.layout=='bt'){
-                        txtLeft = (canvas.width-txtWidth)/2;
-                        txtTop = fontSize/2;
-                        imageLeft = (canvas.width-imageWidth)/2;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = fontSize+ param.distanceImgTxt;
-                        
-                    }
-                }else{//左右结构
-                    canvas.width = imgWidth + param.distanceImgTxt +txtWidth;
-                    canvas.height = fontSize>imgHeight?fontSize:imgHeight;
-                    //计算位置
-                    if(param.layout=='lr'){
-                        imageLeft = 0;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = (canvas.height-imgHeight)/2;
-                        txtLeft = imgWidth + param.distanceImgTxt;
-                        //文字居中显示
-                        txtTop = (canvas.height-fontSize)/2+fontSize;
-                    }else if(param.layout=='rl'){
-                        txtLeft = 0;
-                        txtTop = (canvas.height-fontSize)/2+fontSize;
-                        imageLeft = txtWidth + param.distanceImgTxt;
-                        //图片居中显示，需要给我图片的真实中心点，然后进行相对返回位置
-                        imageTop = (canvas.height-imgHeight)/2;
-                        
-                    }
-
-                }
-                ctx.drawImage(img,0,0,img.width,img.height,imageLeft,imageTop,imgWidth,imgHeight);
-
-                ctx.fillStyle = param.txtParam.fillStyle;
-                ctx.font = param.txtParam.fontWeight+' '+param.txtParam.fontSize +' '+param.txtParam.fontFamily;//"bold 100px Arial";////
-                ctx.lineWidth = param.txtParam.lineWidth;
-                ctx.fillText(param.txt,txtLeft,txtTop);
-                let texture = new THREE.CanvasTexture(canvas);
-                //texture.offset = new THREE.Vector2(-0.3,0);
-                texture.needsUpdate = true;
-                //传递绘制元素内容信息
-                if(typeof(param.node)!=undefined){
-                    fun(x,y,z,texture,canvas.width,canvas.height,param.node);
-                }else{
-                    fun(x,y,z,texture,canvas.width,canvas.height);
-                }
-                
-                
-            //}
-        }
-
-
         
         /**
          *  Creates a graph with random nodes and edges.
@@ -1759,7 +1338,7 @@
             graph.addNode(node);
             drawNode(node);
 
-            var nodes = [];
+            nodes = [];
             nodes.push(node);
 
             var steps = 1;
@@ -1771,7 +1350,7 @@
                 var target_node = new Node(i*steps);
                 if(graph.addNode(target_node)) {
                   target_node.data.title = "This is node " + target_node.id;
-
+                  target_node.id = i;
                   drawNode(target_node);
                   nodes.push(target_node);
                   if(graph.addEdge(node, target_node)) {
@@ -1788,42 +1367,7 @@
             that.graphLayout.layout = that.graphLayout.layout || that.layout;
             graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
             graph.layout.init();
-            //info_text.nodes = "Nodes " + graph.nodes.length;
-            //info_text.edges = "Edges " + graph.edges.length;
         }
-
-
-        /**
-            *  Create a node object and add it to the scene.
-        
-        function drawNode(node) {
-            var draw_object = new THREE.Mesh( nodeGeo, new THREE.MeshBasicMaterial( {  color: Math.random() * 0xffffff, opacity: 0.5 } ) );
-            var label_object;
-
-            if(that.show_labels) {
-              if(node.data.title !== undefined) {
-                label_object = new THREE.Label(node.data.title);
-              } else {
-                label_object = new THREE.Label(node.id);
-              }
-              node.data.label_object = label_object;
-              leftGroup.add( node.data.label_object );
-            }
-
-            var area = 500;
-            draw_object.position.x = Math.floor(Math.random() * (area + area + 1) - area);
-            draw_object.position.y = Math.floor(Math.random() * (area + area + 1) - area);
-
-            if(that.layout === "3d") {
-              draw_object.position.z = Math.floor(Math.random() * (area + area + 1) - area);
-            }
-
-            draw_object.id = node.id;
-            node.data.draw_object = draw_object;
-            node.position = draw_object.position;
-            leftGroup.add( node.data.draw_object );
-        }
-        */
         function drawNode(node){
 
             let area = 500;
@@ -1871,7 +1415,7 @@
             imgTxtDraw(param,addPersonSpriteLeft,x,y,z);
         }
         /**
-         * 添加
+         * 添加实体
          *
          */
         function addPersonSpriteLeft(x,y,z,texture,totalWidth,totalHeight,node){
@@ -1890,22 +1434,44 @@
             //entities.push(textObj);
             textObj.id = node.id;
             node.data.draw_object = textObj;
+            textObj.selected = false;
             node.position = textObj.position;
             leftGroup.add(node.data.draw_object);
 
             textObj.onEnter = function(obj){
-                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.006*totalWidth);
-                //显示信息
+                console.log('enter');
+                console.log(obj);
+                console.log(selectObj);
+                if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
+                    obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.006*totalWidth);
+                }
+                
             }
             textObj.onLeave = function(obj){
-                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+                if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
+                    obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+                }
+            }
+            textObj.onClick = function(obj){
+                /* nodes无数据
+                for(let i=0;i<nodes.length;i++){
+                    let node = nodes[i];
+                    node.data.draw_object.selected = false;
+                }
+                */
+                if(selectObj){
+                    selectObj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+                }
+                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
+                selectObj = obj;
+                mapState2D();
             }
         }
         /**
         *  Create an edge object (line) and add it to the scene.
         */
         function drawEdge(source, target) {
-          material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 1, linewidth: 1 });
+          material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
 
           var tmp_geo = new THREE.Geometry();
           tmp_geo.vertices.push(source.data.draw_object.position);
@@ -1923,9 +1489,83 @@
 
           leftGroup.add( line );
         }
-        // Generate random number
-          function randomFromTo(from, to) {
-            return Math.floor(Math.random() * (to - from + 1) + from);
-          }
+        function mapState2D(){
+            
+            //地图正对 放大
+            //SCALE.scale = 1.2;
+            new TWEEN.Tween( SCALE).to( { scale:1.5 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                //隐藏时间轴
+                timeLineGroup.visible = false;
+                //隐藏浮动的事件
+                eventGroup.visible = false;
+            }).start();
+            //rightGroup.rotation.x = 0;
+            new TWEEN.Tween( rightGroup.rotation).to( { x: 0 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                
+            }).start();
+            
+            
+        }
+        function mapState3D(){
+            //显示时间轴
+            timeLineGroup.visible = true;
+            //地图倾斜
+            SCALE.scale = 1;
+            rightGroup.rotation.x = -Math.PI/3;
+        }
+        function main() {
+            let position = {coords:{longitude:centerLng,latitude:centerLat}};
+            var lng = position.coords.longitude;
+            var lat = position.coords.latitude;
+            console.log("current position in world", lat, lng);
+            centerLat = lat;
+            centerLng = lng;
+
+            var webMercator = LonLat2WebMercator(lng, lat);
+            var tilePos = WebMercator2Tileimage(webMercator.x,webMercator.y);
+                
+            //以centerLng所在点tile中心点为中心，加载tile
+            loadMap(tilePos.tileinfo.x, tilePos.tileinfo.y);
+            //loadMap2(tilePos.tileinfo.x, tilePos.tileinfo.y);
+            
+            
+            addTimeLine();
+            //addBtns();
+            personImgObj.onload = function(){
+                createGraph();
+                addEvents();
+            }
+            
+        }
+        
+        main();
+
+
+        $$.actionInjections.push(function(){
+            //stats.begin();
+            leftControls.update();
+            rightControls.update();
+            //cameraControls.update();
+            TWEEN.update();
+            //锁死标签内容
+            bodyDom.lockToScreen();
+            // Generate layout if not finished
+            if(!graph.layout.finished) {
+              graph.layout.generate();
+            } else {
+                //有一定的完成时间
+                
+            }
+            if(ROTATION.isRotation){
+                leftGroup.rotation.x +=0.005;
+                leftGroup.rotation.y +=0.01;
+            }
+            // Update position of lines (edges)
+            for(i=0; i<geometries.length; i++) {
+              geometries[i].verticesNeedUpdate = true;
+            }
+            rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
+            //stats.end();
+        });
     </script>
 </html>

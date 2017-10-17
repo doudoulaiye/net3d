@@ -12,4 +12,5 @@ $(document).ready(function(){
         currentTime = event.target.innerHTML;
         $(event.target).addClass("btnbg");
     });
- })
+ });
+
