@@ -29,7 +29,7 @@ function eventline(events){
         let y = xy[1]-0;
 
         let webxy = LonLat2WebGL(x,y);
-        tmp_geo.vertices.push(new THREE.Vector3(webxy.x,webxy.y, mapZValue-1));
+        tmp_geo.vertices.push(new THREE.Vector3(webxy.x,webxy.y, mapZValue+1));
     }
 
     let line = new THREE.Line(tmp_geo,material);
