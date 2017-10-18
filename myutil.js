@@ -111,20 +111,23 @@ function imgTxtDraw(param,fun,x,y,z){
  */
 function draw2Circle(color1Rgba,color2Rgba){
     let canvas = document.createElement("canvas");
+    //默认300 150
+    canvas.setAttribute("width","100");
+    canvas.setAttribute("height","100");
     let ctx = canvas.getContext('2d');
-    let imgRWidth = 40;
-    let imgRHeight = 40;
+    let imgRWidth = 100;
     
     //画一个实心圆
     ctx.beginPath();
+    //起点为半径，半径长度 ，起始为0 2PI长度
     ctx.arc(imgRWidth/2,imgRWidth/2,imgRWidth/2,0, Math.PI * 2,false);
-    ctx.fillStyle="#0000FF"//color1Rgba;//填充颜色,默认是黑色
+    ctx.fillStyle=color1Rgba;//填充颜色,默认是黑色
     ctx.fill();//画实心圆
     ctx.closePath();
 
     ctx.beginPath();
     ctx.arc(imgRWidth/2,imgRWidth/2,imgRWidth/4,0, Math.PI * 2,false);
-    ctx.fillStyle="#0000FF"//color2Rgba;//填充颜色,默认是黑色
+    ctx.fillStyle=color2Rgba;//填充颜色,默认是黑色
     ctx.fill();//画实心圆
     ctx.closePath();
     

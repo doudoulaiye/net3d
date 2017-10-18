@@ -72,7 +72,7 @@
                 text-align:center;
                 margin-bottom:12px;
                 position: relative;
-                
+                cursor: pointer;
             }
             .btnfont{
                 font-size: 12px;
@@ -203,7 +203,7 @@
                         <object  data="res/btn_anlysis.svg" width="28" height="28" type="image/svg+xml" ></object>
                     </div>
                 </div>
-                <div class="btnbgbas btnbg">
+                <div id = 'eventTrackBtn' class="btnbgbas btnbg">
                     <div style="position: absolute;top:10px;left:45px;">
                         <object  data="res/btn_map.svg" width="28px" height="28px" type="image/svg+xml" ></object>
                     </div>
@@ -299,8 +299,15 @@
             that.numEdges= 10;//边最大数量
         let graph = new Graph({limit: 20});
         let geometries = [];
+        //被选中的对象
         let selectObj;
+        let selectObj_uuid_save;//选中记忆
 
+
+        //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+        let BUTTON_STATE=null;
+        let BUTTON_STATE_SAVE=null;
+        //时间线的组
         let timeLineGroup;
 
          //切图在scene中的大小
@@ -336,6 +343,7 @@
         let events = new Array();
         let eventGroup = new THREE.Group();
         let eventMapGroup = new THREE.Group();
+        let eventLineGroup = new THREE.Group();
         let entities = new Array();
         let entitiesText = new Array();
         let personImg = 'images/person.png';//'images/person.png';//200*200
@@ -351,7 +359,7 @@
         personCRedImg = new Image();
         personCRedImg.src='res/p_red.png';
         let eventsTexture ={
-            'red':draw2Circle('rgba(190,138,0,0.2)','rgba(190,138,0,0.8)'),
+            'red':draw2Circle('rgba(195,63,40,0.2)','rgba(195,63,40,0.8)'),
             'yellow':draw2Circle('rgba(206,151,0,0.2)','rgba(206,151,0,0.8)'),
             'blue':draw2Circle('rgba(19,176,176,0.2)','rgba(19,176,176,0.8)'),
             'green':draw2Circle('rgba(20,186,95,0.2)','rgba(20,186,95,0.8)'),
@@ -501,6 +509,7 @@
         rightGroup.position.set(180,150,0);
         rightGroup.add(eventGroup);
         rightGroup.add(eventMapGroup);
+        rightGroup.add(eventLineGroup);
         scene.add(leftGroup);
         scene.add(rightGroup);
         let leftControls = new THREE.ObjectTrackballControls(leftGroup,camera,renderer.domElement);
@@ -784,7 +793,7 @@
             //当前位置在全球切片编号
             var col = Math.floor(imgx / 256);
             var row = Math.floor(imgy / 256);
-            console.log("col", col, "row", row);
+            //console.log("col", col, "row", row);
             //当前位置对应于tile图像中的位置
             var imgdx = imgx % 256;
             var imgdy = imgy % 256;
@@ -830,8 +839,8 @@
         function loadImageTile(xno, yno, callback) {
             //var level = 18;
             //var url = serverURL + level + "/" + xno + "/" + yno + ".png";
-
-            let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj81gnx0e7hod2snqhk8wxjof/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            let url = 'https://192.168.137.1/res/map/zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj81gnx0e7hod2snqhk8wxjof/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8r3a8ncb6nf2rqowyp27wfi/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8smxtzfbjx22rs5nwfb7srz/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             var loader = new THREE.TextureLoader();
@@ -1088,15 +1097,16 @@
 
                 //添加地图的图片
                 //暂时不能使用
-                //let eventTexture =   new THREE.CanvasTexture(draw2Circle())//eventsTexture[colorName]);
+                //console.log(colorName,eventsTexture[colorName]);
+                let eventTexture =   new THREE.CanvasTexture(eventsTexture[colorName]);
 
-                let egeo = new THREE.PlaneBufferGeometry(40,40,1,1);
+                let egeo = new THREE.PlaneGeometry(40,40,1);
                 let ematerial = new THREE.MeshBasicMaterial({
-                    map:localTexture
+                    map:eventTexture//localTexture
                     ,transparent: true
                 });
                 let eventmesh = new THREE.Mesh(egeo,ematerial);
-                eventmesh.position.set(x, y,mapZValue+2);
+                eventmesh.position.set(x, y,mapZValue+3);
                 eventMapGroup.add(eventmesh);
                 sprite.mapMapUuid = eventmesh.uuid;
 
@@ -1439,9 +1449,6 @@
             leftGroup.add(node.data.draw_object);
 
             textObj.onEnter = function(obj){
-                console.log('enter');
-                console.log(obj);
-                console.log(selectObj);
                 if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
                     obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.006*totalWidth);
                 }
@@ -1464,8 +1471,7 @@
                 }
                 obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
                 selectObj = obj;
-                mapState2D();
-                eventline(datas.events);
+                
             }
         }
         /**
@@ -1490,29 +1496,132 @@
 
           leftGroup.add( line );
         }
+        /**
+         * 地图2D状态
+         *
+         */
         function mapState2D(){
-            
-            //地图正对 放大
-            //SCALE.scale = 1.2;
-            new TWEEN.Tween( SCALE).to( { scale:1.5 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
-                //隐藏时间轴
-                timeLineGroup.visible = false;
-                //隐藏浮动的事件
-                eventGroup.visible = false;
-            }).start();
             //rightGroup.rotation.x = 0;
             new TWEEN.Tween( rightGroup.rotation).to( { x: 0 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
-                
+                    //隐藏时间轴
+                    timeLineGroup.visible = false;
+                    //隐藏浮动的事件
+                    eventGroup.visible = false;
+                    //地图正对 放大
+                    //SCALE.scale = 1.2;
+                    new TWEEN.Tween( SCALE).to( { scale:1.5 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                        
+                    }).start();
             }).start();
-            
-            
         }
+        /**
+         * 切换为地图3D状态
+         *
+         */
         function mapState3D(){
-            //显示时间轴
-            timeLineGroup.visible = true;
-            //地图倾斜
-            SCALE.scale = 1;
-            rightGroup.rotation.x = -Math.PI/3;
+            //rightGroup.rotation.x = -Math.PI/3;
+            new TWEEN.Tween( rightGroup.rotation).to( { x: -Math.PI/3 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                    //显示时间轴
+                    timeLineGroup.visible = true;
+                    //显示浮动的事件
+                    eventGroup.visible = true;
+                    //清空所有的轨迹
+                    for(var i=0;i<eventLineGroup.children.length;i++){
+                        let obj = eventLineGroup.children[i];
+                        eventLineGroup.remove(obj);
+                    }
+                    //地图倾斜 缩小
+                    //SCALE.scale = 1;
+                    new TWEEN.Tween( SCALE).to( { scale:1 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                        
+                    }).start();
+            }).start();
+        }
+        /**
+         * 判断实体和按钮选中后变量的变更
+         * 按钮有选中和取消选中状态，取消选中则恢复状态删除内容
+         * 实体选中变动，会根据按钮状态来变更，没有按钮选中的话
+         */
+        function selectListen(){
+            /*
+            //被选中的对象
+            let selectObj;
+            let selectObj_uuid_save;//选中记忆
+
+            //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+            let BUTTON_STATE=null;
+            let BUTTON_STATE_SAVE=null;
+            */
+            //对象状态：1对象第一次选中 2对象切换 3选中状态没有改变 4对象没有被选中
+            let objSelectType = 4;
+            //按钮状态：1按钮被选中 2按钮切换 3按钮被还原 4按钮没改变
+            let btnSelectType = 4;
+            //首次赋值
+            if(selectObj && !selectObj_uuid_save){
+                selectObj_uuid_save = selectObj.object.uuid;
+                objSelectType = 1;
+            }else if(selectObj && selectObj_uuid_save){
+                let uuid = selectObj.object.uuid;
+                if(uuid == selectObj_uuid_save){
+                    objSelectType = 3;
+                }else{
+                    objSelectType = 2;//对象切换了，针对不同的按钮状态处理
+                }
+            }else if(!selectObj && !selectObj_uuid_save){
+                objSelectType = 4;
+            }
+            //按钮被选中
+            if(BUTTON_STATE && !BUTTON_STATE_SAVE){
+                BUTTON_STATE_SAVE = BUTTON_STATE;
+                btnSelectType =1;
+            }else if(!BUTTON_STATE && BUTTON_STATE_SAVE){
+                btnSelectType =3;//还原BUTTON_STATE_SAVE对应的状态
+            }else if(BUTTON_STATE && BUTTON_STATE_SAVE){
+                if (BUTTON_STATE == BUTTON_STATE_SAVE) {
+                    btnSelectType = 4;//按钮没有按
+                }else {
+                    btnSelectType = 2;//按钮切换,切换后要赋值给BUTTON_STATE_SAVE
+                }
+            }
+            console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE);
+            //自动播放执行
+            //自动播放还原
+            //事件轨迹执行
+            if(BUTTON_STATE==2){
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //实体被第一次选中 或 实体已经被选中而按钮第一次被选中
+                if(objSelectType==1 || (objSelectType==3 && btnSelectType==1) ){
+                    //第一次选中,执行状态变更和轨迹绘制
+                    mapState2D();
+                    eventline(datas.events);
+                }
+                if(objSelectType==2){
+                    //实体进行切换，只是画轨迹
+                    eventline(datas.events);
+                }
+            }
+            //事件轨迹还原 按钮被还原或切换
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==2) || (btnSelectType==2 && BUTTON_STATE_SAVE==2) ){
+                mapState3D();
+                //清除轨迹
+            }
+            //团伙分析执行
+            //团伙分析还原
+
+            
+
+            //最后选中实体uuid赋值
+            if(objSelectType==2){
+                selectObj_uuid_save = selectObj.object.uuid;
+            }
+            //最后按钮赋值 或 按钮被取消
+            if(btnSelectType==2 || btnSelectType==3){
+                BUTTON_STATE_SAVE = BUTTON_STATE;
+            }
+
         }
         function main() {
             let position = {coords:{longitude:centerLng,latitude:centerLat}};
@@ -1551,7 +1660,7 @@
             //锁死标签内容
             bodyDom.lockToScreen();
             // Generate layout if not finished
-            if(!graph.layout.finished) {
+            if(typeof(graph.layout)!="undefined" &&typeof(graph.layout.finished)!="undefined" && !graph.layout.finished) {
               graph.layout.generate();
             } else {
                 //有一定的完成时间
@@ -1565,8 +1674,13 @@
             for(i=0; i<geometries.length; i++) {
               geometries[i].verticesNeedUpdate = true;
             }
+            //需要判断是否改变
             rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
             //stats.end();
+            //监听按钮状态是否改变//三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+            //监听实体选中状态改变
+            selectListen();
+            
         });
     </script>
 </html>

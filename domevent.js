@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    //时间选择
     $('.basetime').hover(function(event) {
         $(event.target).addClass("btnbg");
     }, function() {
@@ -12,6 +13,17 @@ $(document).ready(function(){
         currentTime = event.target.innerHTML;
         $(event.target).addClass("btnbg");
     });
+    //功能选择
+    $('#eventTrackBtn').click(
+        function(e){
+            if(!BUTTON_STATE || (BUTTON_STATE && BUTTON_STATE!=2)){
+                BUTTON_STATE =2;
+            }else if(BUTTON_STATE && BUTTON_STATE==2){
+                BUTTON_STATE = null;
+            }
+        }
+    );
+    
  });
 /**
  * 绘制事件线
@@ -19,7 +31,6 @@ $(document).ready(function(){
  */
 function eventline(events){
     //let date
-    debugger
     let material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
     var tmp_geo = new THREE.Geometry();
     for(let i=0;i<events.length;i++){
@@ -39,6 +50,5 @@ function eventline(events){
     // NOTE: Deactivated frustumCulled, otherwise it will not draw all lines (even though
     // it looks like the lines are in the view frustum).
     //line.frustumCulled = false;
-
-    rightGroup.add(line);
+    eventLineGroup.add(line);
 }
