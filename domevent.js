@@ -14,17 +14,76 @@ $(document).ready(function(){
         $(event.target).addClass("btnbg");
     });
     //功能选择
-    $('#eventTrackBtn').click(
+    $('#autoPlayImg').click(
         function(e){
-            if(!BUTTON_STATE || (BUTTON_STATE && BUTTON_STATE!=2)){
-                BUTTON_STATE =2;
+            if(!BUTTON_STATE || (BUTTON_STATE && BUTTON_STATE!=1)){
+                //需要设置其它两个按钮样式为不选中
+                setBtnState(true,false,false);
+                BUTTON_STATE =1;
             }else if(BUTTON_STATE && BUTTON_STATE==2){
+                setBtnState(false,false,false);
                 BUTTON_STATE = null;
             }
         }
     );
-    
+    $('#eventTrackImg').click(
+        function(e){
+            if(!BUTTON_STATE || (BUTTON_STATE && BUTTON_STATE!=2)){
+                //需要设置其它两个按钮样式为不选中
+                setBtnState(false,true,false);
+                BUTTON_STATE =2;
+            }else if(BUTTON_STATE && BUTTON_STATE==2){
+                setBtnState(false,false,false);
+                BUTTON_STATE = null;
+            }
+        }
+    );
+    $('#gangfxImg').click(
+        function(e){
+            if(!BUTTON_STATE || (BUTTON_STATE && BUTTON_STATE!=3)){
+                //需要设置其它两个按钮样式为不选中
+                setBtnState(false,false,true);
+                BUTTON_STATE =3;
+            }else if(BUTTON_STATE && BUTTON_STATE==3){
+                setBtnState(false,false,false);
+                BUTTON_STATE = null;
+            }
+        }
+    );
  });
+/**
+ * 设置按钮状态
+ * 
+ */
+function setBtnState(state1,state2,state3){
+    if(state1){
+        $('#autoPlayBtn').addClass("btnbg");
+        $('#autoPlayBtn .btnfont').addClass("btnfontSelect");
+        $('#autoPlayBtn .btnSelect').addClass("btnSelectSelect");
+    }else{
+        $('#autoPlayBtn').removeClass("btnbg");
+        $('#autoPlayBtn .btnfont').removeClass("btnfontSelect");
+        $('#autoPlayBtn .btnSelect').removeClass("btnSelectSelect");
+    }
+    if(state2){
+        $('#eventTrackBtn').addClass("btnbg");
+        $('#eventTrackBtn .btnfont').addClass("btnfontSelect");
+        $('#eventTrackBtn .btnSelect').addClass("btnSelectSelect");
+    }else{
+        $('#eventTrackBtn').removeClass("btnbg");
+        $('#eventTrackBtn .btnfont').removeClass("btnfontSelect");
+        $('#eventTrackBtn .btnSelect').removeClass("btnSelectSelect");
+    }
+    if(state3){
+        $('#gangfx').addClass("btnbg");
+        $('#gangfx .btnfont').addClass("btnfontSelect");
+        $('#gangfx .btnSelect').addClass("btnSelectSelect");
+    }else{
+        $('#gangfx').removeClass("btnbg");
+        $('#gangfx .btnfont').removeClass("btnfontSelect");
+        $('#gangfx .btnSelect').removeClass("btnSelectSelect");
+    }
+}
 /**
  * 绘制事件线
  *

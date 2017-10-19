@@ -66,13 +66,20 @@
                 background-color: rgb(255,255,255,0.1);
                 opacity: 1 !important;
             }
+            .btnImg{
+                position: absolute;
+                left:35px;
+                top:0px;
+                width:48px;
+                height:48px;
+                cursor:pointer;
+            }
             .btnbgbas{
                 width:118px;
                 height:68px;
                 text-align:center;
                 margin-bottom:12px;
                 position: relative;
-                cursor: pointer;
             }
             .btnfont{
                 font-size: 12px;
@@ -191,38 +198,37 @@
                 </div>
             </div>
             <div id ="btnBody">
-                <div class="btnbgbas">
-                    <div>
-                        <object data="res/btn_autoplay.svg" width="48px" height="48px" 
-                        type="image/svg+xml" ></object>
+                <div id="autoPlayBtn" class="btnbgbas">
+                    <div id='autoPlayImg' class='btnImg'>
+                        <img src="res/btn_autoplay.png" width="48px" height="48px"/>
                     </div>
                     <div class="btnfont">
                         自动播放
                     </div>
                     <div class="btnSelect">
-                        <object  data="res/btn_anlysis.svg" width="28" height="28" type="image/svg+xml" ></object>
+                        <img src="res/right.png" width="28px" height="28px"/>
                     </div>
                 </div>
-                <div id = 'eventTrackBtn' class="btnbgbas btnbg">
-                    <div style="position: absolute;top:10px;left:45px;">
-                        <object  data="res/btn_map.svg" width="28px" height="28px" type="image/svg+xml" ></object>
+                <div id = 'eventTrackBtn' class="btnbgbas">
+                    <div id='eventTrackImg' class='btnImg'>
+                        <img  src="res/btn_map.png" width="48px" height="48px" />
                     </div>
-                    <div class="btnfont btnfontSelect">
+                    <div class="btnfont">
                         事件轨迹
                     </div>
-                    <div class="btnSelect btnSelectSelect">
-                        <object  data="res/btn_anlysis.svg" width="28" height="28" type="image/svg+xml" ></object>
+                    <div class="btnSelect">
+                        <img src="res/right.png" width="28px" height="28px"/>
                     </div>
                 </div>
-                <div class="btnbgbas">
-                    <div>
-                        <object  data="res/btn_anlysis.svg" width="48" height="48" type="image/svg+xml" ></object>
+                <div id="gangfx" class="btnbgbas">
+                    <div id='gangfxImg' class='btnImg'>
+                        <img  src="res/btn_anlysis.png" width="48px" height="48px" />
                     </div>
                     <div class="btnfont">
                         团伙分析
                     </div>
                     <div class="btnSelect">
-                        <object  data="res/btn_anlysis.svg" width="28" height="28" type="image/svg+xml" ></object>
+                        <img src="res/right.png" width="28px" height="28px"/>
                     </div>
                 </div>
             </div>
@@ -297,12 +303,17 @@
             showStats: true, 
             showInfo: true};
             that.numEdges= 10;//边最大数量
-        let graph = new Graph({limit: 20});
+        that.graphLayout.width = that.graphLayout.width || 2000;
+        that.graphLayout.height = that.graphLayout.height || 2000;
+        that.graphLayout.iterations = that.graphLayout.iterations || 100000;
+        that.graphLayout.layout = that.graphLayout.layout || that.layout;
+        let graph = new Graph();//{limit: 20}
         let geometries = [];
         //被选中的对象
         let selectObj;
         let selectObj_uuid_save;//选中记忆
 
+        let materialEdge = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
 
         //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
         let BUTTON_STATE=null;
@@ -1336,12 +1347,47 @@
                 isOnCameraMap = !isOnCameraMap;
             }
         }
+        function getEntity(id){
+            for(let i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                if(obj.id ==id){
+                    return obj;
+                }
+            }
+        }
+        /*
+        */
+        function addGraph(){
+
+            for(let i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                let node = new Node(obj.id);
+                node.data = obj;
+                graph.addNode(node);
+                drawNode(node);
+            }
+
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                let ids = r.entities;
+                //let objStart =  getEntity(ids[0]);
+                //let objEnd = getEntity(ids[1]);
+                let node = graph.getNode(ids[0]);
+                let target_node = graph.getNode(ids[1]);
+
+                if(graph.addEdge(node, target_node,r)) {
+                    drawEdge(node, target_node,r);
+                }
+            }
+            graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+            graph.layout.init();
+        }
         
         /**
          *  Creates a graph with random nodes and edges.
          *  Number of nodes and edges can be set with
          *  numNodes and numEdges.
-         */
+         
         function createGraph() {
             var node = new Node(0);
             node.data.title = "This is node " + node.id;
@@ -1371,13 +1417,11 @@
               steps++;
             }
 
-            that.graphLayout.width = that.graphLayout.width || 2000;
-            that.graphLayout.height = that.graphLayout.height || 2000;
-            that.graphLayout.iterations = that.graphLayout.iterations || 100000;
-            that.graphLayout.layout = that.graphLayout.layout || that.layout;
+            
             graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
             graph.layout.init();
         }
+        */
         function drawNode(node){
 
             let area = 500;
@@ -1397,7 +1441,7 @@
             }
             let param = {
                 img:img,//personCImg,//必填，图片url
-                txt:NAMES[randomFromTo(1,NAMES.length)],//必填，文字内容
+                txt:node.data.name,//NAMES[randomFromTo(1,NAMES.length)],//必填，文字内容
                 layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
                 distanceImgTxt:40,//可选 文字和图片的距离 横向或竖向
                 imgParam:{
@@ -1424,6 +1468,31 @@
 
             imgTxtDraw(param,addPersonSpriteLeft,x,y,z);
         }
+        function drawEdge(source, target,relation) {
+          
+
+          var tmp_geo = new THREE.Geometry();
+          tmp_geo.vertices.push(source.data.draw_object.position);
+          tmp_geo.vertices.push(target.data.draw_object.position);
+          //根据关系类型添加
+          if(relation){
+            //
+          }
+          line = new THREE.LineSegments( tmp_geo, materialEdge );
+          line.scale.x = line.scale.y = line.scale.z = 1;
+          line.originalScale = 1;
+
+          // NOTE: Deactivated frustumCulled, otherwise it will not draw all lines (even though
+          // it looks like the lines are in the view frustum).
+          line.frustumCulled = false;
+          if(relation){
+            line.dataID =relation.id;
+          }
+          geometries.push(tmp_geo);
+
+          leftGroup.add( line );
+        }
+        
         /**
          * 添加实体
          *
@@ -1443,6 +1512,7 @@
             
             //entities.push(textObj);
             textObj.id = node.id;
+            textObj.dataID = node.id;
             node.data.draw_object = textObj;
             textObj.selected = false;
             node.position = textObj.position;
@@ -1474,28 +1544,7 @@
                 
             }
         }
-        /**
-        *  Create an edge object (line) and add it to the scene.
-        */
-        function drawEdge(source, target) {
-          material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
-
-          var tmp_geo = new THREE.Geometry();
-          tmp_geo.vertices.push(source.data.draw_object.position);
-          tmp_geo.vertices.push(target.data.draw_object.position);
-
-          line = new THREE.LineSegments( tmp_geo, material );
-          line.scale.x = line.scale.y = line.scale.z = 1;
-          line.originalScale = 1;
-
-          // NOTE: Deactivated frustumCulled, otherwise it will not draw all lines (even though
-          // it looks like the lines are in the view frustum).
-          line.frustumCulled = false;
-
-          geometries.push(tmp_geo);
-
-          leftGroup.add( line );
-        }
+        
         /**
          * 地图2D状态
          *
@@ -1586,14 +1635,14 @@
             console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE);
             //自动播放执行
             //自动播放还原
-            //事件轨迹执行
+            /****事件轨迹执行*****/
             if(BUTTON_STATE==2){
                 if(objSelectType==4){
                     //alert('请选中实体执行轨迹！');
                     return;
                 }
-                //实体被第一次选中 或 实体已经被选中而按钮第一次被选中
-                if(objSelectType==1 || (objSelectType==3 && btnSelectType==1) ){
+                //实体被第一次选中 或 实体已经被选中而按钮第一次被选中或切换
+                if(objSelectType==1 || (objSelectType==3 && btnSelectType==1 || btnSelectType==2) ){
                     //第一次选中,执行状态变更和轨迹绘制
                     mapState2D();
                     eventline(datas.events);
@@ -1603,7 +1652,7 @@
                     eventline(datas.events);
                 }
             }
-            //事件轨迹还原 按钮被还原或切换
+            /*******事件轨迹还原 按钮被还原或切换*****/
             if((btnSelectType==3 && BUTTON_STATE_SAVE==2) || (btnSelectType==2 && BUTTON_STATE_SAVE==2) ){
                 mapState3D();
                 //清除轨迹
@@ -1642,8 +1691,157 @@
             addTimeLine();
             //addBtns();
             personImgObj.onload = function(){
-                createGraph();
+                //createGraph();
+                addGraph();
                 addEvents();
+                setTimeout(
+                    function(){
+                        /*
+                        //清空所有的轨迹
+                        for(var i=0;i<leftGroup.children.length;i++){
+                            let obj = leftGroup.children[i];
+                            leftGroup.remove(obj);
+                        }
+                        graph = new Graph();//{limit: 20}
+                        */
+                        setTimeout(
+                            function(){
+                                
+                                    let obj = { 
+                                        id:'e12',
+                                        type:'人',
+                                        name:'王大麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let node = new Node(obj.id);
+                                    node.data = obj;
+                                    graph.addNode(node);
+                                    drawNode(node);
+                                
+
+                                    let r = {
+                                        id:'r12',
+                                        type:'关系',
+                                        name:'同行',
+                                        entities:['e1','e12']
+                                    };
+                                    let ids = r.entities;
+                                    //let objStart =  getEntity(ids[0]);
+                                    //let objEnd = getEntity(ids[1]);
+                                    let nodestart = graph.getNode(ids[0]);
+                                    let target_node = graph.getNode(ids[1]);
+
+                                    if(graph.addEdge(nodestart, target_node)) {
+                                        drawEdge(nodestart, target_node);
+                                    }
+
+                                    let obj2 = { 
+                                        id:'e13',
+                                        type:'人',
+                                        name:'王二麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let node2 = new Node(obj2.id);
+                                    node2.data = obj2;
+                                    graph.addNode(node2);
+                                    drawNode(node2);
+                                
+
+                                    let r2 = {
+                                        id:'r13',
+                                        type:'关系',
+                                        name:'同行',
+                                        entities:['e12','e13']
+                                    };
+                                    let ids2 = r2.entities;
+                                    //let objStart =  getEntity(ids[0]);
+                                    //let objEnd = getEntity(ids[1]);
+                                    let nodestart2 = graph.getNode(ids2[0]);
+                                    let target_node2 = graph.getNode(ids2[1]);
+
+                                    if(graph.addEdge(nodestart2, target_node2)) {
+                                        drawEdge(nodestart2, target_node2);
+                                    }
+
+                                    /*
+                                    let obj3 = { 
+                                        id:'e1',
+                                        type:'人',
+                                        name:'王二麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let edgeIds = graph.removeNode(obj3);
+                                    console.log('edgeIds============',edgeIds);
+                                    for(var i=0;i<leftGroup.children.length;i++){
+                                        let obj = leftGroup.children[i];
+                                        if(obj.dataID==obj3.id){
+                                            leftGroup.remove(obj);
+                                            break;
+                                        }
+                                    }
+                                    if(edgeIds.length>0){
+                                        for(let i=0;i<leftGroup.children.length;i++){
+                                            let obj = leftGroup.children[i];
+                                            for(let m=0;m<edgeIds.length;m++){
+                                                if(obj.dataID==edgeIds[m]){
+                                                    leftGroup.remove(obj);
+                                                    break;
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                                    */
+
+                                    let obj4 = { 
+                                        id:'e3',
+                                        type:'人',
+                                        name:'王二麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+
+                                    let edgeIds = graph.removeNode(obj4);
+                                    console.log('edgeIds============',edgeIds);
+                                    for(var i=0;i<leftGroup.children.length;i++){
+                                        let obj = leftGroup.children[i];
+                                        if(obj.dataID==obj4.id){
+                                            leftGroup.remove(obj);
+                                            break;
+                                        }
+                                    }
+                                    if(edgeIds.length>0){
+                                        for(let m=0;m<edgeIds.length;m++){
+                                            for(let i=0;i<leftGroup.children.length;i++){
+                                                let obj = leftGroup.children[i];
+                                                if(obj.dataID===edgeIds[m]){
+                                                    leftGroup.remove(obj);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    console.log(leftGroup.children);
+                                    graph.layout.init();
+                            },2000);
+                    }
+                ,10000)
+
             }
             
         }

@@ -29,7 +29,91 @@ datas.entities = [
 		events:['ev2','ev3'],
 		position:'122.158572 30.044879',
 		is_prevent:'否'
+	}
+	,
+	{	
+		id:'e4',
+		type:'车',
+		name:'浙A11111',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	}
+	,
+	{	
+		id:'e5',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	}
+	,
+	{	
+		id:'e6',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	}
+	,
+	{	
+		id:'e7',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
 	},
+	{	
+		id:'e8',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	},
+	{	
+		id:'e9',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	},
+	{	
+		id:'e10',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	},
+	{	
+		id:'e11',
+		type:'人',
+		name:'王五',
+		sex:'男',
+		relations:['r2','r3'],
+		events:['ev2','ev3'],
+		position:'122.158572 30.044879',
+		is_prevent:'否'
+	}
 ];
 datas.events = [
 	{
@@ -268,5 +352,61 @@ datas.relations = [
 		name:'同行',
 		entities:['e3','e2']
 	}
+	,
+	{
+		id:'r4',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e4']
+	}
+	,
+	{
+		id:'r5',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e5']
+	}
+	,
+	{
+		id:'r6',
+		type:'关系',
+		name:'同行',
+		entities:['e2','e6']
+	},
+	{
+		id:'r7',
+		type:'关系',
+		name:'同行',
+		entities:['e2','e7']
+	}
+	,
+	{
+		id:'r8',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e8']
+	}
+	,
+	{
+		id:'r9',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e9']
+	}
+	,
+	{
+		id:'r10',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e10']
+	}
+	,
+	{
+		id:'r11',
+		type:'关系',
+		name:'同行',
+		entities:['e1','e11']
+	}
+	
 ];
 
