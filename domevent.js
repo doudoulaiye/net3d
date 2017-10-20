@@ -9,9 +9,15 @@ $(document).ready(function(){
         }
     });
     $('.basetime').click(function(event) {
-        $('.basetime').removeClass("btnbg");
-        currentTime = event.target.innerHTML;
-        $(event.target).addClass("btnbg");
+        if(currentTime!=event.target.innerHTML){
+            $('.basetime').removeClass("btnbg");
+            currentTime = event.target.innerHTML;
+            $(event.target).addClass("btnbg");
+        }else{
+            $('.basetime').removeClass("btnbg");
+            currentTime = null;
+        }
+        
     });
     //功能选择
     $('#autoPlayImg').click(
@@ -89,6 +95,10 @@ function setBtnState(state1,state2,state3){
  *
  */
 function eventline(events){
+    for(var i=eventLineGroup.children.length-1;i>-1;i--){
+        let obj = eventLineGroup.children[i];
+        eventLineGroup.remove(obj);
+    }
     //let date
     let material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
     var tmp_geo = new THREE.Geometry();

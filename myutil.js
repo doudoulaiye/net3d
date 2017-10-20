@@ -134,3 +134,43 @@ function draw2Circle(color1Rgba,color2Rgba){
     return canvas;
     
 }
+
+function getEntity(id){
+    for(let i=0;i<datas.entities.length;i++){
+        let obj = datas.entities[i];
+        if(obj.id ==id){
+            return obj;
+        }
+    }
+}
+/**
+ * 获得事件数组
+ * time 2016.10-12 不传则全部
+ */
+function getEventsByObjIDTime  (entityId,time){
+    let events = [];
+    for(let i=0;i<datas.events.length;i++){
+        let event = datas.events[i];
+        let entities = event.entities;
+        let date = event.date.substring(0,5);
+        if(time){
+            let year = time.substring(0,3);
+            let startMonth = time.substring(time.indexOf('.')+1,time.indexOf('-')-1) -0; 
+            time = [year+stratMonth,year+(stratMonth+1),year+(stratMonth+2)];
+        }
+        //判断包含的实体的事件
+        for(let m=0;m<entities.length;m++){
+            if(entities[m] === entityId){
+                if(time){
+                    if(time.indexOf(date)>-1){
+                        events.push(event);
+                    }
+                }else{
+                    events.push(event);
+                }
+                break;
+            }
+        }
+    }
+    return events;
+}
