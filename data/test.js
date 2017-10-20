@@ -118,7 +118,7 @@ datas.entities = [
 datas.events = [
 	{
 		id:'ev1',
-		type:'事件',
+		typestr:'事件',
 		name:'快递',
 		date:'20171008',
 		entities:['e1','e2'],
@@ -127,7 +127,7 @@ datas.events = [
 	},
 	{
 		id:'ev2',
-		type:'事件',
+		typestr:'事件',
 		name:'入住',
 		date:'20170908',
 		entities:['e1','e3'],
@@ -136,7 +136,7 @@ datas.events = [
 	},
 	{
 		id:'ev3',
-		type:'事件',
+		typestr:'事件',
 		name:'卡口过车',
 		date:'20170608',
 		entities:['e3','e2'],
@@ -145,7 +145,7 @@ datas.events = [
 	},
 	{
 		id:'ev4',
-		type:'事件',
+		typestr:'事件',
 		name:'卡口过车',
 		date:'20170308',
 		entities:['e3','e2'],
@@ -155,7 +155,7 @@ datas.events = [
 	{
 		id:'ev5',
 		type:'事件',
-		name:'卡口过车',
+		name:'抓拍',
 		date:'20160608',
 		entities:['e3','e2'],
 		relations:['r3','r2'],
@@ -164,7 +164,7 @@ datas.events = [
 	{
 		id:'ev6',
 		type:'事件',
-		name:'卡口过车',
+		name:'案件',
 		date:'20160508',
 		entities:['e3','e2'],
 		relations:['r3','r2'],
@@ -173,7 +173,7 @@ datas.events = [
 	{
 		id:'ev7',
 		type:'事件',
-		name:'卡口过车',
+		name:'快递',
 		date:'20160408',
 		entities:['e3','e2'],
 		relations:['r3','r2'],
@@ -182,7 +182,7 @@ datas.events = [
 	{
 		id:'ev8',
 		type:'事件',
-		name:'卡口过车',
+		name:'入住',
 		date:'20160308',
 		entities:['e3','e2'],
 		relations:['r3','r2'],
@@ -191,7 +191,7 @@ datas.events = [
 	{
 		id:'ev9',
 		type:'事件',
-		name:'卡口过车',
+		name:'入住',
 		date:'20160208',
 		entities:['e3','e2'],
 		relations:['r3','r2'],
@@ -200,7 +200,7 @@ datas.events = [
 	{
 		id:'ev10',
 		type:'事件',
-		name:'卡口过车',
+		name:'进餐',
 		date:'20160208',
 		entities:['e3','e2'],
 		relations:['r3','r2'],

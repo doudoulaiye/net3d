@@ -316,7 +316,23 @@
         let selectObj_uuid_save;//选中记忆
 
         let materialEdge = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
-
+        let eventMaterial = {
+            'blue':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x00C2C2
+                            //,ambient:0xFFFFFF
+                        })
+            ,'pink':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x7237AF
+                            //,ambient:0xFFFFFF
+                        })
+            ,'yellow':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0xBE8B00
+                            //,ambient:0xFFFFFF
+                        })
+            ,'green':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x00B954
+                            //,ambient:0xFFFFFF
+                        })
+            ,'red':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0xB42D15
+                            //,ambient:0xFFFFFF
+                        })
+        };
         //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
         let BUTTON_STATE=null;
         let BUTTON_STATE_SAVE=null;
@@ -1059,6 +1075,7 @@
          * 通过计算高度设定
          */
         function addEvents(eventArr){
+            
             for(var i=0;i<eventArr.length;i++){
                 let obj = eventArr[i];
                 let x = obj.position.split(' ')[0]-0;
@@ -1067,9 +1084,21 @@
                 x = currentWebGLPos.x;
                 y = currentWebGLPos.y;
                 //eventtype 抓拍 0x00C2C2 住院 7237AF 饮食 BE8B00 快递 00B954 案件B42D15
-                let random = randomFromTo(1, 10);
                 let color = 0x00C2C2;
                 let colorName = 'blue';
+                if(obj.name == '抓拍'){
+                    colorName = 'blue';
+                }else if(obj.name == '入住'){
+                    colorName = 'pink';
+                }else if(obj.name == '进餐'){
+                    colorName = 'yellow';
+                }else if(obj.name == '快递'){
+                    colorName = 'green';
+                }else if(obj.name == '案件'){
+                    colorName = 'red';
+                }
+                /*
+                let random = randomFromTo(1, 10);
                 if(random==4){
                     color = 0x7237AF;
                     colorName = 'pink';
@@ -1083,34 +1112,36 @@
                     color = 0xB42D15;
                     colorName = 'red';
                 }
+                */
                 /*
                 var sprite = new THREE.Sprite(materialEvent);
                 sprite.scale.set(20, 20, 1);
                 */
-                
-                let geo = new THREE.SphereGeometry( 15, 150, 150 );
+                let geo = new THREE.SphereGeometry( 15, 15, 15 );
                 let sprite = new THREE.Mesh(
                         geo,
                         //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
-                        new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:color
-                            //,ambient:0xFFFFFF
-                        })
+                       eventMaterial[colorName]
                     );
-                let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
+                //let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
+                debugger
+                let month = obj.date.substring(4,6);
+                let day = obj.date.substring(6,8);
+                let z= (month-1)*TIMELINEH/12 + (day-0)/31*TIMELINEH/12 +mapZValue;
                 obj.x=x;
                 obj.y=y;
                 obj.z=z;
                 sprite.attr = obj;
-                sprite.position.set(x, y, z);
+                sprite.position.set(x, y, mapZValue+8);
                 
                 
                 eventGroup.add(sprite);
 
                 events.push(sprite);
-
                 //添加地图的图片
                 //暂时不能使用
                 //console.log(colorName,eventsTexture[colorName]);
+                
                 let eventTexture =   new THREE.CanvasTexture(eventsTexture[colorName]);
 
                 let egeo = new THREE.PlaneGeometry(40,40,1);
@@ -1122,8 +1153,8 @@
                 eventmesh.position.set(x, y,mapZValue+3);
                 eventMapGroup.add(eventmesh);
                 sprite.mapMapUuid = eventmesh.uuid;
-
                 
+
                 sprite.onEnter = function(obj){
                     obj.object.scale.set(1.2, 1.2, 1.2);
                     //显示信息
@@ -1152,7 +1183,12 @@
                     obj.object.material.emissive.setHex(0x999900);
                 }
                 */
-                
+            }
+            //添加完后启用动画
+            for(let i=0;i<events.length;i++){
+                let event = events[i];
+                let z = event.attr.z;
+                new TWEEN.Tween( event.position).to( { z: z }, duration[7] ).easing( TWEEN.Easing.Linear.None).start();
             }
         }
         /**
