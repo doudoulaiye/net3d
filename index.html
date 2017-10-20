@@ -291,7 +291,7 @@
         let currentTime_save;
         let timeEvents = [];
         //关系网络绘制
-        let nodeGeo = new THREE.SphereGeometry( 20, 150, 150 );
+        let nodeGeo = new THREE.SphereGeometry( 20, 20, 20 );
         let that = {
             layout: '3d', 
             selection: true, 
@@ -950,7 +950,7 @@
 		 * @param {Object} y
 		 */
         function markCurrentPosition(x, y) {
-            var geometry = new THREE.SphereGeometry(10,30,30);
+            var geometry = new THREE.SphereGeometry(10,20,20);
             var material = new THREE.MeshBasicMaterial({
                 color: 0xff0000
             });
@@ -1124,7 +1124,6 @@
                        eventMaterial[colorName]
                     );
                 //let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
-                debugger
                 let month = obj.date.substring(4,6);
                 let day = obj.date.substring(6,8);
                 let z= (month-1)*TIMELINEH/12 + (day-0)/31*TIMELINEH/12 +mapZValue;
@@ -1230,7 +1229,19 @@
             let lineHeight = TIMELINEH;//girdH*1/2;
             timeLineGroup = new THREE.Group();
             rightGroup.add(timeLineGroup);
-
+            let planeColor = 0x808080;
+            let jdGroup1 = new THREE.Group();
+            let jdGroup2 = new THREE.Group();
+            let jdGroup3 = new THREE.Group();
+            let jdGroup4 = new THREE.Group();
+            timeLineGroup.add(jdGroup1);
+            timeLineGroup.add(jdGroup2);
+            timeLineGroup.add(jdGroup3);
+            timeLineGroup.add(jdGroup4);
+            jdGroup1.visible = false;
+            jdGroup2.visible = false;
+            jdGroup3.visible = false;
+            jdGroup4.visible = false;
             //0-12的横线 包含左、前、右
             for(let i=0;i<=12;i++){
                 let lineLengthLR = girdH;
@@ -1248,6 +1259,25 @@
                 let lineGeoF = new THREE.Geometry();
                 lineGeoF.vertices.push(new THREE.Vector3(-girdW/2, girdH/2, z));
                 lineGeoF.vertices.push(new THREE.Vector3(girdW/2, girdH/2, z));
+
+                if(i==0){
+                    
+                    let planeRGeometry = new THREE.PlaneGeometry(girdH,TIMELINEH/4);
+                    let planeRMaterial = new THREE.MeshBasicMaterial({color:planeColor});
+                    let planR = new THREE.Mesh(planeRGeometry,planeRMaterial);
+                    
+                    planR.rotation.z=Math.PI/2;
+                    planR.rotation.y=-Math.PI/2;
+                    planR.position.x = girdW/2;
+                    planR.position.y = 0;
+                    planR.position.z = 0;
+                    /*
+                    planR.rotation.z=Math.PI;
+                    
+                    */
+                    jdGroup1.add(planR);
+                    jdGroup1.visible =true;
+                }
                 //添加线
                 let lineR = new THREE.Line(lineGeoR,timeMaterialLine);
                 let lineL = new THREE.Line(lineGeoL,timeMaterialLine);
