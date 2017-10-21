@@ -26,7 +26,7 @@ $(document).ready(function(){
                 //需要设置其它两个按钮样式为不选中
                 setBtnState(true,false,false);
                 BUTTON_STATE =1;
-            }else if(BUTTON_STATE && BUTTON_STATE==2){
+            }else if(BUTTON_STATE && BUTTON_STATE==1){
                 setBtnState(false,false,false);
                 BUTTON_STATE = null;
             }
@@ -120,4 +120,53 @@ function eventline(events){
     // it looks like the lines are in the view frustum).
     //line.frustumCulled = false;
     eventLineGroup.add(line);
+}
+/**
+ * 自动播放 倒序执行循环时间数组 并滚动滚动条 $('.basetime')
+ *
+ */
+function autoPlay(){
+    //获得数组
+    let arr = [];
+    $('.basetime').each(function(){
+        arr.push(this);
+    });
+    //反转
+    arr.reverse();
+    let autoPlayIndex = 0;
+
+    if(autoPlayIndex==arr.length){
+        clearAutoPlay();
+        return;
+    }
+    $(arr[autoPlayIndex]).click();
+    //滚动到对应位置
+    $('#time_ul').animate({
+        scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
+      }, 1000);
+    autoPlayIndex++;
+
+    autoInterval = setInterval(function(){
+        if(autoPlayIndex==arr.length){
+            clearAutoPlay();
+            return;
+        }
+        $(arr[autoPlayIndex]).click();
+        //滚动到对应位置
+        $('#time_ul').animate({
+            scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
+          }, 1000);
+        autoPlayIndex++;
+    }, duration[3]);
+    
+}
+function clearAutoPlay(){
+    clearInterval(autoInterval);
+    autoInterval = null;
+    //清空时间和设置时间，选择全部时间
+    $('.basetime').removeClass("btnbg");
+    currentTime = null;
+    //自动播放按钮样式也要去除
+    setBtnState(false,false,false);
+    BUTTON_STATE = null;
 }

@@ -287,6 +287,7 @@
     <script src="domevent.js"></script>
     <script src="myutil.js"></script>
     <script>
+        let autoInterval;
         let currentTime;
         let currentTime_save;
         let timeEvents = [];
@@ -337,7 +338,15 @@
         let BUTTON_STATE=null;
         let BUTTON_STATE_SAVE=null;
         //时间线的组
-        let timeLineGroup;
+        let timeLineGroup= new THREE.Group();
+        //定义季度的平面样式
+        let planeMaterial = new THREE.MeshBasicMaterial({color:0x808080,opacity:0.3,transparent:true});
+        //季度群组
+        let jdGroup1 = new THREE.Group();
+        timeLineGroup.add(jdGroup1);
+        jdGroup1.visible = false;
+
+            
 
          //切图在scene中的大小
         var tileSize = 50;
@@ -350,8 +359,8 @@
         //let centerLng = 122.136151, centerLat = 30.04688;
         let centerLng = 122.136151, centerLat = 30.084887;
         //122.152823,
-        //let duration = [500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
-        let duration = [500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000];
+        let duration = [500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
+        //let duration = [500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000];
         let stats;
         var loader = new THREE.FontLoader();
         let INTERSECTED;
@@ -514,7 +523,8 @@
         */
         
         let leftGroup = new THREE.Group();
-        leftGroup.position.set(-800,400,0);
+        leftGroup.position.set(-390,130, 710);//-800 -400 0
+        //通过leftScale设置缩放
         //leftGroup.add(cube);
         
 
@@ -539,8 +549,10 @@
         rightGroup.add(eventGroup);
         rightGroup.add(eventMapGroup);
         rightGroup.add(eventLineGroup);
-        scene.add(leftGroup);
+        rightGroup.add(timeLineGroup);
         scene.add(rightGroup);
+        scene.add(leftGroup);
+        
         let leftControls = new THREE.ObjectTrackballControls(leftGroup,camera,renderer.domElement);
         let rightControls = new THREE.ObjectTrackballControls(rightGroup,camera,renderer.domElement);
 
@@ -552,7 +564,7 @@
         gui.add(rightControls, 'noZoom');
 
         gui.add(rightGroup.rotation, 'x',-Math.PI,0);//控制倾斜度
-        let SCALE = {scale:1};
+        let SCALE = {scale:1,leftscale:0.7};
         rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
 
         gui.add(SCALE, 'scale',1,10);
@@ -577,6 +589,10 @@
         leftControls.enabled = false;
         leftControls.noZoom = true;
         gui.add(leftControls, 'enabled');
+        gui.add(leftGroup.position, 'x',-1000,1000).step(10);
+        gui.add(leftGroup.position, 'y',-1000,1000).step(10);
+        gui.add(leftGroup.position, 'z',-1000,1000).step(10);
+        gui.add(SCALE, 'leftscale',0,1);
         /*
         gui.add(leftControls, 'moveCamera');
         gui.add(leftControls, 'rotateSpeed', 0, 2);
@@ -722,9 +738,9 @@
             //镜头移动到地图200米上
             //addEntities();
             //addEvents();
-            new TWEEN.Tween( camera.position).delay(2000).to( { z: mapZValue+200 }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ //应当计算出范围展示的中心点才好
+            new TWEEN.Tween( camera.position).to( { z: mapZValue+200 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ //应当计算出范围展示的中心点才好
                 //镜头跟随实体冒泡
-                new TWEEN.Tween( camera.position).to( { z: entityZValue+100 }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(
+                new TWEEN.Tween( camera.position).to( { z: entityZValue+100 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(
                         function(){ new TWEEN.Tween( camera.position).to( { z: entityZValue+1600}, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).start()
                     }
                     ).start();
@@ -868,7 +884,8 @@
         function loadImageTile(xno, yno, callback) {
             //var level = 18;
             //var url = serverURL + level + "/" + xno + "/" + yno + ".png";
-            let url = 'https://192.168.137.1/res/map/zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
+            //let url = 'https://192.168.137.1/res/map/zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
+            let url = 'zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
             //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj81gnx0e7hod2snqhk8wxjof/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8r3a8ncb6nf2rqowyp27wfi/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
             //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8smxtzfbjx22rs5nwfb7srz/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
@@ -1187,7 +1204,7 @@
             for(let i=0;i<events.length;i++){
                 let event = events[i];
                 let z = event.attr.z;
-                new TWEEN.Tween( event.position).to( { z: z }, duration[7] ).easing( TWEEN.Easing.Linear.None).start();
+                new TWEEN.Tween( event.position).to( { z: z }, duration[2] ).easing( TWEEN.Easing.Linear.None).start();
             }
         }
         /**
@@ -1227,21 +1244,9 @@
             let girdH = (radiusY+0.5) * tileSize *2;//entityZValue-mapZValue;
             //时间线的高度 暂时设定为地图高度的一部分
             let lineHeight = TIMELINEH;//girdH*1/2;
-            timeLineGroup = new THREE.Group();
-            rightGroup.add(timeLineGroup);
-            let planeColor = 0x808080;
-            let jdGroup1 = new THREE.Group();
-            let jdGroup2 = new THREE.Group();
-            let jdGroup3 = new THREE.Group();
-            let jdGroup4 = new THREE.Group();
-            timeLineGroup.add(jdGroup1);
-            timeLineGroup.add(jdGroup2);
-            timeLineGroup.add(jdGroup3);
-            timeLineGroup.add(jdGroup4);
-            jdGroup1.visible = false;
-            jdGroup2.visible = false;
-            jdGroup3.visible = false;
-            jdGroup4.visible = false;
+            
+            
+            
             //0-12的横线 包含左、前、右
             for(let i=0;i<=12;i++){
                 let lineLengthLR = girdH;
@@ -1263,21 +1268,36 @@
                 if(i==0){
                     
                     let planeRGeometry = new THREE.PlaneGeometry(girdH,TIMELINEH/4);
-                    let planeRMaterial = new THREE.MeshBasicMaterial({color:planeColor});
-                    let planR = new THREE.Mesh(planeRGeometry,planeRMaterial);
+                    
+                    let planR = new THREE.Mesh(planeRGeometry,planeMaterial);
                     
                     planR.rotation.z=Math.PI/2;
                     planR.rotation.y=-Math.PI/2;
                     planR.position.x = girdW/2;
                     planR.position.y = 0;
-                    planR.position.z = 0;
-                    /*
-                    planR.rotation.z=Math.PI;
-                    
-                    */
+                    planR.position.z = mapZValue+TIMELINEH/4/2;
                     jdGroup1.add(planR);
-                    jdGroup1.visible =true;
+
+                    let planeLGeometry = new THREE.PlaneGeometry(girdH,TIMELINEH/4);
+                    let planeL = new THREE.Mesh(planeRGeometry,planeMaterial);
+                    
+                    planeL.rotation.z=Math.PI/2;
+                    planeL.rotation.y=Math.PI/2;
+                    planeL.position.x = -girdW/2;
+                    planeL.position.y = 0;
+                    planeL.position.z = mapZValue+TIMELINEH/4/2;
+                    jdGroup1.add(planeL);
+
+                    let planeFGeometry = new THREE.PlaneGeometry(girdW,TIMELINEH/4);
+                    let planeF = new THREE.Mesh(planeFGeometry,planeMaterial);
+                    
+                    planeF.rotation.x=Math.PI/2;
+                    planeF.position.x = 0;
+                    planeF.position.y = girdH/2;
+                    planeF.position.z = mapZValue+TIMELINEH/4/2;
+                    jdGroup1.add(planeF);
                 }
+
                 //添加线
                 let lineR = new THREE.Line(lineGeoR,timeMaterialLine);
                 let lineL = new THREE.Line(lineGeoL,timeMaterialLine);
@@ -1418,7 +1438,7 @@
         
         /*
         */
-        function addGraph(){
+        function addAllGraph(){
 
             for(let i=0;i<datas.entities.length;i++){
                 let obj = datas.entities[i];
@@ -1579,7 +1599,7 @@
             node.position = textObj.position;
             leftGroup.add(node.data.draw_object);
 
-
+            //默认选中
             if(textObj.dataID=='e1'){
                 let xScale = 0.5;
                 //保证等比例缩放
@@ -1656,6 +1676,67 @@
                     }).start();
             }).start();
         }
+        function isInTime(t1s,t1e,t2s,t2e){
+            //两个时间段只要有相交
+            if((t1s<=t2e && t1s>=t2s) || (t1e<=t2e && t1e>=t2s) || (t2s<=t1e && t2s>=t1s) || (t2e<=t1e && t2e>=t1s)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        /**
+         * 获得关系和实体及二阶关系，一阶关系根据时间，二阶关系不考虑时间
+         * time 2016.10-12 不传则全部
+         */
+        function getRelationAndEntitiesByTime  (entityId,time){
+            //获得一阶关系
+            //根据一阶关系取得相关实体
+            //根据相关实体取得全部时间的二阶关系
+            let timeStart = time;
+            let timeEnd = time;
+            let firstRelations = [];
+            let firstEntityIds = [entityId];
+            let secondRelations = [];
+            let secondEntityIds = [];
+            //一阶
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                let ids = r.entities;
+                if(ids[0]==entityId || ids[1] == entityId){
+                    if(isInTime(r.datef,r.datet,timeStart,timeEnd) || !time){
+                        fistRelations.push(r);//一阶关系
+                        if(ids[0]==entityId){
+                            firstEntityIds.push(ids[1]);//一阶相关实体
+                        }else{
+                            firstEntityIds.push(ids[0]);
+                        }
+                    }
+                }
+            }
+            //二阶
+            for(let i=0;i<firstEntityIds.length;i++){
+                let enId = firstEntityIds[i];
+                for(let j=0;j<datas.relations.length;j++){
+                    let r = datas.relations[j];
+                    let ids = r.entities; 
+                    if(ids.indexOf(entityId)<0 && (ids[0]==enId || ids[1] == enId)){
+                        if(secondRelations.indexOf(r.id)<0){
+                            secondRelations.push(r);
+                        }
+                        if(ids[0]==enId){
+                            secondEntityIds.push(ids[1]);
+                        }else{
+                            secondEntityIds.push(ids[0]);
+                        }
+                    }
+                }
+            }
+            return {enIds:firstEntityIds.concat(secondEntityIds),relations:firstRelations.concat(secondRelations)};
+        }
+        /**
+         * 对比获得需要增加的实体和需要删除的实体，需要删除的关系和需要增加的关系
+         *
+         */
         /**
          * 获得事件数组
          * time 2016.10-12 不传则全部
@@ -1756,9 +1837,61 @@
                 }
             }
             console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE,'timeSelectType',timeSelectType);
-            //自动播放执行
+            //自动播放执行 
+            if(BUTTON_STATE==1){
+                //没有选中实体播放
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //按钮被第一次选中 或 切换至自动播放
+                if(btnSelectType==1 || btnSelectType==2 ){
+                    //从最底层开始自动播放
+                    autoPlay();
+                }
+            }
             //自动播放还原
-
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==1) || (btnSelectType==2 && BUTTON_STATE_SAVE==1) ){
+                clearAutoPlay();
+            }
+            //时间选择改变 1 按下按钮 2 切换 3 关闭
+            let isUpdatejdGroup = false;
+            if(timeSelectType==1){
+                jdGroup1.visible = true;
+                isUpdatejdGroup = true;
+            }else if(timeSelectType==2){
+                jdGroup1.visible = true;
+                isUpdatejdGroup = true;
+            }else if(timeSelectType==3){
+                jdGroup1.visible = false;
+            }
+            if(isUpdatejdGroup){
+                let jdfrom = currentTime_save.substring(5);
+                let jdto = currentTime.substring(5);
+                let z = {
+                    '1-3':mapZValue + TIMELINEH/8,
+                    '4-6':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 1,
+                    '7-9':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 2,
+                    '10-12':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 3,
+                }
+                let zfrom = z[jdfrom];
+                let zto = z[jdto];
+                jdGroup1.traverse(function(obj){
+                    if(obj instanceof THREE.Mesh){
+                        //timeSelectType 只等于2时比较合适做变化  1不合适做
+                        if(timeSelectType==2){
+                             new TWEEN.Tween( obj.position).to( { z: zto }, duration[2] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){
+                            }).start();
+                        }else if(timeSelectType==1){
+                            //1状态下动画后才显示
+                            
+                            obj.position.z = zto;
+                        }
+                    }
+                }
+                );
+                
+            }
             //取得需要的事件 当时间改变或实体选中
             if(timeSelectType!=4 || objSelectType==1  || objSelectType==2  ){
                 //先清除事件对象
@@ -1793,7 +1926,6 @@
                     eventline(timeEvents);
                 }
                 if(objSelectType==2){
-                    debugger
                     //实体进行切换，只是画轨迹
                     eventline(timeEvents);
                 }
@@ -1817,7 +1949,6 @@
             //if(btnSelectType==2 || btnSelectType==3){
                 BUTTON_STATE_SAVE = BUTTON_STATE;
             //}
-
         }
         function main() {
             let position = {coords:{longitude:centerLng,latitude:centerLat}};
@@ -1838,7 +1969,7 @@
             addTimeLine();
             //addBtns();
             personImgObj.onload = function(){
-                addGraph();
+                addAllGraph();
 
                 
                 setTimeout(
@@ -2016,11 +2147,13 @@
             }
             //需要判断是否改变
             rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
+            leftGroup.scale.set(SCALE.leftscale,SCALE.leftscale,SCALE.leftscale);
             //stats.end();
             //监听按钮状态是否改变//三种状态 1 自动播放  2 事件轨迹  3 团伙分析
             //监听实体选中状态改变
             selectListen();
             
         });
+        // --enable-webgl --ignore-gpu-blacklist --allow-file-access-from-files --disable-web-security
     </script>
 </html>
