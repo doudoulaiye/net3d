@@ -334,7 +334,7 @@ datas.events = [
 
 
 datas.relations = [
-/*
+
 	{
 		id:'r1',
 		type:'关系',
@@ -343,7 +343,7 @@ datas.relations = [
 		datef:'20160101',
 		datet:'20171230'//当前时间
 	},
-	*/
+	
 	{
 		id:'r2',
 		type:'关系',

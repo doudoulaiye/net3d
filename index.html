@@ -1834,6 +1834,7 @@
             return {addEnIds,delEnIds,addRelIds,delRelIds};
         }
         function changeEntityAndRels(){
+            debugger
             let objID = selectObj.object.dataID;
             //获得当前需要显示的实体和关系
             let enrelObj = getRelationAndEntitiesByTime(objID,currentTime);
@@ -1853,8 +1854,28 @@
                 //从图上删除，自动会删除相关的图上的关系，但还是需要对应删除3D中的关系
                 graph.removeNode({id:enId});
             }
+            //发现，有这种只删除关系而不删除实体的情况，每个删除的关系都要取出graph对应的node，去除nodesTo对应的node
             for(let i=0;i<delRelIds.length;i++){
                 let relId = delRelIds[i];
+                let relObj;
+                //取得关系属性
+                for(let m=0;m<datas.relations.length;m++){
+                    let rel = datas.relations[m];
+                    if(rel.id === relId){
+                        relObj = rel;
+                    }
+                }
+                //得到关系的开始node
+                let nodeSource = graph.getNode(relObj.entities[0]);//取出source的node
+                if(nodeSource){
+                  for(let j=0;j<nodeSource.nodesTo.length;j++){
+                    let onode = nodeSource.nodesTo[j];
+                    if(onode.id===relObj.entities[1]){
+                      nodeSource.nodesTo.splice(j,1);
+                      break;
+                    }
+                  }
+                }
                 for(let j=leftGroup.children.length-1;i>-1;j--){
                     let obj = leftGroup.children[j];
                     console.log('objobjobj===',obj);
@@ -1864,9 +1885,11 @@
                         debugger
 
                     }
+
                     //异常的对象，现在还不确定问题在哪
                     if(typeof(obj)!='undefined' && typeof(obj.dataID)!= 'undefined' && obj.dataID==relId){
                         leftGroup.remove(obj);
+                        //
                         break;
                     }
                 }
