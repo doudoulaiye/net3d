@@ -45,7 +45,7 @@ datas.entities = [
 	{	
 		id:'e5',
 		type:'人',
-		name:'王五',
+		name:'王e5',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -56,7 +56,7 @@ datas.entities = [
 	{	
 		id:'e6',
 		type:'人',
-		name:'王五',
+		name:'王e6',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -67,7 +67,7 @@ datas.entities = [
 	{	
 		id:'e7',
 		type:'人',
-		name:'王五',
+		name:'王e7',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -77,7 +77,7 @@ datas.entities = [
 	{	
 		id:'e8',
 		type:'人',
-		name:'王五',
+		name:'王e8',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -87,7 +87,7 @@ datas.entities = [
 	{	
 		id:'e9',
 		type:'人',
-		name:'王五',
+		name:'王e9',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -97,7 +97,7 @@ datas.entities = [
 	{	
 		id:'e10',
 		type:'人',
-		name:'王五',
+		name:'王e10',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -107,7 +107,7 @@ datas.entities = [
 	{	
 		id:'e11',
 		type:'人',
-		name:'王五',
+		name:'王e11',
 		sex:'男',
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
@@ -334,78 +334,102 @@ datas.events = [
 
 
 datas.relations = [
+/*
 	{
 		id:'r1',
 		type:'关系',
-		name:'亲属',
-		entities:['e1','e2']
+		name:'同住',
+		entities:['e1','e2'],
+		datef:'20160101',
+		datet:'20171230'//当前时间
 	},
+	*/
 	{
 		id:'r2',
 		type:'关系',
-		name:'同住',
-		entities:['e1','e3']
+		name:'亲属',
+		entities:['e1','e3'],
+		datef:'19900100',
+		datet:'20171230'//当前时间
 	},
 	{
 		id:'r3',
 		type:'关系',
 		name:'同行',
-		entities:['e3','e2']
+		entities:['e3','e2'],
+		datef:'20170101',
+		datet:'20170701'
 	}
 	,
 	{
 		id:'r4',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e4']
+		entities:['e1','e4'],
+		datef:'20150101',
+		datet:'20150401'
 	}
 	,
 	{
 		id:'r5',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e5']
+		entities:['e1','e5'],
+		datef:'20150401',
+		datet:'20150701'
 	}
 	,
 	{
 		id:'r6',
 		type:'关系',
 		name:'同行',
-		entities:['e2','e6']
+		entities:['e2','e6'],
+		datef:'20150401',
+		datet:'20150701'
 	},
 	{
 		id:'r7',
 		type:'关系',
 		name:'同行',
-		entities:['e2','e7']
+		entities:['e2','e7'],
+		datef:'20150401',
+		datet:'20150701'
 	}
 	,
 	{
 		id:'r8',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e8']
+		entities:['e1','e8'],
+		datef:'20150701',
+		datet:'20151101'
 	}
 	,
 	{
 		id:'r9',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e9']
+		entities:['e1','e9'],
+		datef:'20160101',
+		datet:'20161201'
 	}
 	,
 	{
 		id:'r10',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e10']
+		entities:['e1','e10'],
+		datef:'20160101',
+		datet:'20171201'
 	}
 	,
 	{
 		id:'r11',
 		type:'关系',
 		name:'同行',
-		entities:['e1','e11']
+		entities:['e1','e11'],
+		datef:'20160101',
+		datet:'20171201'
 	}
 	
 ];

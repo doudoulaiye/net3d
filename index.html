@@ -315,6 +315,11 @@
         //被选中的对象
         let selectObj;
         let selectObj_uuid_save;//选中记忆
+        let curEnIds = [];
+        let curRelIds = [];
+
+        let FIRSTSELECTID = 'e1';
+        let isfirstSelect = true;
 
         let materialEdge = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
         let eventMaterial = {
@@ -1221,6 +1226,19 @@
             return null;
         }
         /**
+         * 获得关系的信息
+         *
+         */
+        function getRelation(id){
+             for(var i=0;i<datas.relations.length;i++){
+                let obj = datas.relations[i];
+                if(obj.id == id){
+                    return obj;
+                }
+            }
+            return null;
+        }
+        /**
          * 修改有position坐标的对象设置其
          *
          */
@@ -1435,7 +1453,43 @@
                 isOnCameraMap = !isOnCameraMap;
             }
         }
-        
+        /**
+         * 首次增加的实体
+         *
+         */
+        function firstAddGraph(){
+            let enrelObj = getRelationAndEntitiesByTime(FIRSTSELECTID,null);
+            let enIds = enrelObj.enIds;
+            let relIds = enrelObj.relIds;
+            curEnIds = enIds.slice(0);//数组copy
+            curRelIds = relIds.slice(0);
+            for(let i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                if(enIds.indexOf(obj.id)>-1){
+                    let node = new Node(obj.id);
+                    node.data = obj;
+                    graph.addNode(node);
+                    drawNode(node);
+                }
+            }
+
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                if(relIds.indexOf(r.id)>-1){
+                    let ids = r.entities;
+                    //let objStart =  getEntity(ids[0]);
+                    //let objEnd = getEntity(ids[1]);
+                    let node = graph.getNode(ids[0]);
+                    let target_node = graph.getNode(ids[1]);
+
+                    if(graph.addEdge(node, target_node,r)) {
+                        drawEdge(node, target_node,r);
+                    }
+                }
+            }
+            graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+            graph.layout.init();
+        }
         /*
         */
         function addAllGraph(){
@@ -1600,12 +1654,13 @@
             leftGroup.add(node.data.draw_object);
 
             //默认选中
-            if(textObj.dataID=='e1'){
+            if(textObj.dataID==FIRSTSELECTID  && isfirstSelect){
                 let xScale = 0.5;
                 //保证等比例缩放
                 let yScale = xScale *totalHeight /totalWidth;
                 textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
                 selectObj = {object:textObj};
+                isfirstSelect = false;
             }
 
             textObj.onEnter = function(obj){
@@ -1676,6 +1731,10 @@
                     }).start();
             }).start();
         }
+        /**
+         * 判断时间是否有交集
+         *
+         */
         function isInTime(t1s,t1e,t2s,t2e){
             //两个时间段只要有相交
             if((t1s<=t2e && t1s>=t2s) || (t1e<=t2e && t1e>=t2s) || (t2s<=t1e && t2s>=t1s) || (t2e<=t1e && t2e>=t1s)){
@@ -1699,18 +1758,17 @@
                 timeStart = (year + (startMonth<10? '0'+startMonth:startMonth) +'00') -0;
                 timeEnd = (year + ((startMonth+2)<10? '0'+(startMonth+2):(startMonth+2))+'00'-0);
             }
-            let timeEnd = time;
-            let firstRelations = [];
+            let firstRelationIds = [];
             let firstEntityIds = [entityId];
-            let secondRelations = [];
+            let secondRelationIds = [];
             let secondEntityIds = [];
             //一阶
             for(let i=0;i<datas.relations.length;i++){
                 let r = datas.relations[i];
                 let ids = r.entities;
                 if(ids[0]==entityId || ids[1] == entityId){
-                    if(isInTime(r.datef-0,r.datet-0,timeStart,timeEnd) || !time){
-                        fistRelations.push(r);//一阶关系
+                    if(isInTime((r.datef-0),(r.datet-0),timeStart,timeEnd) || !time){
+                        firstRelationIds.push(r.id);//一阶关系
                         if(ids[0]==entityId){
                             firstEntityIds.push(ids[1]);//一阶相关实体
                         }else{
@@ -1726,8 +1784,8 @@
                     let r = datas.relations[j];
                     let ids = r.entities; 
                     if(ids.indexOf(entityId)<0 && (ids[0]==enId || ids[1] == enId)){
-                        if(secondRelations.indexOf(r.id)<0){
-                            secondRelations.push(r);
+                        if(secondRelationIds.indexOf(r.id)<0){
+                            secondRelationIds.push(r.id);
                         }
                         if(ids[0]==enId){
                             secondEntityIds.push(ids[1]);
@@ -1736,13 +1794,111 @@
                         }
                     }
                 }
-            }
-            return {enIds:firstEntityIds.concat(secondEntityIds),relations:firstRelations.concat(secondRelations)};
+            } 
+            return {enIds:firstEntityIds.concat(secondEntityIds),relIds:firstRelationIds.concat(secondRelationIds)};
         }
         /**
          * 对比获得需要增加的实体和需要删除的实体，需要删除的关系和需要增加的关系
          *
          */
+        function getAddDel(currentIds,enIds,relIds,oldEnIds,oldRelIds){
+            let addEnIds=[],delEnIds=[],addRelIds=[],delRelIds=[];
+            //实体需要删除的
+            for(let i=0;i<oldEnIds.length;i++){
+                let enId = oldEnIds[i];
+                if(enIds.indexOf(enId)<0){
+                    delEnIds.push(enId);
+                }
+            }
+            //实体需要增加的
+            for(let i=0;i<enIds.length;i++){
+                let enId = enIds[i];
+                if(oldEnIds.indexOf(enId)<0){
+                    addEnIds.push(enId);
+                }
+            }
+            //关系需要删除的,在graph删除实体时就会返回
+            for(let i=0;i<oldRelIds.length;i++){
+                let relId = oldRelIds[i];
+                if(relIds.indexOf(relId)<0){
+                    delRelIds.push(relId);
+                }
+            }
+            //关系需要增加的，跟现有关系进行对比
+            for(let i=0;i<relIds.length;i++){
+                let relId = relIds[i];
+                if(oldRelIds.indexOf(relId)<0){
+                    addRelIds.push(relId);
+                }
+            }
+            return {addEnIds,delEnIds,addRelIds,delRelIds};
+        }
+        function changeEntityAndRels(){
+            let objID = selectObj.object.dataID;
+            //获得当前需要显示的实体和关系
+            let enrelObj = getRelationAndEntitiesByTime(objID,currentTime);
+            let enIds = enrelObj.enIds;
+            let relIds = enrelObj.relIds;
+            let {addEnIds,delEnIds,addRelIds,delRelIds} = getAddDel(objID,enIds,relIds,curEnIds,curRelIds);
+            for(let i=0;i<delEnIds.length;i++){
+                let enId = delEnIds[i];
+                for(var j=leftGroup.children.length-1;j>-1;j--){
+                    let obj = leftGroup.children[j];
+                    if(obj.dataID==enId){
+                        leftGroup.remove(obj);
+                        
+                        break;
+                    }
+                }
+                //从图上删除，自动会删除相关的图上的关系，但还是需要对应删除3D中的关系
+                graph.removeNode({id:enId});
+            }
+            for(let i=0;i<delRelIds.length;i++){
+                let relId = delRelIds[i];
+                for(let j=leftGroup.children.length-1;i>-1;j--){
+                    let obj = leftGroup.children[j];
+                    console.log('objobjobj===',obj);
+                    if(typeof(obj)=='undefined'){
+                        console.log(leftGroup);
+                        console.log(delRelIds);
+                        debugger
+
+                    }
+                    //异常的对象，现在还不确定问题在哪
+                    if(typeof(obj)!='undefined' && typeof(obj.dataID)!= 'undefined' && obj.dataID==relId){
+                        leftGroup.remove(obj);
+                        break;
+                    }
+                }
+            }
+            for(let i=0;i<addEnIds.length;i++){
+                let enId = addEnIds[i];
+                //添加实体
+                let obj = getEntity(enId);
+                let node = new Node(obj.id);
+                node.data = obj;
+                graph.addNode(node);
+                drawNode(node);
+            }
+            for(let i=0;i<addRelIds.length;i++){
+                let relId = addRelIds[i];
+                let obj = getRelation(relId);
+                let ids = obj.entities;
+                let nodestart = graph.getNode(ids[0]);
+                let target_node = graph.getNode(ids[1]);
+
+                if(graph.addEdge(nodestart, target_node,obj)) {
+                    drawEdge(nodestart, target_node,obj);
+                }
+            }
+            if(addEnIds.length>0 || delEnIds.length>0 || addRelIds.length>0 || delRelIds.length>0){
+                //当前实体
+                curEnIds = enIds;
+                curRelIds = relIds;
+                //重新布局位置
+                graph.layout.init();
+            }
+        }
         /**
          * 获得事件数组
          * time 2016.10-12 不传则全部
@@ -1967,6 +2123,7 @@
                 addEvents(timeEvents);
 
                 /**********关系动态改变*********/
+                changeEntityAndRels();
             }
 
             /****事件轨迹执行*****/
@@ -2025,8 +2182,8 @@
             addTimeLine();
             //addBtns();
             personImgObj.onload = function(){
-                addAllGraph();
-
+                //addAllGraph();
+                firstAddGraph();
                 
                 setTimeout(
                     function(){
