@@ -300,9 +300,9 @@
             graphLayout:{
                 width:500,
                 height:500,
-                iterations:10000,//力导向布局迭代次数100000时间太长
-                attraction: 1, //吸引力
-                repulsion: 0.5}, //排斥力
+                iterations:20000,//力导向布局迭代次数100000时间太长
+                attraction: 1, //吸引力 1
+                repulsion: 0.5}, //排斥力 0.5
             showStats: true, 
             showInfo: true};
             that.numEdges= 10;//边最大数量
@@ -362,7 +362,7 @@
         //var centerLng = 122.201691, centerLat = 30.037876;//舟山
         //var centerLng = 122.211464, centerLat = 30.003853;//舟山
         //let centerLng = 122.136151, centerLat = 30.04688;
-        let centerLng = 122.136151, centerLat = 30.084887;
+        let centerLng = 122.136151, centerLat = 30.044887;
         //122.152823,
         let duration = [500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
         //let duration = [500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000];
@@ -526,9 +526,12 @@
         cube2.position.z = 0;
         scene.add(cube2);
         */
-        
+        let nodeGroup = new THREE.Group();
+        let lineGroup = new THREE.Group();
         let leftGroup = new THREE.Group();
         leftGroup.position.set(-390,130, 710);//-800 -400 0
+        leftGroup.add(nodeGroup);
+        leftGroup.add(lineGroup);
         //通过leftScale设置缩放
         //leftGroup.add(cube);
         
@@ -1625,7 +1628,7 @@
           }
           geometries.push(tmp_geo);
 
-          leftGroup.add( line );
+          lineGroup.add( line );
         }
         
         /**
@@ -1651,7 +1654,7 @@
             node.data.draw_object = textObj;
             textObj.selected = false;
             node.position = textObj.position;
-            leftGroup.add(node.data.draw_object);
+            nodeGroup.add(node.data.draw_object);
 
             //默认选中
             if(textObj.dataID==FIRSTSELECTID  && isfirstSelect){
@@ -1795,7 +1798,7 @@
                     }
                 }
             } 
-            return {enIds:firstEntityIds.concat(secondEntityIds),relIds:firstRelationIds.concat(secondRelationIds)};
+            return {enIds:firstEntityIds.concat(secondEntityIds).unique(),relIds:firstRelationIds.concat(secondRelationIds).unique()};
         }
         /**
          * 对比获得需要增加的实体和需要删除的实体，需要删除的关系和需要增加的关系
@@ -1834,7 +1837,6 @@
             return {addEnIds,delEnIds,addRelIds,delRelIds};
         }
         function changeEntityAndRels(){
-            debugger
             let objID = selectObj.object.dataID;
             //获得当前需要显示的实体和关系
             let enrelObj = getRelationAndEntitiesByTime(objID,currentTime);
@@ -1843,10 +1845,10 @@
             let {addEnIds,delEnIds,addRelIds,delRelIds} = getAddDel(objID,enIds,relIds,curEnIds,curRelIds);
             for(let i=0;i<delEnIds.length;i++){
                 let enId = delEnIds[i];
-                for(var j=leftGroup.children.length-1;j>-1;j--){
-                    let obj = leftGroup.children[j];
+                for(var j=nodeGroup.children.length-1;j>-1;j--){
+                    let obj = nodeGroup.children[j];
                     if(obj.dataID==enId){
-                        leftGroup.remove(obj);
+                        nodeGroup.remove(obj);
                         
                         break;
                     }
@@ -1876,11 +1878,11 @@
                     }
                   }
                 }
-                for(let j=leftGroup.children.length-1;i>-1;j--){
-                    let obj = leftGroup.children[j];
+                for(let j=lineGroup.children.length-1;i>-1;j--){
+                    let obj = lineGroup.children[j];
                     console.log('objobjobj===',obj);
                     if(typeof(obj)=='undefined'){
-                        console.log(leftGroup);
+                        console.log(lineGroup);
                         console.log(delRelIds);
                         debugger
 
@@ -1888,7 +1890,7 @@
 
                     //异常的对象，现在还不确定问题在哪
                     if(typeof(obj)!='undefined' && typeof(obj.dataID)!= 'undefined' && obj.dataID==relId){
-                        leftGroup.remove(obj);
+                        lineGroup.remove(obj);
                         //
                         break;
                     }
@@ -1919,6 +1921,7 @@
                 curEnIds = enIds;
                 curRelIds = relIds;
                 //重新布局位置
+                graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
                 graph.layout.init();
             }
         }
@@ -2172,7 +2175,45 @@
                 //清除轨迹
             }
             //团伙分析执行
+            if(BUTTON_STATE==3){
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //第一次被选中或切换
+                if(btnSelectType==1 || btnSelectType==2 ){
+                    //所有的线隐藏
+                    //获得当前的团伙成员
+                    //隐藏非团伙成员
+                    //停止旋转
+                    lineGroup.visible = false;
+                    //
+
+                    for(let i=0;i<nodeGroup.children.length;i++){
+                        let node = nodeGroup.children[i];
+                        if(datas.guns.indexOf(node.dataID)<0){
+                            node.visible = false;
+                        }
+                    }
+                }
+            }
             //团伙分析还原
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==3) || (btnSelectType==2 && BUTTON_STATE_SAVE==3) ){
+
+                //所有的线显示
+                //获得当前的团伙成员
+                //显示非团伙成员
+                //开始旋转
+                lineGroup.visible = true;
+                for(let i=0;i<nodeGroup.children.length;i++){
+                    let node = nodeGroup.children[i];
+                    if(datas.guns.indexOf(node.dataID)<0){
+                        node.visible = true;
+                    }
+                }
+
+            }
+            
 
 
             //最后时间赋值
@@ -2391,5 +2432,17 @@
             
         });
         // --enable-webgl --ignore-gpu-blacklist --allow-file-access-from-files --disable-web-security
+
+        Array.prototype.unique = function(){
+            let res = [];
+            let json = {};
+            for(let i=0;i<this.length;i++){
+                if(!json[this[i]]){
+                    res.push(this[i]);
+                    json[this[i]]=1;
+                }
+            }
+            return res;
+        }
     </script>
 </html>

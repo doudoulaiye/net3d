@@ -434,3 +434,4 @@ datas.relations = [
 	
 ];
 
+datas.guns = ['e1','e2','e3','e6'];
