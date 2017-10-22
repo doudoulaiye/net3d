@@ -1692,7 +1692,13 @@
             //获得一阶关系
             //根据一阶关系取得相关实体
             //根据相关实体取得全部时间的二阶关系
-            let timeStart = time;
+            let timeStart,timeEnd;
+            if(time){
+                let year = time.substring(0,4);
+                let startMonth = time.substring(time.indexOf('.')+1,time.indexOf('-')) -0; 
+                timeStart = (year + (startMonth<10? '0'+startMonth:startMonth) +'00') -0;
+                timeEnd = (year + ((startMonth+2)<10? '0'+(startMonth+2):(startMonth+2))+'00'-0);
+            }
             let timeEnd = time;
             let firstRelations = [];
             let firstEntityIds = [entityId];
@@ -1703,7 +1709,7 @@
                 let r = datas.relations[i];
                 let ids = r.entities;
                 if(ids[0]==entityId || ids[1] == entityId){
-                    if(isInTime(r.datef,r.datet,timeStart,timeEnd) || !time){
+                    if(isInTime(r.datef-0,r.datet-0,timeStart,timeEnd) || !time){
                         fistRelations.push(r);//一阶关系
                         if(ids[0]==entityId){
                             firstEntityIds.push(ids[1]);//一阶相关实体
@@ -1771,6 +1777,55 @@
                 }
             }
             return events;
+        }
+        /**
+         * 自动播放 倒序执行循环时间数组 并滚动滚动条 $('.basetime')
+         *
+         */
+        function autoPlay(){
+            //获得数组
+            let arr = [];
+            $('.basetime').each(function(){
+                arr.push(this);
+            });
+            //反转
+            arr.reverse();
+            let autoPlayIndex = 0;
+
+            if(autoPlayIndex==arr.length){
+                clearAutoPlay();
+                return;
+            }
+            $(arr[autoPlayIndex]).click();
+            //滚动到对应位置
+            $('#time_ul').animate({
+                scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
+              }, 1000);
+            autoPlayIndex++;
+
+            autoInterval = setInterval(function(){
+                if(autoPlayIndex==arr.length){
+                    clearAutoPlay();
+                    return;
+                }
+                $(arr[autoPlayIndex]).click();
+                //滚动到对应位置
+                $('#time_ul').animate({
+                    scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
+                  }, 1000);
+                autoPlayIndex++;
+            }, duration[3]);
+            
+        }
+        function clearAutoPlay(){
+            clearInterval(autoInterval);
+            autoInterval = null;
+            //清空时间和设置时间，选择全部时间
+            $('.basetime').removeClass("btnbg");
+            currentTime = null;
+            //自动播放按钮样式也要去除
+            setBtnState(false,false,false);
+            BUTTON_STATE = null;
         }
         /**
          * 判断实体和按钮选中后变量的变更
@@ -1892,7 +1947,7 @@
                 );
                 
             }
-            //取得需要的事件 当时间改变或实体选中
+            //取得需要的事件 当时间改变或实体选中=>事件重绘  实体关系变更
             if(timeSelectType!=4 || objSelectType==1  || objSelectType==2  ){
                 //先清除事件对象
                 for(var i=eventGroup.children.length-1;i>-1;i--){
@@ -1908,9 +1963,10 @@
                     let objID = selectObj.object.dataID;
                     timeEvents = getEventsByObjIDTime(objID,currentTime);
                 }
-                 
                 //事件需要重绘切换
                 addEvents(timeEvents);
+
+                /**********关系动态改变*********/
             }
 
             /****事件轨迹执行*****/
