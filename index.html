@@ -1115,7 +1115,7 @@
                     colorName = 'blue';
                 }else if(obj.name == '入住'){
                     colorName = 'pink';
-                }else if(obj.name == '进餐'){
+                }else if(obj.name == '卡口过车'){
                     colorName = 'yellow';
                 }else if(obj.name == '快递'){
                     colorName = 'green';
@@ -1180,6 +1180,28 @@
                 
 
                 sprite.onEnter = function(obj){
+                    //获得屏幕坐标
+                    /*
+                    let world_vector = obj.object.position.clone();
+                    rightGroup.localToWorld(world_vector);
+
+                    .getWorldQuaternion
+                    //var world_vector = new THREE.Vector3(obj.object.position.x,obj.object.position.y,obj.object.position.z);  
+                    //
+
+                    //var vector = projector.projectVector(world_vector, camera);  
+                     world_vector.project(camera); 
+                    var halfWidth = window.innerWidth / 2;  
+                    var halfHeight = window.innerHeight / 2;  
+                      
+                    var result = {  
+                      
+                        x: Math.round(world_vector.x * halfWidth + halfWidth),  
+                        y: Math.round(-world_vector.y * halfHeight + halfHeight)  
+                      
+                    };
+                    console.log('2dxy ====',result.x,'  y===',result.y);
+                    */
                     obj.object.scale.set(1.2, 1.2, 1.2);
                     //显示信息
                     for(var i=0;i<eventMapGroup.children.length;i++){
@@ -1651,6 +1673,8 @@
             //entities.push(textObj);
             textObj.id = node.id;
             textObj.dataID = node.id;
+            textObj.yScale = yScale;
+            textObj.totalWidth = totalWidth;
             node.data.draw_object = textObj;
             textObj.selected = false;
             node.position = textObj.position;
@@ -1658,9 +1682,6 @@
 
             //默认选中
             if(textObj.dataID==FIRSTSELECTID  && isfirstSelect){
-                let xScale = 0.5;
-                //保证等比例缩放
-                let yScale = xScale *totalHeight /totalWidth;
                 textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
                 selectObj = {object:textObj};
                 isfirstSelect = false;
@@ -1668,13 +1689,13 @@
 
             textObj.onEnter = function(obj){
                 if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
-                    obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.006*totalWidth);
+                    obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.006*obj.object.totalWidth);
                 }
                 
             }
             textObj.onLeave = function(obj){
                 if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
-                    obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+                    obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.004*obj.object.totalWidth);
                 }
             }
             textObj.onClick = function(obj){
@@ -1685,9 +1706,9 @@
                 }
                 */
                 if(selectObj){
-                    selectObj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+                    selectObj.object.scale.set(xScale * 100, selectObj.object.yScale * 100, 20 * 100).multiplyScalar(0.004*selectObj.object.totalWidth);
                 }
-                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
+                obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.008*obj.object.totalWidth);
                 selectObj = obj;
                 
             }
@@ -1974,16 +1995,6 @@
             arr.reverse();
             let autoPlayIndex = 0;
 
-            if(autoPlayIndex==arr.length){
-                clearAutoPlay();
-                return;
-            }
-            $(arr[autoPlayIndex]).click();
-            //滚动到对应位置
-            $('#time_ul').animate({
-                scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
-              }, 1000);
-            autoPlayIndex++;
 
             autoInterval = setInterval(function(){
                 if(autoPlayIndex==arr.length){
@@ -2073,7 +2084,7 @@
                     btnSelectType = 2;//按钮切换,切换后要赋值给BUTTON_STATE_SAVE
                 }
             }
-            console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE,'timeSelectType',timeSelectType);
+            //console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE,'timeSelectType',timeSelectType);
             //自动播放执行 
             if(BUTTON_STATE==1){
                 //没有选中实体播放
@@ -2195,6 +2206,11 @@
                             node.visible = false;
                         }
                     }
+                    let i=0;
+                    timer=setInterval(function(){
+                        nodeGroup.visible=i++%2?false:true;//还是有收获的。这个写法比if..else想必简单了好多
+                        i>8&&clearInterval(timer);//这个短路用的经典啊
+                    },80);
                 }
             }
             //团伙分析还原
@@ -2415,7 +2431,7 @@
                 
             }
             if(ROTATION.isRotation){
-                leftGroup.rotation.x +=0.005;
+                //leftGroup.rotation.x +=0.005;
                 leftGroup.rotation.y +=0.01;
             }
             // Update position of lines (edges)
