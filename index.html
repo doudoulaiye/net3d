@@ -572,7 +572,7 @@
         gui.add(rightControls, 'noZoom');
 
         gui.add(rightGroup.rotation, 'x',-Math.PI,0);//控制倾斜度
-        let SCALE = {scale:1,leftscale:0.7};
+        let SCALE = {scale:1,leftscale:0.5};//0.7
         rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
 
         gui.add(SCALE, 'scale',1,10);
@@ -1594,9 +1594,9 @@
             let textObj = new THREE.Object3D();
             textObj.position.set(x,y,z);
             node.data.draw_object = textObj;
-            let imagetype = randomFromTo(1,10);
+            //let imagetype = randomFromTo(1,10);
             let img = personCImg;
-            if(imagetype>8){
+            if(node.data.is_prevent=='是'){
                 img = personCRedImg;
             }
             let param = {
@@ -2101,8 +2101,9 @@
             //自动播放还原
             if((btnSelectType==3 && BUTTON_STATE_SAVE==1) || (btnSelectType==2 && BUTTON_STATE_SAVE==1) ){
                 clearAutoPlay();
+                timeSelectType=3;//执行还原变化
             }
-            //时间选择改变 1 按下按钮 2 切换 3 关闭
+            //时间选择改变季度 1 按下按钮 2 切换 3 关闭
             let isUpdatejdGroup = false;
             if(timeSelectType==1){
                 jdGroup1.visible = true;
@@ -2113,7 +2114,7 @@
             }else if(timeSelectType==3){
                 jdGroup1.visible = false;
             }
-            if(isUpdatejdGroup){
+            if(isUpdatejdGroup && currentTime_save && currentTime ){
                 let jdfrom = currentTime_save.substring(5);
                 let jdto = currentTime.substring(5);
                 let z = {
@@ -2175,7 +2176,7 @@
                     mapState2D();
                     eventline(timeEvents);
                 }
-                if(objSelectType==2){
+                if(objSelectType==2 || timeSelectType!=4){
                     //实体进行切换，只是画轨迹
                     eventline(timeEvents);
                 }
@@ -2197,6 +2198,7 @@
                     //获得当前的团伙成员
                     //隐藏非团伙成员
                     //停止旋转
+                    /*
                     lineGroup.visible = false;
                     //
 
@@ -2206,10 +2208,17 @@
                             node.visible = false;
                         }
                     }
-                    let i=0;
+                    */
+                    let j=0;
                     timer=setInterval(function(){
-                        nodeGroup.visible=i++%2?false:true;//还是有收获的。这个写法比if..else想必简单了好多
-                        i>8&&clearInterval(timer);//这个短路用的经典啊
+                        for(let i=0;i<nodeGroup.children.length;i++){
+                            let node = nodeGroup.children[i];
+                            if(datas.guns.indexOf(node.dataID)>-1){
+                                node.visible=j%2?false:true;
+                            }
+                        }
+                        j++;
+                        j>40&&clearInterval(timer);
                     },80);
                 }
             }
@@ -2220,12 +2229,17 @@
                 //获得当前的团伙成员
                 //显示非团伙成员
                 //开始旋转
+                /*
                 lineGroup.visible = true;
                 for(let i=0;i<nodeGroup.children.length;i++){
                     let node = nodeGroup.children[i];
                     if(datas.guns.indexOf(node.dataID)<0){
                         node.visible = true;
                     }
+                }
+                */
+                if(typeof(timer)!= 'undefined' && timer){
+                    clearInterval(timer);
                 }
 
             }

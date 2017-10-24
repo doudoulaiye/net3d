@@ -18,7 +18,7 @@ datas.entities = [
 		relations:['r1','r3'],
 		events:['ev1','ev3'],
 		position:'122.176395 30.001852',
-		is_prevent:'否'
+		is_prevent:'是'
 	},
 	{	
 		id:'e3',
@@ -28,7 +28,7 @@ datas.entities = [
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
 		position:'122.158572 30.044879',
-		is_prevent:'否'
+		is_prevent:'是'
 	}
 	,
 	{	
@@ -61,7 +61,7 @@ datas.entities = [
 		relations:['r2','r3'],
 		events:['ev2','ev3'],
 		position:'122.158572 30.044879',
-		is_prevent:'否'
+		is_prevent:'是'
 	}
 	,
 	{	
