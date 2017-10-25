@@ -339,6 +339,13 @@
                             //,ambient:0xFFFFFF
                         })
         };
+        let eventGradientMaterial = {
+            'blue':eventSpriteMaterial('0,194,194')//rgbcolor
+            ,'pink':eventSpriteMaterial('114,44,175')//rgbcolor
+            ,'yellow':eventSpriteMaterial('190,139,0')//rgbcolor
+            ,'green':eventSpriteMaterial('0,185,84')//rgbcolor
+            ,'red':eventSpriteMaterial('180,45,21')//rgbcolor
+        };
         //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
         let BUTTON_STATE=null;
         let BUTTON_STATE_SAVE=null;
@@ -1093,7 +1100,46 @@
             }
             
         }
-        
+        /**
+         * 外发光效果
+         *
+         */
+        function eventSpriteMaterial(rgbcolor){
+
+            let canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            let context = canvas.getContext('2d');
+            let gradient = context.createRadialGradient(canvas.width/2,canvas.height/2,0,canvas.width/2,canvas.height/2,canvas.width/2);
+            //gradient.addColorStop(0,'rgba(255,255,255,1)');//不要中心亮白
+            gradient.addColorStop(0.1,'rgba('+rgbcolor+',0.1)');//微弱的渐变。调整的话，可以调整透明度
+            gradient.addColorStop(1,'rgba(255,255,255,0)');//向白色渐变
+            
+            //绘制底部渐变
+            context.beginPath();
+            context.fillStyle = gradient;
+            context.arc(canvas.width/2,canvas.height/2,canvas.width/2,0, Math.PI * 2,false);
+            context.fill();
+            context.closePath();
+
+            //绘制实心圆
+
+            context.beginPath();
+            context.arc(canvas.width/2,canvas.width/2,canvas.width/4,0, Math.PI * 2,false);
+                context.fillStyle='rgba('+rgbcolor+',1)';
+                context.fill();//画实心圆
+            context.closePath();
+
+            let texture = new THREE.CanvasTexture(canvas);
+            texture.needUpdate = true;
+            let material = new THREE.SpriteMaterial({
+                    map:texture
+                    ,transparent: false
+                    //,size:20
+                    ,blending:THREE.AdditiveBlending
+                });
+            return material; 
+        }
 
         /**
          * 添加事件
@@ -1139,15 +1185,17 @@
                 }
                 */
                 /*
-                var sprite = new THREE.Sprite(materialEvent);
-                sprite.scale.set(20, 20, 1);
+                var sprite = new THREE.Sprite(eventGradientMaterial[colorName]);
+                sprite.scale.set(50, 50, 1);
                 */
                 let geo = new THREE.SphereGeometry( 15, 15, 15 );
                 let sprite = new THREE.Mesh(
                         geo,
                         //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
                        eventMaterial[colorName]
+                       
                     );
+                    
                 //let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
                 let month = obj.date.substring(4,6);
                 let day = obj.date.substring(6,8);
