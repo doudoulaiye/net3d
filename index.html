@@ -286,6 +286,14 @@
     <script src="data/name.js"></script>
     <script src="domevent.js"></script>
     <script src="myutil.js"></script>
+
+    <script src="lib/postprocessing/EffectComposer.js"></script>
+    <script src="lib/postprocessing/MaskPass.js"></script>
+    <script src="lib/postprocessing/RenderPass.js"></script>
+    <script src="lib/shaders/CopyShader.js"></script>
+    <script src="lib/postprocessing/ShaderPass.js"></script>
+
+    <script src="lib/shaders/FocusShader.js"></script>
     <script>
         let autoInterval;
         let currentTime;
@@ -654,6 +662,16 @@
         directionalLight.position.set(0, 1, 0);
         scene.add(directionalLight);
         
+        let renderModel = new THREE.RenderPass( scene, camera );
+        let effectFocus = new THREE.ShaderPass( THREE.FocusShader );
+        effectFocus.uniforms[ "screenWidth" ].value = window.innerWidth;
+        effectFocus.uniforms[ "screenHeight" ].value = window.innerHeight;
+        effectFocus.renderToScreen = true;
+
+        let composer = new THREE.EffectComposer( renderer );
+
+        composer.addPass( renderModel );
+        composer.addPass( effectFocus );
         //添加时间轴，
         /*
         //实际地图的宽度和高度
@@ -2477,7 +2495,9 @@
         main();
 
 
-        $$.actionInjections.push(function(){
+        //$$.actionInjections.push(function(){
+
+        function tick() {
             //stats.begin();
             leftControls.update();
             rightControls.update();
@@ -2507,8 +2527,11 @@
             //监听按钮状态是否改变//三种状态 1 自动播放  2 事件轨迹  3 团伙分析
             //监听实体选中状态改变
             selectListen();
-            
-        });
+
+            composer.render();
+            requestAnimationFrame(tick);
+        }
+        //});
         // --enable-webgl --ignore-gpu-blacklist --allow-file-access-from-files --disable-web-security
 
         Array.prototype.unique = function(){
@@ -2522,5 +2545,7 @@
             }
             return res;
         }
+
+        tick();
     </script>
 </html>

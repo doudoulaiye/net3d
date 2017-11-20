@@ -61,6 +61,7 @@ $(document).ready(function(){
 function onResize(){
     camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
+    composer.reset();
     renderer.setSize(window.innerWidth,window.innerHeight);
 }
 /**
