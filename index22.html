@@ -1,0 +1,2754 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title></title>
+        <style>
+            html,body {
+                height: 100%;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+                color:#ffffff;
+            }
+            #timeContent{
+                position: absolute;
+                left:20px;/*位置待确定 80*/
+                top:20px;/*位置待确定 80*/
+                z-index: 10000;
+                width:180px;
+                height:240px;
+                cursor: pointer;
+                overflow: hidden;
+                border-left:1px solid rgba(255,255,255,0.1);
+            }
+            #time_ul{
+                height: 100%;  
+                width: 200px;  
+                overflow-y: auto;  
+                overflow-x: hidden;  
+            }
+            .btnbg{
+                border-width: 1px;
+                border-color: rgb(255,255,255);
+                border-style: solid;
+                background-color: rgba(255,255,255,0.1);
+                box-shadow: 0px 0px 32px 0px rgba(255,255,255,0.3);
+                font-size:18px !important;
+                font-weight: bold !important;
+                color:#ffffff !important;
+                opacity: 1 !important;
+            }
+            .basetime{
+                text-align:center;/*横向居中*/
+                line-height:40px; /*垂直居中*/ 
+                width:160px;
+                height:40px;
+                color:#ffffff;
+                font-weight: normal;
+                margin-bottom:16px;
+                opacity: 0.4;
+            }
+            #btnBody{
+                position: absolute;
+                left:30px; /*位置待确定 70*/
+                top:300px; /*位置待确定 396*/
+                z-index: 10000;
+                width:118px;
+                height:68px;
+                cursor: pointer;
+            }
+            .btnbgSelect{
+                border-width: 1px;
+                border-color: rgb(255,255,255);
+                border-style:solid;
+                background-color: rgb(255,255,255,0.1);
+                opacity: 1 !important;
+            }
+            .btnImg{
+                position: absolute;
+                left:35px;
+                top:0px;
+                width:48px;
+                height:48px;
+                cursor:pointer;
+            }
+            .btnbgbas{
+                width:118px;
+                height:68px;
+                text-align:center;
+                margin-bottom:12px;
+                position: relative;
+            }
+            .btnfont{
+                font-size: 12px;
+                color:#ffffff;
+                opacity: 0.23 ;
+                position: absolute;
+                top:48px;
+                left:35px;
+            }
+            .btnfontSelect{
+                opacity: 0.6 !important;
+            }
+            .btnSelect{
+                position: absolute;
+                right: 0px;
+                top:0px;
+                display:none;
+            }
+            .btnSelectSelect{
+                display:block !important;
+            }
+
+            #eventImgMsg{
+                width:48px;
+                height:180px;
+                position: absolute;
+                left:60px;/*位置待确定120*/
+                bottom:20px;/*位置待确定*/
+            }
+            .eventMsg{
+                opacity: 0.4;
+                font-size: 12px;
+                color:#ffffff;
+                margin-bottom: 24px;
+            }
+
+
+            #cpMsg{
+                position: absolute;;
+                right: 72px;
+                top:64px;
+                float:right;
+                width:20px;
+            }
+            #sparta{
+                position: relative;
+                float:right;
+                width:92px;
+                height: 40px;
+                margin-bottom: 16px;
+            }
+            #mapboxImg{
+                position: relative;
+                float:right;
+                width:72px;
+                height: 40px;
+                margin-top: 12px;
+            }
+            #cpMsgline{
+                position: relative;
+                float:right;
+                height:32px;
+                width:186px;
+            }
+            #cpMsglineDiv{
+                position: absolute;
+                left:0px;
+                top:16px;
+                width:186px;
+                height:1px;
+                border-bottom: 1px solid #FFFFFF;
+                opacity: 0.4;
+            }
+            .font10{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 10px;
+                white-space: nowrap;
+            }
+            .font12{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 12px;
+                margin-bottom:12px;
+                white-space: nowrap;
+            }
+            .font14{
+                position: relative;
+                float:right;
+                opacity: 0.4;
+                font-size: 14px;
+                margin-bottom:12px;
+                white-space: nowrap;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="main">
+            <div id="timeContent">
+                <div id="time_ul">
+                    <div class="basetime">2017.10-12</div>
+                    <div class="basetime">2017.7-9</div>
+                    <div class="basetime">2017.4-6</div>
+                    <div class="basetime">2017.1-3</div>
+                    <div class="basetime">2016.10-12</div>
+                    <div class="basetime">2016.7-9</div>
+                    <div class="basetime">2016.4-6</div>
+                    <div class="basetime">2016.1-3</div>
+                    <div class="basetime">2015.10-12</div>
+                    <div class="basetime">2015.7-9</div>
+                    <div class="basetime">2015.4-6</div>
+                    <div class="basetime">2015.1-3</div>
+                </div>
+            </div>
+            <div id ="btnBody">
+                <div id="autoPlayBtn" class="btnbgbas">
+                    <div id='autoPlayImg' class='btnImg'>
+                        <img src="res/btn_autoplay.png" width="48px" height="48px"/>
+                    </div>
+                    <div class="btnfont">
+                        自动播放
+                    </div>
+                    <div class="btnSelect">
+                        <img src="res/right.png" width="28px" height="28px"/>
+                    </div>
+                </div>
+                <div id = 'eventTrackBtn' class="btnbgbas">
+                    <div id='eventTrackImg' class='btnImg'>
+                        <img  src="res/btn_map.png" width="48px" height="48px" />
+                    </div>
+                    <div class="btnfont">
+                        事件轨迹
+                    </div>
+                    <div class="btnSelect">
+                        <img src="res/right.png" width="28px" height="28px"/>
+                    </div>
+                </div>
+                <div id="gangfx" class="btnbgbas">
+                    <div id='gangfxImg' class='btnImg'>
+                        <img  src="res/btn_anlysis.png" width="48px" height="48px" />
+                    </div>
+                    <div class="btnfont">
+                        团伙分析
+                    </div>
+                    <div class="btnSelect">
+                        <img src="res/right.png" width="28px" height="28px"/>
+                    </div>
+                </div>
+            </div>
+            <div id="eventImgMsg">
+                <div class="eventMsg">
+                    <span><object  data="res/blue.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;抓拍</span>
+                </div>
+                <div class="eventMsg">
+                    <span><object  data="res/pink.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;住宿</span>
+                </div>
+                <div class="eventMsg">
+                    <span><object  data="res/yellow.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;进餐</span>
+                </div>
+                <div class="eventMsg">
+                    <span><object  data="res/green.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;快递</span>
+                </div>
+                <div class="eventMsg">
+                    <span><object  data="res/red.svg" width="8" height="8" type="image/svg+xml" ></object>&nbsp;&nbsp;&nbsp;案件</span>
+                </div>
+            </div>
+        </div>
+        <div id='cpMsg'>
+            <div id="sparta"><img src="res/sparta.png"/></div>
+            <div class="font10" style="font-style: italic;margin-bottom: 8px"></div>
+            <div class="font10"></div>
+            <div id="cpMsgline"><div id="cpMsglineDiv"></div></div>
+            <div class="font14">地图信息</div>
+            <div class="font12">舟山，宁波，浙江，中国</div>
+            <div class="font12">2017/10/16</div>
+            <div id="mapboxImg"><img src="res/map_small.png"/></div>
+        </div>
+    </body>
+    <script src="lib/jquery-3.2.1.min.js"></script>
+    <script src="three.min.js"></script>
+    <script src="lib/loaders/SVGLoader.js"></script>
+    <script src="lib/stats.min.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="THREE.TextTexture.min.js"></script>
+    <script src="tween.min.js"></script>
+    <script src="lib/dat.gui.min.js"></script>
+    
+    <script src="lib/threeQuery.min.js"></script>
+    <script src="lib/threeQuery.dom.js"></script>
+    <script src="lib/control/ObjectTrackballControls.js"></script>
+    
+    
+    <script src="lib/Graph.js"></script>
+    <script src="lib/Label.js"></script>
+    <script src="lib/ObjectSelection.js"></script>
+    <script src="lib/Vector3.js"></script>
+    <script src="lib/layouts/force-directed-layout.js"></script>
+    <script src="lib/drawings/simple_graph.js"></script>
+
+    <script src="data/test.js"></script>
+    <script src="data/name.js"></script>
+    <script src="domevent.js"></script>
+    <script src="myutil.js"></script>
+
+    <script src="lib/postprocessing/EffectComposer.js"></script>
+    <script src="lib/postprocessing/ClearPass.js"></script>
+    <script src="lib/postprocessing/MaskPass.js"></script>
+    <script src="lib/postprocessing/RenderPass.js"></script>
+    <script src="lib/shaders/CopyShader.js"></script>
+    <script src="lib/postprocessing/ShaderPass.js"></script>
+    <!--泛光-->
+    <script src="lib/shaders/ConvolutionShader.js"></script>
+    <script src="lib/postprocessing/BloomPass.js"></script>
+    <!--点集-->
+    <script src="lib/shaders/DotScreenShader.js"></script>
+    <script src="lib/postprocessing/DotScreenPass.js"></script>
+    <!--自定义：局部镜面-->
+    <script src="lib/shaders/MirrorShader.js"></script>
+    <!--自定义：周边模糊-->
+    <script src="lib/shaders/FocusShader.js"></script>
+    <!--自定义：颜色覆盖-->
+    <script src="lib/shaders/ColorifyShader.js"></script>
+
+    <!--自定义：面内部周边渐变  自己绘制-->
+    <script src="AreaInnerGlowShader.js"></script>
+    
+    <script>
+        let autoInterval;
+        let currentTime;
+        let currentTime_save;
+        let timeEvents = [];
+        //关系网络绘制
+        let nodeGeo = new THREE.SphereGeometry( 20, 20, 20 );
+        let that = {
+            layout: '3d', 
+            selection: true, 
+            numNodes: 100, 
+            graphLayout:{
+                width:500,
+                height:500,
+                iterations:20000,//力导向布局迭代次数100000时间太长
+                attraction: 1, //吸引力 1
+                repulsion: 0.5}, //排斥力 0.5
+            showStats: true, 
+            showInfo: true};
+            that.numEdges= 10;//边最大数量
+        that.graphLayout.width = that.graphLayout.width || 2000;
+        that.graphLayout.height = that.graphLayout.height || 2000;
+        that.graphLayout.iterations = that.graphLayout.iterations || 100000;
+        that.graphLayout.layout = that.graphLayout.layout || that.layout;
+        let graph = new Graph();//{limit: 20}
+        let geometries = [];
+        //被选中的对象
+        let selectObj;
+        let selectObj_uuid_save;//选中记忆
+        let curEnIds = [];
+        let curRelIds = [];
+
+        let FIRSTSELECTID = 'e1';
+        let isfirstSelect = true;
+
+        let materialEdge = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.1, linewidth: 1 });
+        let eventMaterial = {
+            'blue':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x00C2C2
+                            //,ambient:0xFFFFFF
+                        })
+            ,'pink':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x7237AF
+                            //,ambient:0xFFFFFF
+                        })
+            ,'yellow':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0xBE8B00
+                            //,ambient:0xFFFFFF
+                        })
+            ,'green':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0x00B954
+                            //,ambient:0xFFFFFF
+                        })
+            ,'red':new THREE.MeshPhongMaterial({color:0xFFFFFF,shininess:10,emissive:0xB42D15
+                            //,ambient:0xFFFFFF
+                        })
+        };
+        let eventGradientMaterial = {
+            'blue':eventSpriteMaterial('0,194,194')//rgbcolor
+            ,'pink':eventSpriteMaterial('114,44,175')//rgbcolor
+            ,'yellow':eventSpriteMaterial('190,139,0')//rgbcolor
+            ,'green':eventSpriteMaterial('0,185,84')//rgbcolor
+            ,'red':eventSpriteMaterial('180,45,21')//rgbcolor
+        };
+        //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+        let BUTTON_STATE=null;
+        let BUTTON_STATE_SAVE=null;
+        //时间线的组
+        let timeLineGroup= new THREE.Group();
+        //定义季度的平面样式
+        let planeMaterial = new THREE.MeshBasicMaterial({color:0x808080,opacity:0.3,transparent:true});
+        //季度群组
+        let jdGroup1 = new THREE.Group();
+        timeLineGroup.add(jdGroup1);
+        jdGroup1.visible = false;
+
+            
+
+         //切图在scene中的大小
+        var tileSize = 50;
+        //地图切片服务地址
+        var serverURL = "http://c.tile.osm.org/";
+        //设置中心经纬度 
+        //var centerLng = 120.215, centerLat = 30.211666;//杭州
+        //var centerLng = 122.201691, centerLat = 30.037876;//舟山
+        //var centerLng = 122.211464, centerLat = 30.003853;//舟山
+        //let centerLng = 122.136151, centerLat = 30.04688;
+        let centerLng = 122.136151, centerLat = 30.044887;
+        //122.152823,
+        let duration = [500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
+        //let duration = [500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000];
+        let stats;
+        var loader = new THREE.FontLoader();
+        let INTERSECTED;
+        let raycaster;
+        let radius = 11;//设置地图的图片数量行列 中间点一个50的图片，10半径左侧宽度是525,11半径左侧宽度是575
+        let radiusX = 17;
+        let radiusY = 13; 
+
+        let TIMELINEH = (radiusY+0.5) * tileSize *2 /2;
+        //地图层级默认
+        let level = 15;
+        
+        //地图层的z值
+        let mapZValue = -300;
+
+        //实体层的z值
+        let entityZValue =100;  //let girdH = (radius+0.5) * 500 *2 + mapZValue; //
+        let events = new Array();
+        let eventGroup = new THREE.Group();
+        let eventMapGroup = new THREE.Group();
+        let eventLineGroup = new THREE.Group();
+        let entities = new Array();
+        let entitiesText = new Array();
+        let personImg = 'images/person.png';//'images/person.png';//200*200
+        let localImg = 'res/green.png';//'images/local.png';//200*200
+        let personImgObj = new Image();
+            personImgObj.src=personImg;
+        let svgManger = new THREE.SVGLoader();
+
+        //svgManger.load('res/p.svg',svgloaderPerson,function(){console.log('loading svg....')},function(){console.log('Error loading SVG')});
+        let personCImg,personCSelectImg,personCRedImg;
+        personCImg = new Image();
+        personCImg.src='res/p.png';
+        personCRedImg = new Image();
+        personCRedImg.src='res/p_red.png';
+        let eventsTexture ={
+            'red':draw2Circle('rgba(195,63,40,0.2)','rgba(195,63,40,0.8)'),
+            'yellow':draw2Circle('rgba(206,151,0,0.2)','rgba(206,151,0,0.8)'),
+            'blue':draw2Circle('rgba(19,176,176,0.2)','rgba(19,176,176,0.8)'),
+            'green':draw2Circle('rgba(20,186,95,0.2)','rgba(20,186,95,0.8)'),
+            'pink':draw2Circle('rgba(124,69,179,0.2)','rgba(124,69,179,0.8)')
+        } 
+        let personTexture =  new THREE.TextureLoader().load(personImg);
+        let localTexture = new THREE.TextureLoader().load(localImg);
+        function svgloaderPerson(doc){
+            svgToImg(doc,personCImg);
+        }
+        let canvas = document.createElement('canvas');
+        let canvasContent = canvas.getContext('2d');
+        function svgToImg(doc,obj){
+            let img = new Image();
+            img.src = doc;
+            img.onload = function(){
+                canvasContent.drawImage(img,32,32);
+                obj = img;
+                //let textTure = new THREE.TextureLoader().load(img);
+                //obj = new THREE.SpriteMaterial({map: textTure});
+            }
+
+        }
+        let mouse = new THREE.Vector2();
+        function onMouseOver(event){
+            event.preventDefault();
+            mouse.x = (event.clientX/window.innerWidth)*2-1;
+            mouse.y = -(event.clientY/window.innerHeight)*2+1;
+        }
+        //线的样式
+        let materialLine = new THREE.LineBasicMaterial({color: 0x0000ff,vertexColors:false});
+        //时间的线的样式
+        let timeMaterialLine = new THREE.LineBasicMaterial({color: 0x363636,vertexColors:false, opacity: 0.5});
+        let geometry = new THREE.Geometry();
+        //人的样式
+        let materialPerson = new THREE.SpriteMaterial({
+            //opacity: 0.7,
+            //transparent: true,
+            //useScreenCoordinates: false,
+            //sizeAttenuation:false, 缩放大小不变，发现不好使
+            color:0xffffff,
+            map: personTexture
+        });
+        //事件的样式
+        let materialEvent = new THREE.SpriteMaterial({
+            //opacity: 0.7,
+            //transparent: true,
+            //useScreenCoordinates: false,
+            //sizeAttenuation:false, 缩放大小不变，发现不好使
+            color:0x0000ff,
+            map: localTexture
+            /*
+            transparent:false,
+            blending:THREE.AdditiveBlending,
+            //alignment:THREE.SpriteAlignment.center,
+            useScreenCoordinates:false,
+            fog:true
+            */
+        });
+        var div = document.getElementById("main");
+        var width = window.innerWidth
+          , height = window.innerHeight;
+
+        div.style.width = width + "px";
+        div.style.height = height + "px";
+
+        var fov = 45
+          , ratio = width / height;
+
+
+        //var scene, camera, cameraControls, renderer;
+        //stats = new Stats();
+        //div.appendChild( stats.dom );
+
+        $$.global.canvasContainerDom=document.getElementById("main");
+        let [scene,renderer,camera]=$$.init({},{},{fov});
+        let bodyDom;
+        $$.animate();
+        /*
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(fov,ratio,1,4000);
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 500;
+        camera.lookAt(scene.position);
+        
+        //监听事件
+        raycaster = new THREE.Raycaster();
+        renderer = new THREE.WebGLRenderer({
+            antialias: true//抗锯齿
+        });
+        renderer.setSize(width, height);
+        renderer.setClearColor(0x000000);
+        renderer.autoClear =false;
+
+        cameraControls = new THREE.OrbitControls(camera,renderer.domElement);
+        cameraControls.target.set(0, 0, mapZValue);
+        cameraControls.maxDistance = 1600;//最远范围距离
+        cameraControls.minDistance = 10;
+        cameraControls.update();
+
+        div.appendChild(renderer.domElement);
+        */
+
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = entityZValue+1600;//500;
+        camera.lookAt(scene.position);
+
+        let boxGeo = new THREE.BoxGeometry(300,300,300);
+        let cubeMl = new THREE.MeshNormalMaterial();
+        let cube = new THREE.Mesh(boxGeo,cubeMl);
+        cube.position.x = 0;
+        cube.position.y = 0;
+        cube.position.z = 0;
+        /*
+        let cube2 = new THREE.Mesh(boxGeo,cubeMl);
+        cube2.position.x = -600;
+        cube2.position.y = 0;
+        cube2.position.z = 0;
+        scene.add(cube2);
+        */
+        let nodeGroup = new THREE.Group();
+        let lineGroup = new THREE.Group();
+        let leftGroup = new THREE.Group();
+        leftGroup.position.set(-390,130, 710);//-800 -400 0
+        leftGroup.add(nodeGroup);
+        leftGroup.add(lineGroup);
+        //通过leftScale设置缩放
+        //leftGroup.add(cube);
+        
+
+        //leftGroup.translateOnAxis(new THREE.Vector3(-1600,1,0),0);
+        
+        
+        //console.log('leftGroup-position',leftGroup.position);
+        //console.log('leftGroup',leftGroup.toJSON());
+        //leftGroup.scale.set(-600,0,0);
+        //leftGroup.matrix.setPosition(-600,0,0);
+        //leftGroup.matrixAutoUpdate = false;
+        //leftGroup.matrix.set(-600,0,0);
+        //leftGroup.updateMatrixWorld(true);
+        //leftGroup.updateMatrix();
+        //leftGroup.translateX(-600);
+        //leftGroup.translateY(-550);
+        //leftGroup.translateY(-550);
+
+        let rightGroup = new THREE.Group();
+        rightGroup.rotation.x = -Math.PI/3;
+        rightGroup.position.set(180,150,0);
+        rightGroup.add(eventGroup);
+        rightGroup.add(eventMapGroup);
+        rightGroup.add(eventLineGroup);
+        rightGroup.add(timeLineGroup);
+        scene.add(rightGroup);
+        scene.add(leftGroup);
+        
+        let leftControls = new THREE.ObjectTrackballControls(leftGroup,camera,renderer.domElement);
+        let rightControls = new THREE.ObjectTrackballControls(rightGroup,camera,renderer.domElement);
+
+        var gui = new dat.GUI();
+	   gui.closed = true;
+        rightControls.enabled = false;
+        rightControls.noZoom = true;
+        gui.add(rightControls, 'enabled');
+        gui.add(rightControls, 'noZoom');
+
+        gui.add(rightGroup.rotation, 'x',-Math.PI,0);//控制倾斜度
+        let SCALE = {scale:1,leftscale:0.5};//0.7
+        rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
+
+        gui.add(SCALE, 'scale',1,10);
+        //gui.add(rightControls, 'noZoom');
+
+        let ROTATION={isRotation:true };
+        gui.add(ROTATION,'isRotation');
+        /*
+        gui.add(rightControls, 'moveCamera');
+        gui.add(rightControls, 'rotateSpeed', 0, 2);
+        gui.add(rightControls, 'zoomSpeed', 0, 2);
+        gui.add(rightControls, 'panSpeed', 0, 2);
+        gui.add(rightControls, 'noRotate');
+        
+        gui.add(rightControls, 'noPan');
+        gui.add(rightControls, 'noRoll');
+        gui.add(rightControls, 'staticMoving');
+        gui.add(rightControls, 'dynamicCameraDampingFactor', 0, 1);
+        gui.add(rightControls, 'dynamicObjectDampingFactor', 0, 1);
+        */
+        
+        leftControls.enabled = false;
+        leftControls.noZoom = true;
+        gui.add(leftControls, 'enabled');
+        gui.add(leftGroup.position, 'x',-1000,1000).step(10);
+        gui.add(leftGroup.position, 'y',-1000,1000).step(10);
+        gui.add(leftGroup.position, 'z',-1000,1000).step(10);
+        gui.add(SCALE, 'leftscale',0,1);
+        /*
+        gui.add(leftControls, 'moveCamera');
+        gui.add(leftControls, 'rotateSpeed', 0, 2);
+        gui.add(leftControls, 'zoomSpeed', 0, 2);
+        gui.add(leftControls, 'panSpeed', 0, 2);
+        gui.add(leftControls, 'noRotate');
+        gui.add(leftControls, 'noZoom');
+        gui.add(leftControls, 'noPan');
+        gui.add(leftControls, 'noRoll');
+        gui.add(leftControls, 'staticMoving');
+        gui.add(leftControls, 'dynamicCameraDampingFactor', 0, 1);
+        gui.add(leftControls, 'dynamicObjectDampingFactor', 0, 1);
+        */
+        /*
+        let cameraControls = new THREE.OrbitControls(camera,renderer.domElement);
+        cameraControls.target.set(0, 0, mapZValue);
+        cameraControls.maxDistance = 6000;//最远范围距离
+        cameraControls.minDistance = 10;
+        cameraControls.update();
+        */
+
+        /*
+        let cameraControls = $$.Controls.createOrbitControls();
+        cameraControls.target.set(0, 0, mapZValue);
+        cameraControls.maxDistance = 1600;//最远范围距离
+        cameraControls.minDistance = 10;
+        cameraControls.update();
+        */
+
+        //创建坐标轴并加入到scene  
+        //var axes = new THREE.AxisHelper(50);
+        //scene.add(axes);
+
+        bodyDom=new $$.Body();
+        bodyDom.distanceFromCamera=20;
+        scene.add(bodyDom);
+
+        let light = new THREE.AmbientLight(0x222222);
+        scene.add(light);
+
+        //加入一个白光
+        
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        directionalLight.position.set(0, 1, 0);
+        scene.add(directionalLight);
+        /*自定义着色器：*/
+        
+        let renderModel = new THREE.RenderPass( scene, camera );
+        //外围模糊，中间清晰
+        //let effectCustom = new THREE.ShaderPass( THREE.FocusShader );
+        //effectCustom.uniforms[ "screenWidth" ].value = window.innerWidth;
+        //effectCustom.uniforms[ "screenHeight" ].value = window.innerHeight;
+        //effectCustom.uniforms[ "sampleDistance" ].value = 0.94;
+        //effectCustom.uniforms[ "waveFactor" ].value = 0.00125;//波浪因子
+        //effectCustom.renderToScreen = true;
+        //上下左右镜像
+        //let effectCustom = new THREE.ShaderPass( THREE.MirrorShader);
+        //effectCustom.uniforms[ "side" ].value = 1;//0 = left, 1 = right, 2 = top, 3 = bottom
+        //effectCustom.renderToScreen = true;
+        //颜色覆盖
+        
+        
+
+
+        let effectCustom = new THREE.ShaderPass( THREE.ColorifyShader );
+        //effectCustom.uniforms[ "color" ].value = new THREE.Color( 0xffffff );
+        effectCustom.renderToScreen = true;
+        renderer.autoClear = false;
+
+        var parameters = {
+                    minFilter: THREE.LinearFilter,
+                    magFilter: THREE.LinearFilter,
+                    format: THREE.RGBFormat,
+                    stencilBuffer: true
+                };
+                var renderTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, parameters );
+        let composer = new THREE.EffectComposer( renderer,renderTarget );
+        //composer.renderTarget1.stencilBuffer = true;
+        //composer.renderTarget2.stencilBuffer = true;
+
+        console.log('1111111111111111111::::::::',new THREE.Vector3( 2, 2, 2 ));
+
+        //添加特效
+        //setTimeout(function(){composer.addPass( effectCustom );},10000)
+        //
+        
+
+        /*
+        let renderModel = new THREE.RenderPass( scene, camera );
+        let effectCopy = new THREE.ShaderPass( THREE.CopyShader );
+        effectCopy.renderToScreen = true;
+        
+        let composer = new THREE.EffectComposer( renderer );
+
+        
+        composer.addPass( renderModel );
+        //添加泛光 需要
+        let bloomPass = new THREE.BloomPass(3,25,5,256);
+        composer.addPass(bloomPass);
+        //点集输出
+        //let dotScreenPass = new THREE.DotScreenPass();
+        //composer.addPass(dotScreenPass);
+
+        composer.addPass( effectCopy );
+        */
+
+        //添加时间轴，
+        /*
+        //实际地图的宽度和高度
+        let girdH = (radius+0.5) * tileSize *2;//entityZValue-mapZValue;
+        let timerX = girdH/2 +20;
+        let timerY = 0;
+        let timerZ1 = mapZValue+girdH;
+        let timerZ2 = mapZValue+girdH*3/4;
+        let timerZ3 = mapZValue+girdH*2/4;
+        let timerZ4 = mapZValue+girdH*1/4;
+        let timerZ5 = mapZValue;
+
+        let textureT1 = new THREE.TextTexture({
+          text: '1月',
+          fontStyle: 'bold',
+          fontSize: 90,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT1 = new THREE.SpriteMaterial({map: textureT1, color: 0xffffbb});
+        let spriteTextT1 = new THREE.Sprite(materialTextT1);
+        spriteTextT1.scale.setX(textureT1.aspect).multiplyScalar(4);
+        spriteTextT1.scale.setZ(textureT1.aspect).multiplyScalar(7);
+        spriteTextT1.position.set(timerX, timerY,  timerZ1);
+        rightGroup.add(spriteTextT1);
+
+        let textureT2 = new THREE.TextTexture({
+          text: '3月',
+          fontStyle: 'bold',
+          fontSize: 90,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT2 = new THREE.SpriteMaterial({map: textureT2, color: 0xffffbb});
+        let spriteTextT2 = new THREE.Sprite(materialTextT2);
+        spriteTextT2.scale.setX(textureT2.aspect).multiplyScalar(4);
+        spriteTextT2.scale.setZ(textureT2.aspect).multiplyScalar(7);
+        spriteTextT2.position.set(timerX, timerY,  timerZ2);
+        rightGroup.add(spriteTextT2);
+
+        let textureT3 = new THREE.TextTexture({
+          text: '6月',
+          fontStyle: 'bold',
+          fontSize: 90,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT3 = new THREE.SpriteMaterial({map: textureT3, color: 0xffffbb});
+        let spriteTextT3 = new THREE.Sprite(materialTextT3);
+        spriteTextT3.scale.setX(textureT3.aspect).multiplyScalar(4);
+        spriteTextT3.scale.setZ(textureT3.aspect).multiplyScalar(7);
+        spriteTextT3.position.set(timerX, timerY,  timerZ3);
+        rightGroup.add(spriteTextT3);
+
+        let textureT4 = new THREE.TextTexture({
+          text: '9月',
+          fontStyle: 'bold',
+          fontSize: 90,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT4 = new THREE.SpriteMaterial({map: textureT4, color: 0xffffbb});
+        let spriteTextT4 = new THREE.Sprite(materialTextT4);
+        spriteTextT4.scale.setX(textureT4.aspect).multiplyScalar(4);
+        spriteTextT4.scale.setZ(textureT4.aspect).multiplyScalar(7);
+        spriteTextT4.position.set(timerX, timerY,  timerZ4);
+        rightGroup.add(spriteTextT4);
+
+        let textureT5 = new THREE.TextTexture({
+          text: '12月',
+          fontStyle: 'bold',
+          fontSize: 90,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT5 = new THREE.SpriteMaterial({map: textureT5, color: 0xffffbb});
+        let spriteTextT5 = new THREE.Sprite(materialTextT5);
+        spriteTextT5.scale.setX(textureT5.aspect).multiplyScalar(4);
+        spriteTextT5.scale.setZ(textureT5.aspect).multiplyScalar(7);
+        spriteTextT5.position.set(timerX, timerY,  timerZ5+10);
+        rightGroup.add(spriteTextT5);
+        */
+
+/*
+        let textureT1 = new THREE.TextTexture({
+          text: '1月',
+          fontStyle: 'bold',
+          fontSize: 28,
+          fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+        });
+        let materialTextT1 = new THREE.SpriteMaterial({map: textureT1, color: 0xffffbb});
+        let spriteTextT1 = new THREE.Sprite(materialTextT1);
+        spriteTextT1.scale.setX(textureT1.aspect).multiplyScalar(10);
+        //spriteText.scale.set(10, 10, 10);
+        spriteTextT1.position.set(timerX, timerY,  timerZ1);
+        scene.add(spriteTextT1);
+        */
+
+
+        function initTween()
+        {
+            //镜头移动到地图200米上
+            //addEntities();
+            //addEvents();
+            new TWEEN.Tween( camera.position).to( { z: mapZValue+200 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ //应当计算出范围展示的中心点才好
+                //镜头跟随实体冒泡
+                new TWEEN.Tween( camera.position).to( { z: entityZValue+100 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(
+                        function(){ new TWEEN.Tween( camera.position).to( { z: entityZValue+1600}, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).start()
+                    }
+                    ).start();
+                
+                
+            }).start();
+        }
+        
+        var render = function() {
+            //cameraControls.update();
+            rightControls.update();
+            raycaster.setFromCamera(mouse,camera);
+            let intersects = raycaster.intersectObjects(scene.children);
+            /*
+            if(intersects.length>0){
+                if (INTERSECTED != intersects[0].object) {  
+                        if (INTERSECTED) INTERSECTED.material.color.setHex(INTERSECTED.currentHex);  
+                        INTERSECTED = intersects[0].object;  
+                        INTERSECTED.currentHex = INTERSECTED.material.color.getHex();  
+                        INTERSECTED.material.color.set( 0xff0000 );  
+                } else {  
+                    if (INTERSECTED) INTERSECTED.material.color.set(INTERSECTED.currentHex);  
+                    INTERSECTED = null;  
+                }  
+            }
+            */
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+
+            TWEEN.update();
+        }
+        //initTween();
+        //render();
+        initListener();
+
+        function initListener() {
+            var onmousedown = function(event) {
+                div.style.cursor = "move";
+                //div.addEventListener("mousemove",onmousemove);
+            };
+
+            var onmouseup = function(event) {
+                div.style.cursor = "default";
+                //div.removeEventListener("mousemove",onmousemove)
+            };
+
+            div.addEventListener("mousedown", onmousedown);
+            div.addEventListener("mouseup", onmouseup);
+            document.addEventListener('mousemove',onMouseOver,false);
+        }
+/*******************************************************************/
+
+       
+        
+        //WGS84转Web墨卡托
+        //参考：http://www.opengsc.com/archives/137
+        function LonLat2WebMercator(lng, lat) {
+            /*
+            var x = (lng / 180.0) * 20037508.3427892;
+            var y;
+            if (lat > 85.05112) {
+                lat = 85.05112;
+            }
+            if (lat < -85.05112) {
+                lat = -85.05112;
+            }
+            y = (Math.PI / 180.0) * lat;
+            var tmp = Math.PI / 4.0 + y / 2.0;
+            y = 20037508.3427892 * Math.log(Math.tan(tmp)) / Math.PI;
+            var result = {
+                x: x,
+                y: y
+            };
+            return result;
+            */
+            var mercator={x:0,y:0};
+            var x = lng *20037508.34/180;
+            var y = Math.log(Math.tan((90+lat)*Math.PI/360))/(Math.PI/180);
+            y = y *20037508.34/180;
+            mercator.x = x;
+            mercator.y = y;
+            return mercator;
+        }
+        
+        //Web墨卡托转成tile上的像素坐标，返回像素坐标，以及tile编号，在所在tile上的偏移
+        function WebMercator2Tileimage(x,y){
+            //对于第18级地图, 对于我国而言
+            //var level = 18;
+            var r = 20037508.3427892;
+            y = r - y;
+            x = r + x;
+            var size = Math.pow(2, level) * 256;
+            var imgx = x * size / (r * 2);
+            var imgy = y * size / (r * 2);
+            //当前位置在全球切片编号
+            var col = Math.floor(imgx / 256);
+            var row = Math.floor(imgy / 256);
+            //console.log("col", col, "row", row);
+            //当前位置对应于tile图像中的位置
+            var imgdx = imgx % 256;
+            var imgdy = imgy % 256;
+            
+        		//像素坐标
+        		var position = {x:imgx,y:imgy};
+        		//tile编号
+        		var tileinfo = {x:col,y:row,level:level};
+        		//在所在tile上的偏移
+        		var offset = {x:imgdx,y:imgdy};
+        		
+        		var result = {position:position,tileinfo:tileinfo,offset:offset};
+        		return result;
+        }
+        
+        //经纬度到tile，再到WebGL坐标
+        function LonLat2WebGL(lng,lat){
+        		var webMercator = LonLat2WebMercator(lng,lat);
+        		var tilePos = WebMercator2Tileimage(webMercator.x,webMercator.y).position;
+        		
+        		var centerWM = LonLat2WebMercator(centerLng,centerLat);
+        		var centerTP = WebMercator2Tileimage(centerWM.x,centerWM.y);
+        		//相对偏移修正（以centerLng,centerLat所在点tile中心点为原点，导致的偏移）
+        		var x = (tilePos.x - centerTP.position.x + (centerTP.offset.x - 256/2) )*tileSize/256;
+
+                //发现y是反的，直接取负值，括号里面也是反的，使用GPS的坐标位置是准确的
+        		var y = -(tilePos.y - centerTP.position.y + (centerTP.offset.y - 256/2))*tileSize/256;
+        		
+            var result = {
+                x: x,
+                y: y
+            };
+            //console.log('*****************'+x+'*************'+y);
+            return result;
+        }
+
+        /**
+		 * 加载一个切图
+		 * @param {Object} xno tile编号x
+		 * @param {Object} yno tile编号y
+		 * @param {Object} callback
+		 */
+        function loadImageTile(xno, yno, callback) {
+            //var level = 18;
+            //var url = serverURL + level + "/" + xno + "/" + yno + ".png";
+            //let url = 'https://192.168.137.1/res/map/zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
+            let url = 'zhoushanDarkNav/'+level+'/'+xno+'/'+yno+'.png';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj81gnx0e7hod2snqhk8wxjof/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8r3a8ncb6nf2rqowyp27wfi/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            //let url = 'https://api.mapbox.com/styles/v1/doudoulaiye/cj8smxtzfbjx22rs5nwfb7srz/tiles/256/'+level+'/'+xno+'/'+yno+'?access_token=pk.eyJ1IjoiZG91ZG91bGFpeWUiLCJhIjoiY2oxazN0MTd6MDIxazJxcGptcjhkMGNiYSJ9.N1TxfoQ-kKfKJkGuQ7F42Q';
+            var loader = new THREE.TextureLoader();
+            //跨域加载图片
+            loader.crossOrigin = true;
+            loader.load(url, function(texture) {
+                console.log("loaded tile");
+                var geometry = new THREE.PlaneGeometry(tileSize,tileSize,1);
+                var material = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    transparent: true,
+                    side: THREE.DoubleSide//双面显示
+                });
+                var mesh = new THREE.Mesh(geometry,material);
+                callback(mesh);
+            });
+        }
+        /**
+		 * 将加载的切图放到scene
+		 * @param {Object} mesh
+		 * @param {Object} x坐标  WebGL坐标
+		 * @param {Object} y坐标
+		 */
+        function addTileToScene(mesh, x, y,z) {
+            //mesh的中心位置
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.position.z = z;//不设置的话会在屏幕的正中心
+            rightGroup.add(mesh);
+        }
+        /**
+		 * 辅助函数，用于计算tile应该放在何处
+		 * @param {Object} dx  tile间相对位置，也就是编号差
+		 * @param {Object} dy
+		 */
+        function addTileToSceneHelper(dx, dy,dz) {
+            var x = tileSize * dx ;
+            var y = -tileSize * dy ;
+            var z = dz
+            return function(mesh) {
+                addTileToScene(mesh, x, y,z);
+            }
+            ;
+        }
+        /**
+		 * 加载地图
+		 * @param {Object} centerX 地图中间的切图编号
+		 * @param {Object} centerY 地图中间的切图编号
+		 */
+        function loadMap(centerX, centerY) {
+            
+            for (var i = centerX - radiusX; i <= centerX + radiusX; i++) {
+                for (var j = centerY - radiusY; j <= centerY + radiusY; j++) {
+                    //console.log("try to load",i,j,i-centerX,j-centerY);
+                    console.log("try to load");
+                    loadImageTile(i, j, addTileToSceneHelper(i - centerX, j - centerY,mapZValue));
+                }
+            }
+        }
+        /**
+         * 加载地图
+         * @param {Object} centerX 地图中间的切图编号
+         * @param {Object} centerY 地图中间的切图编号
+         */
+        function loadMap2(centerX, centerY) {
+            var radius = 16;//设置地图的图片数量行列
+            for (var i = centerX - radius; i <= centerX + radius; i++) {
+                for (var j = centerY - radius; j <= centerY + radius; j++) {
+                    //console.log("try to load",i,j,i-centerX,j-centerY);
+                    console.log("try to load");
+                    loadImageTile(i, j, addTileToSceneHelper(i - centerX, j - centerY,entityZValue));
+                }
+            }
+        }
+        /**
+		 * 标记出当前位置
+		 * @param {Object} x webGL坐标
+		 * @param {Object} y
+		 */
+        function markCurrentPosition(x, y) {
+            var geometry = new THREE.SphereGeometry(10,20,20);
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xff0000
+            });
+            var mesh = new THREE.Mesh(geometry,material);
+            mesh.position.x = x;
+            mesh.position.y = y;
+            rightGroup.add(mesh);
+
+        }
+
+        /**
+         * 标记出当前位置
+         * @param {Object} x webGL坐标
+         * @param {Object} y
+         */
+        function addPerson(person) {
+            let x = person.xy[0];
+            let y = person.xy[1];
+            var currentWebGLPos = LonLat2WebGL(x,y);
+            x = currentWebGLPos.x;
+            y = currentWebGLPos.y;
+            
+            let param = {
+                img:personImgObj,//必填，图片url
+                txt:person.name,//必填，文字内容
+                layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
+                distanceImgTxt:20,//可选 文字和图片的距离 横向或竖向
+                imgParam:{
+                    width:50,//可不传，图片宽度，默认使用图片的高度
+                    height:50,//可不传，图片高度，默认使用图片的宽度
+                    //scale:1//可不传，图片等比例缩放
+                },
+                txtParam:{
+                    fillStyle:'#ffffbb',//可选，文字颜色，默认颜色红色，或者渐变色gradient类型
+                    //font:'Bold 100px Arial',//可选，字体粗细 字体大小 字体类型
+                    //font-style||font-variant||font-weight||font-size||line-height||font-family
+                    fontStyle:'bold',//
+                    fontVariant:null,
+                    fontWeight:'bold',
+                    fontSize:'40px',
+                    //lineHeight:
+                    fontFamily:'Microsoft YaHei',
+                    
+                    lineWidth: 4,//可选，字体粗度
+                    maxWidth:1000,//可选，最大宽度
+                }
+            };
+
+            imgTxtDraw(param,addPersonSprite,x,y,mapZValue);
+            /*
+            var sprite = new THREE.Sprite(materialPerson);
+            sprite.scale.set(10, 10, 1);
+            sprite.position.set(x, y, mapZValue);
+
+           
+            //geometry.colors.push(color1);
+            scene.add(sprite);
+            entities.push(sprite);
+            let texture = new THREE.TextTexture({
+              text: person.name,
+              fontStyle: 'bold',
+              fontSize: 12,
+              fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+            });
+            let materialText = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
+            let spriteText = new THREE.Sprite(materialText);
+            spriteText.scale.setX(texture.aspect).multiplyScalar(10);
+            //spriteText.scale.set(10, 10, 10);
+            spriteText.position.set(x, y-10, mapZValue-10);
+            scene.add(spriteText);
+            
+            entitiesText.push(spriteText);
+            */
+        }
+        function addPersonSprite(x,y,z,texture,totalWidth,totalHeight){
+            //console.log('canvas.width',canvas.width);
+            //使用Sprite显示文字
+            let material = new THREE.SpriteMaterial({map:texture});
+            let textObj = new THREE.Sprite(material);
+            let xScale = 0.5;
+            //保证等比例缩放
+            let yScale = xScale *totalHeight /totalWidth;
+            //let zScale = 0.75 * 
+            textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+            textObj.position.set(x,y,z);
+            //textObj.translateX(-100);
+            rightGroup.add(textObj);
+            entities.push(textObj);
+
+            textObj.onEnter = function(obj){
+                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.006*totalWidth);
+                //显示信息
+            }
+            textObj.onLeave = function(obj){
+                obj.object.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+            }
+        }
+        function addPersons(){
+            //标记当前位置
+            let persons=[
+                
+                {xy:[120.215,30.211666],name:'张三'},
+                //下沙多蓝水岸
+                {xy:[120.381111,30.299444],name:'多蓝水岸'},
+                {xy:[120.197697,30.2581],name:'王五'},
+                {xy:[120.086307,30.161973],name:'刘六'},
+                {xy:[120.219113,30.170966],name:'猴七'},
+                
+                {xy:[120.211199,30.263497],name:'小八'}
+                
+            ];
+            for(let i=0;i<persons.length;i++){
+                
+                addPerson(persons[i]);
+            }
+            
+        }
+        /**
+         * 外发光效果
+         *
+         */
+        function eventSpriteMaterial(rgbcolor){
+
+            let canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            let context = canvas.getContext('2d');
+            let gradient = context.createRadialGradient(canvas.width/2,canvas.height/2,0,canvas.width/2,canvas.height/2,canvas.width/2);
+            //gradient.addColorStop(0,'rgba(255,255,255,1)');//不要中心亮白
+            gradient.addColorStop(0.1,'rgba('+rgbcolor+',0.1)');//微弱的渐变。调整的话，可以调整透明度
+            gradient.addColorStop(1,'rgba(255,255,255,0)');//向白色渐变
+            
+            //绘制底部渐变
+            context.beginPath();
+            context.fillStyle = gradient;
+            context.arc(canvas.width/2,canvas.height/2,canvas.width/2,0, Math.PI * 2,false);
+            context.fill();
+            context.closePath();
+
+            //绘制实心圆
+
+            context.beginPath();
+            context.arc(canvas.width/2,canvas.width/2,canvas.width/4,0, Math.PI * 2,false);
+                context.fillStyle='rgba('+rgbcolor+',1)';
+                context.fill();//画实心圆
+            context.closePath();
+
+            let texture = new THREE.CanvasTexture(canvas);
+            texture.needUpdate = true;
+            let material = new THREE.SpriteMaterial({
+                    map:texture
+                    ,transparent: false
+                    //,size:20
+                    ,blending:THREE.AdditiveBlending
+                });
+            return material; 
+        }
+
+        /**
+         * 添加事件
+         * 通过计算高度设定
+         */
+        function addEvents(eventArr){
+            
+            for(var i=0;i<eventArr.length;i++){
+                let obj = eventArr[i];
+                let x = obj.position.split(' ')[0]-0;
+                let y = obj.position.split(' ')[1]-0;
+                var currentWebGLPos = LonLat2WebGL(x,y);
+                x = currentWebGLPos.x;
+                y = currentWebGLPos.y;
+                //eventtype 抓拍 0x00C2C2 住院 7237AF 饮食 BE8B00 快递 00B954 案件B42D15
+                let color = 0x00C2C2;
+                let colorName = 'blue';
+                if(obj.name == '抓拍'){
+                    colorName = 'blue';
+                }else if(obj.name == '入住'){
+                    colorName = 'pink';
+                }else if(obj.name == '卡口过车'){
+                    colorName = 'yellow';
+                }else if(obj.name == '快递'){
+                    colorName = 'green';
+                }else if(obj.name == '案件'){
+                    colorName = 'red';
+                }
+                /*
+                let random = randomFromTo(1, 10);
+                if(random==4){
+                    color = 0x7237AF;
+                    colorName = 'pink';
+                }else if(random==5){
+                    color = 0xBE8B00;
+                    colorName = 'yellow';
+                }else if(random ==6 || random==7){
+                    color = 0x00B954;
+                    colorName = 'green';
+                }else if(random ==8 || random==9){
+                    color = 0xB42D15;
+                    colorName = 'red';
+                }
+                */
+                /*
+                var sprite = new THREE.Sprite(eventGradientMaterial[colorName]);
+                sprite.scale.set(50, 50, 1);
+                */
+                let geo = new THREE.SphereGeometry( 15, 15, 15 );
+                let sprite = new THREE.Mesh(
+                        geo,
+                        //new THREE.MeshLambertMaterial({color:0xCC0000})//,specular:0X00EEEE
+                       eventMaterial[colorName]
+                       
+                    );
+                    
+                //let z = randomNumBoth(mapZValue+10,TIMELINEH+mapZValue-10);
+                let month = obj.date.substring(4,6);
+                let day = obj.date.substring(6,8);
+                let z= (month-1)*TIMELINEH/12 + (day-0)/31*TIMELINEH/12 +mapZValue;
+                obj.x=x;
+                obj.y=y;
+                obj.z=z;
+                sprite.attr = obj;
+                sprite.position.set(x, y, mapZValue+8);
+                
+                
+                eventGroup.add(sprite);
+
+                events.push(sprite);
+                //添加地图的图片
+                //暂时不能使用
+                //console.log(colorName,eventsTexture[colorName]);
+                
+                let eventTexture =   new THREE.CanvasTexture(eventsTexture[colorName]);
+
+                let egeo = new THREE.PlaneGeometry(40,40,1);
+                let ematerial = new THREE.MeshBasicMaterial({
+                    map:eventTexture//localTexture
+                    ,transparent: true
+                });
+                let eventmesh = new THREE.Mesh(egeo,ematerial);
+                eventmesh.position.set(x, y,mapZValue+3);
+                eventMapGroup.add(eventmesh);
+                sprite.mapMapUuid = eventmesh.uuid;
+                
+
+                sprite.onEnter = function(obj){
+                    //获得屏幕坐标
+                    
+                    let world_vector = obj.object.position.clone();
+                    rightGroup.localToWorld(world_vector);
+
+                    //.getWorldQuaternion
+                    //var world_vector = new THREE.Vector3(obj.object.position.x,obj.object.position.y,obj.object.position.z);  
+                    //
+
+                    //var vector = projector.projectVector(world_vector, camera);  
+                     world_vector.project(camera); 
+                    var halfWidth = window.innerWidth / 2;  
+                    var halfHeight = window.innerHeight / 2;  
+                      
+                    var result = {  
+                      
+                        x: Math.round(world_vector.x * halfWidth + halfWidth),  
+                        y: Math.round(-world_vector.y * halfHeight + halfHeight)  
+                      
+                    };
+                    console.log('2dxy ====',result.x,'  y===',result.y);
+                    
+                    obj.object.scale.set(1.2, 1.2, 1.2);
+                    //显示信息
+                    for(var i=0;i<eventMapGroup.children.length;i++){
+                        let event = eventMapGroup.children[i];
+                        if(event.uuid==obj.object.mapMapUuid){
+                            event.scale.set(1.2, 1.2, 1.2);
+                        }
+                    }
+                }
+                sprite.onLeave = function(obj){
+                    obj.object.scale.set(1, 1, 1);
+                    //显示信息
+                    for(var i=0;i<eventMapGroup.children.length;i++){
+                        let event = eventMapGroup.children[i];
+                        if(event.uuid==obj.object.mapMapUuid){
+                            event.scale.set(1, 1, 1);
+                        }
+                    }
+                }
+                
+                /*
+                //玻璃气泡详情
+                sprite.onClick = function(obj){
+                    console.log('OO***',obj);
+                    obj.object.material.emissive.setHex(0x999900);
+                }
+                */
+            }
+            //添加完后启用动画
+            for(let i=0;i<events.length;i++){
+                let event = events[i];
+                let z = event.attr.z;
+                new TWEEN.Tween( event.position).to( { z: z }, duration[2] ).easing( TWEEN.Easing.Linear.None).start();
+            }
+        }
+        /**
+         * 获得实体的信息
+         *
+         */
+        function getEntity(id){
+             for(var i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                if(obj.id == id){
+                    return obj;
+                }
+            }
+            return null;
+        }
+        /**
+         * 获得关系的信息
+         *
+         */
+        function getRelation(id){
+             for(var i=0;i<datas.relations.length;i++){
+                let obj = datas.relations[i];
+                if(obj.id == id){
+                    return obj;
+                }
+            }
+            return null;
+        }
+        /**
+         * 修改有position坐标的对象设置其
+         *
+         */
+        function setXY(obj){
+            obj.x = obj.position.split(' ')[0] -0;
+            obj.y = obj.position.split(' ')[1] -0;
+            var currentWebGLPos = LonLat2WebGL(obj.x,obj.y);
+            obj.x = currentWebGLPos.x;
+            obj.y = currentWebGLPos.y;
+            return obj;
+        }
+
+        
+        /**
+         * 绘制时间线
+         *
+         */
+        function addTimeLine(){
+            //地图宽度和高度
+            let girdW = (radiusX+0.5) * tileSize *2;
+            let girdH = (radiusY+0.5) * tileSize *2;//entityZValue-mapZValue;
+            //时间线的高度 暂时设定为地图高度的一部分
+            let lineHeight = TIMELINEH;//girdH*1/2;
+            
+            
+            
+            //0-12的横线 包含左、前、右
+            for(let i=0;i<=12;i++){
+                let lineLengthLR = girdH;
+                let z = mapZValue+ i*lineHeight/12;
+                /*右侧的时间线*/
+                let lineGeoR = new THREE.Geometry();
+                lineGeoR.vertices.push(new THREE.Vector3(girdW/2, -girdH/2, z));
+                lineGeoR.vertices.push(new THREE.Vector3(girdW/2, girdH/2, z));
+                /*左侧的时间线*/
+                let lineGeoL = new THREE.Geometry();
+                lineGeoL.vertices.push(new THREE.Vector3(-girdW/2, -girdH/2, z));
+                lineGeoL.vertices.push(new THREE.Vector3(-girdW/2, girdH/2, z));
+
+                /*前侧的时间线*/
+                let lineGeoF = new THREE.Geometry();
+                lineGeoF.vertices.push(new THREE.Vector3(-girdW/2, girdH/2, z));
+                lineGeoF.vertices.push(new THREE.Vector3(girdW/2, girdH/2, z));
+
+                if(i==0){
+                    
+                    let planeRGeometry = new THREE.PlaneGeometry(girdH,TIMELINEH/4);
+                    
+                    let planR = new THREE.Mesh(planeRGeometry,planeMaterial);
+                    
+                    planR.rotation.z=Math.PI/2;
+                    planR.rotation.y=-Math.PI/2;
+                    planR.position.x = girdW/2;
+                    planR.position.y = 0;
+                    planR.position.z = mapZValue+TIMELINEH/4/2;
+                    jdGroup1.add(planR);
+
+                    let planeLGeometry = new THREE.PlaneGeometry(girdH,TIMELINEH/4);
+                    let planeL = new THREE.Mesh(planeRGeometry,planeMaterial);
+                    
+                    planeL.rotation.z=Math.PI/2;
+                    planeL.rotation.y=Math.PI/2;
+                    planeL.position.x = -girdW/2;
+                    planeL.position.y = 0;
+                    planeL.position.z = mapZValue+TIMELINEH/4/2;
+                    jdGroup1.add(planeL);
+
+                    let planeFGeometry = new THREE.PlaneGeometry(girdW,TIMELINEH/4);
+                    let planeF = new THREE.Mesh(planeFGeometry,planeMaterial);
+                    
+                    planeF.rotation.x=Math.PI/2;
+                    planeF.position.x = 0;
+                    planeF.position.y = girdH/2;
+                    planeF.position.z = mapZValue+TIMELINEH/4/2;
+                    jdGroup1.add(planeF);
+                }
+
+                //添加线
+                let lineR = new THREE.Line(lineGeoR,timeMaterialLine);
+                let lineL = new THREE.Line(lineGeoL,timeMaterialLine);
+                let lineF = new THREE.Line(lineGeoF,timeMaterialLine);
+                timeLineGroup.add(lineR);
+                timeLineGroup.add(lineL);
+                timeLineGroup.add(lineF);
+                if(i>0){
+                    let fontZ = mapZValue+ i*lineHeight/12 - lineHeight/24;
+                    let fontX = -girdW/2 - 20;
+                    let fontY = -girdH/2;
+                    //添加字体
+                    let texture = new THREE.TextTexture({
+                      text: i+'',
+                      fontStyle: 'bold',
+                      fontSize: 90,
+                      fontFamily: '"Microsoft YaHei", SimSun, SimHei',
+                    });
+                    let materialText = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
+                    let spriteText = new THREE.Sprite(materialText);
+                    spriteText.scale.setX(texture.aspect).multiplyScalar(4);
+                    spriteText.scale.setZ(texture.aspect).multiplyScalar(7);
+                    spriteText.position.set(fontX, fontY,  fontZ);
+                    timeLineGroup.add(spriteText);
+                }
+            }
+            //绘制4根竖线
+            let lineZ = mapZValue + lineHeight;
+            //绘制左下竖线
+            let lineGeoLB = new THREE.Geometry();
+            lineGeoLB.vertices.push(new THREE.Vector3(-girdW/2, -girdH/2, mapZValue));
+            lineGeoLB.vertices.push(new THREE.Vector3(-girdW/2, -girdH/2, lineZ));
+            //绘制左上竖线
+            let lineGeoLF = new THREE.Geometry();
+            lineGeoLF.vertices.push(new THREE.Vector3(-girdW/2, girdH/2, mapZValue));
+            lineGeoLF.vertices.push(new THREE.Vector3(-girdW/2, girdH/2, lineZ));
+            //绘制右上竖线
+            let lineGeoRF = new THREE.Geometry();
+            lineGeoRF.vertices.push(new THREE.Vector3(girdW/2, girdH/2, mapZValue));
+            lineGeoRF.vertices.push(new THREE.Vector3(girdW/2, girdH/2, lineZ));
+            //绘制右下竖线
+            let lineGeoRB = new THREE.Geometry();
+            lineGeoRB.vertices.push(new THREE.Vector3(girdW/2, -girdH/2, mapZValue));
+            lineGeoRB.vertices.push(new THREE.Vector3(girdW/2, -girdH/2, lineZ));
+
+            let lineLB = new THREE.Line(lineGeoLB,timeMaterialLine);
+            let lineLF = new THREE.Line(lineGeoLF,timeMaterialLine);
+            let lineRF = new THREE.Line(lineGeoRF,timeMaterialLine);
+            let lineRB = new THREE.Line(lineGeoRB,timeMaterialLine);
+            timeLineGroup.add(lineLB);
+            timeLineGroup.add(lineLF);
+            timeLineGroup.add(lineRF);
+            timeLineGroup.add(lineRB);
+        }
+        /**
+         * 添加按钮及事件
+         * 
+         */
+        function addBtns(){
+            let tableBtn=new $$.Txt("事件时空",{
+                backgroundColor: "rgba(255,0,0,0.5)",
+                color:"#ffffff",
+                fontSize:40,
+                width:256,
+                height:72
+            });
+            bodyDom.add(tableBtn);
+            tableBtn.scale.x/=28;
+            tableBtn.scale.y/=28;
+            tableBtn.position.set(-4.5,-7.2,1);
+            let isOnmap = false;
+            tableBtn.element.onEnter = function(){
+                for(let i=0;i<events.length;i++){
+                    let event = events[i];
+                    let z;
+                    if(isOnmap){
+                        z = event.attr.z;
+                    }else{
+                        z  = mapZValue+5;
+                    }
+                    new TWEEN.Tween( event.position).to( { z: z }, duration[7] ).easing( TWEEN.Easing.Linear.None).start();
+                }
+                isOnmap = !isOnmap;
+            }
+            tableBtn.element.onLeave = function(){
+                
+            }
+            tableBtn.element.onClick=function(){
+                for(let i=0;i<events.length;i++){
+                    let event = events[i];
+                    let z;
+                    if(isOnmap){
+                        z = event.attr.z;
+                    }else{
+                        z  = mapZValue+5;
+                    }
+                    new TWEEN.Tween( event.position).to( { z: z }, duration[7] ).easing( TWEEN.Easing.Linear.None).start();
+                }
+                isOnmap = !isOnmap;
+            }
+
+            let cameraBtn=new $$.Txt("视角切换",{
+                backgroundColor: "rgba(255,0,0,0.5)",
+                color:"#ffffff",
+                fontSize:40,
+                width:256,
+                height:72
+            });
+            bodyDom.add(cameraBtn);
+            cameraBtn.scale.x/=28;
+            cameraBtn.scale.y/=28;
+            cameraBtn.position.set(0,-7.2,1);
+            let isOnCameraMap = false;
+            
+            cameraBtn.element.onEnter=function(){//onClick因为和control冲突
+                for(let i=0;i<events.length;i++){
+                    let event = events[i];
+                    let z;
+                    let x;
+                    if(isOnCameraMap){
+                        z = event.attr.z;
+                        x = -girdH;
+                        
+                    }else{
+                        x = 0;
+                    }
+                    //镜头移动
+                    console.log('xxxxxxxxxxxxxx',x);
+                    camera.lookAt(new THREE.Vector3(x,0,0));
+                    //cameraControls.target.set(x,0,0);
+                    new TWEEN.Tween( camera.position).to( { x: x }, duration[7] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){
+                        
+                    }).start();
+                }
+                isOnCameraMap = !isOnCameraMap;
+            }
+        }
+        /**
+         * 首次增加的实体
+         *
+         */
+        function firstAddGraph(){
+            let enrelObj = getRelationAndEntitiesByTime(FIRSTSELECTID,null);
+            let enIds = enrelObj.enIds;
+            let relIds = enrelObj.relIds;
+            curEnIds = enIds.slice(0);//数组copy
+            curRelIds = relIds.slice(0);
+            for(let i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                if(enIds.indexOf(obj.id)>-1){
+                    let node = new Node(obj.id);
+                    node.data = obj;
+                    graph.addNode(node);
+                    drawNode(node);
+                }
+            }
+
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                if(relIds.indexOf(r.id)>-1){
+                    let ids = r.entities;
+                    //let objStart =  getEntity(ids[0]);
+                    //let objEnd = getEntity(ids[1]);
+                    let node = graph.getNode(ids[0]);
+                    let target_node = graph.getNode(ids[1]);
+
+                    if(graph.addEdge(node, target_node,r)) {
+                        drawEdge(node, target_node,r);
+                    }
+                }
+            }
+            graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+            graph.layout.init();
+        }
+        /*
+        */
+        function addAllGraph(){
+
+            for(let i=0;i<datas.entities.length;i++){
+                let obj = datas.entities[i];
+                let node = new Node(obj.id);
+                node.data = obj;
+                graph.addNode(node);
+                drawNode(node);
+            }
+
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                let ids = r.entities;
+                //let objStart =  getEntity(ids[0]);
+                //let objEnd = getEntity(ids[1]);
+                let node = graph.getNode(ids[0]);
+                let target_node = graph.getNode(ids[1]);
+
+                if(graph.addEdge(node, target_node,r)) {
+                    drawEdge(node, target_node,r);
+                }
+            }
+            graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+            graph.layout.init();
+        }
+        
+        /**
+         *  Creates a graph with random nodes and edges.
+         *  Number of nodes and edges can be set with
+         *  numNodes and numEdges.
+         
+        function createGraph() {
+            var node = new Node(0);
+            node.data.title = "This is node " + node.id;
+            graph.addNode(node);
+            drawNode(node);
+
+            nodes = [];
+            nodes.push(node);
+
+            var steps = 1;
+            while(nodes.length !== 0 && steps < that.numNodes) {
+              node = nodes.shift();
+
+              var numEdges = randomFromTo(1, that.numEdges);
+              for(var i=1; i <= numEdges; i++) {
+                var target_node = new Node(i*steps);
+                if(graph.addNode(target_node)) {
+                  target_node.data.title = "This is node " + target_node.id;
+                  target_node.id = i;
+                  drawNode(target_node);
+                  nodes.push(target_node);
+                  if(graph.addEdge(node, target_node)) {
+                    drawEdge(node, target_node);
+                  }
+                }
+              }
+              steps++;
+            }
+
+            
+            graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+            graph.layout.init();
+        }
+        */
+        function drawNode(node){
+
+            let area = 500;
+            let x = Math.floor(Math.random() * (area + area + 1) - area);
+            let y = Math.floor(Math.random() * (area + area + 1) - area);
+            let z = 0;
+            if(that.layout === "3d") {
+              z = Math.floor(Math.random() * (area + area + 1) - area);
+            }
+            let textObj = new THREE.Object3D();
+            textObj.position.set(x,y,z);
+            node.data.draw_object = textObj;
+            //let imagetype = randomFromTo(1,10);
+            let img = personCImg;
+            if(node.data.is_prevent=='是'){
+                img = personCRedImg;
+            }
+            let param = {
+                img:img,//personCImg,//必填，图片url
+                txt:node.data.name,//NAMES[randomFromTo(1,NAMES.length)],//必填，文字内容
+                layout:'tb',//可选，默认tb， 图上字下tb ，图左字右lr ，图右字左rl，图下字上 bt   top left right bottom
+                distanceImgTxt:40,//可选 文字和图片的距离 横向或竖向
+                imgParam:{
+                    width:220,//可不传，图片宽度，默认使用图片的高度
+                    height:220,//可不传，图片高度，默认使用图片的宽度
+                    //scale:1//可不传，图片等比例缩放
+                },
+                txtParam:{
+                    fillStyle:'#00ffff',//可选，文字颜色，默认颜色红色，或者渐变色gradient类型
+                    //font:'Bold 100px Arial',//可选，字体粗细 字体大小 字体类型
+                    //font-style||font-variant||font-weight||font-size||line-height||font-family
+                    fontStyle:'bold',//
+                    fontVariant:null,
+                    fontWeight:'bold',//normal
+                    fontSize:'120px',
+                    //lineHeight:
+                    fontFamily:'Microsoft YaHei',
+                    
+                    lineWidth: 6,//可选，字体粗度
+                    maxWidth:1000,//可选，最大宽度
+                }
+                ,node:node
+            };
+
+            imgTxtDraw(param,addPersonSpriteLeft,x,y,z);
+        }
+        function drawEdge(source, target,relation) {
+          
+
+          var tmp_geo = new THREE.Geometry();
+          tmp_geo.vertices.push(source.data.draw_object.position);
+          tmp_geo.vertices.push(target.data.draw_object.position);
+          //根据关系类型添加
+          if(relation){
+            //
+          }
+          line = new THREE.LineSegments( tmp_geo, materialEdge );
+          line.scale.x = line.scale.y = line.scale.z = 1;
+          line.originalScale = 1;
+
+          // NOTE: Deactivated frustumCulled, otherwise it will not draw all lines (even though
+          // it looks like the lines are in the view frustum).
+          line.frustumCulled = false;
+          if(relation){
+            line.dataID =relation.id;
+          }
+          geometries.push(tmp_geo);
+
+          lineGroup.add( line );
+        }
+        
+        /**
+         * 添加实体
+         *
+         */
+        function addPersonSpriteLeft(x,y,z,texture,totalWidth,totalHeight,node){
+            //console.log('canvas.width',canvas.width);
+            //使用Sprite显示文字
+            let material = new THREE.SpriteMaterial({map:texture});
+            let textObj = new THREE.Sprite(material);
+            let xScale = 0.5;
+            //保证等比例缩放
+            let yScale = xScale *totalHeight /totalWidth;
+            //let zScale = 0.75 * 
+            textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.004*totalWidth);
+            textObj.position.set(x,y,z);
+            //textObj.translateX(-100);
+            
+            //entities.push(textObj);
+            textObj.id = node.id;
+            textObj.dataID = node.id;
+            textObj.yScale = yScale;
+            textObj.totalWidth = totalWidth;
+            node.data.draw_object = textObj;
+            textObj.selected = false;
+            node.position = textObj.position;
+            nodeGroup.add(node.data.draw_object);
+
+            //默认选中
+            if(textObj.dataID==FIRSTSELECTID  && isfirstSelect){
+                textObj.scale.set(xScale * 100, yScale * 100, 20 * 100).multiplyScalar(0.008*totalWidth);
+                selectObj = {object:textObj};
+                isfirstSelect = false;
+            }
+
+            textObj.onEnter = function(obj){
+                if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
+                    obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.006*obj.object.totalWidth);
+                }
+                
+            }
+            textObj.onLeave = function(obj){
+                if(!(selectObj && obj.object.uuid == selectObj.object.uuid)){
+                    obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.004*obj.object.totalWidth);
+                }
+            }
+            textObj.onClick = function(obj){
+                /* nodes无数据
+                for(let i=0;i<nodes.length;i++){
+                    let node = nodes[i];
+                    node.data.draw_object.selected = false;
+                }
+                */
+                if(selectObj){
+                    selectObj.object.scale.set(xScale * 100, selectObj.object.yScale * 100, 20 * 100).multiplyScalar(0.004*selectObj.object.totalWidth);
+                }
+                obj.object.scale.set(xScale * 100, obj.object.yScale * 100, 20 * 100).multiplyScalar(0.008*obj.object.totalWidth);
+                selectObj = obj;
+                
+            }
+        }
+        
+        /**
+         * 地图2D状态
+         *
+         */
+        function mapState2D(){
+            //rightGroup.rotation.x = 0;
+            new TWEEN.Tween( rightGroup.rotation).to( { x: 0 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                    //隐藏时间轴
+                    timeLineGroup.visible = false;
+                    //隐藏浮动的事件
+                    eventGroup.visible = false;
+                    //地图正对 放大
+                    //SCALE.scale = 1.2;
+                    new TWEEN.Tween( SCALE).to( { scale:1.5 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                        
+                    }).start();
+            }).start();
+        }
+        /**
+         * 切换为地图3D状态
+         *
+         */
+        function mapState3D(){
+            //rightGroup.rotation.x = -Math.PI/3;
+            new TWEEN.Tween( rightGroup.rotation).to( { x: -Math.PI/3 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                    //显示时间轴
+                    timeLineGroup.visible = true;
+                    //显示浮动的事件
+                    eventGroup.visible = true;
+                    //清空所有的轨迹
+                    for(var i=eventLineGroup.children.length-1;i>-1;i--){
+                        let obj = eventLineGroup.children[i];
+                        eventLineGroup.remove(obj);
+                    }
+                    //地图倾斜 缩小
+                    //SCALE.scale = 1;
+                    new TWEEN.Tween( SCALE).to( { scale:1 }, duration[3] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){ 
+                        
+                    }).start();
+            }).start();
+        }
+        /**
+         * 判断时间是否有交集
+         *
+         */
+        function isInTime(t1s,t1e,t2s,t2e){
+            //两个时间段只要有相交
+            if((t1s<=t2e && t1s>=t2s) || (t1e<=t2e && t1e>=t2s) || (t2s<=t1e && t2s>=t1s) || (t2e<=t1e && t2e>=t1s)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        /**
+         * 获得关系和实体及二阶关系，一阶关系根据时间，二阶关系不考虑时间
+         * time 2016.10-12 不传则全部
+         */
+        function getRelationAndEntitiesByTime  (entityId,time){
+            //获得一阶关系
+            //根据一阶关系取得相关实体
+            //根据相关实体取得全部时间的二阶关系
+            let timeStart,timeEnd;
+            if(time){
+                let year = time.substring(0,4);
+                let startMonth = time.substring(time.indexOf('.')+1,time.indexOf('-')) -0; 
+                timeStart = (year + (startMonth<10? '0'+startMonth:startMonth) +'00') -0;
+                timeEnd = (year + ((startMonth+2)<10? '0'+(startMonth+2):(startMonth+2))+'00'-0);
+            }
+            let firstRelationIds = [];
+            let firstEntityIds = [entityId];
+            let secondRelationIds = [];
+            let secondEntityIds = [];
+            //一阶
+            for(let i=0;i<datas.relations.length;i++){
+                let r = datas.relations[i];
+                let ids = r.entities;
+                if(ids[0]==entityId || ids[1] == entityId){
+                    if(isInTime((r.datef-0),(r.datet-0),timeStart,timeEnd) || !time){
+                        firstRelationIds.push(r.id);//一阶关系
+                        if(ids[0]==entityId){
+                            firstEntityIds.push(ids[1]);//一阶相关实体
+                        }else{
+                            firstEntityIds.push(ids[0]);
+                        }
+                    }
+                }
+            }
+            //二阶
+            for(let i=0;i<firstEntityIds.length;i++){
+                let enId = firstEntityIds[i];
+                for(let j=0;j<datas.relations.length;j++){
+                    let r = datas.relations[j];
+                    let ids = r.entities; 
+                    if(ids.indexOf(entityId)<0 && (ids[0]==enId || ids[1] == enId)){
+                        if(secondRelationIds.indexOf(r.id)<0){
+                            secondRelationIds.push(r.id);
+                        }
+                        if(ids[0]==enId){
+                            secondEntityIds.push(ids[1]);
+                        }else{
+                            secondEntityIds.push(ids[0]);
+                        }
+                    }
+                }
+            } 
+            return {enIds:firstEntityIds.concat(secondEntityIds).unique(),relIds:firstRelationIds.concat(secondRelationIds).unique()};
+        }
+        /**
+         * 对比获得需要增加的实体和需要删除的实体，需要删除的关系和需要增加的关系
+         *
+         */
+        function getAddDel(currentIds,enIds,relIds,oldEnIds,oldRelIds){
+            let addEnIds=[],delEnIds=[],addRelIds=[],delRelIds=[];
+            //实体需要删除的
+            for(let i=0;i<oldEnIds.length;i++){
+                let enId = oldEnIds[i];
+                if(enIds.indexOf(enId)<0){
+                    delEnIds.push(enId);
+                }
+            }
+            //实体需要增加的
+            for(let i=0;i<enIds.length;i++){
+                let enId = enIds[i];
+                if(oldEnIds.indexOf(enId)<0){
+                    addEnIds.push(enId);
+                }
+            }
+            //关系需要删除的,在graph删除实体时就会返回
+            for(let i=0;i<oldRelIds.length;i++){
+                let relId = oldRelIds[i];
+                if(relIds.indexOf(relId)<0){
+                    delRelIds.push(relId);
+                }
+            }
+            //关系需要增加的，跟现有关系进行对比
+            for(let i=0;i<relIds.length;i++){
+                let relId = relIds[i];
+                if(oldRelIds.indexOf(relId)<0){
+                    addRelIds.push(relId);
+                }
+            }
+            return {addEnIds,delEnIds,addRelIds,delRelIds};
+        }
+        function changeEntityAndRels(){
+            let objID = selectObj.object.dataID;
+            //获得当前需要显示的实体和关系
+            let enrelObj = getRelationAndEntitiesByTime(objID,currentTime);
+            let enIds = enrelObj.enIds;
+            let relIds = enrelObj.relIds;
+            let {addEnIds,delEnIds,addRelIds,delRelIds} = getAddDel(objID,enIds,relIds,curEnIds,curRelIds);
+            for(let i=0;i<delEnIds.length;i++){
+                let enId = delEnIds[i];
+                for(var j=nodeGroup.children.length-1;j>-1;j--){
+                    let obj = nodeGroup.children[j];
+                    if(obj.dataID==enId){
+                        nodeGroup.remove(obj);
+                        
+                        break;
+                    }
+                }
+                //从图上删除，自动会删除相关的图上的关系，但还是需要对应删除3D中的关系
+                graph.removeNode({id:enId});
+            }
+            //发现，有这种只删除关系而不删除实体的情况，每个删除的关系都要取出graph对应的node，去除nodesTo对应的node
+            for(let i=0;i<delRelIds.length;i++){
+                let relId = delRelIds[i];
+                let relObj;
+                //取得关系属性
+                for(let m=0;m<datas.relations.length;m++){
+                    let rel = datas.relations[m];
+                    if(rel.id === relId){
+                        relObj = rel;
+                    }
+                }
+                //得到关系的开始node
+                let nodeSource = graph.getNode(relObj.entities[0]);//取出source的node
+                if(nodeSource){
+                  for(let j=0;j<nodeSource.nodesTo.length;j++){
+                    let onode = nodeSource.nodesTo[j];
+                    if(onode.id===relObj.entities[1]){
+                      nodeSource.nodesTo.splice(j,1);
+                      break;
+                    }
+                  }
+                }
+                for(let j=lineGroup.children.length-1;i>-1;j--){
+                    let obj = lineGroup.children[j];
+                    console.log('objobjobj===',obj);
+                    if(typeof(obj)=='undefined'){
+                        console.log(lineGroup);
+                        console.log(delRelIds);
+                        
+
+                    }
+
+                    //异常的对象，现在还不确定问题在哪
+                    if(typeof(obj)!='undefined' && typeof(obj.dataID)!= 'undefined' && obj.dataID==relId){
+                        lineGroup.remove(obj);
+                        //
+                        break;
+                    }
+                }
+            }
+            for(let i=0;i<addEnIds.length;i++){
+                let enId = addEnIds[i];
+                //添加实体
+                let obj = getEntity(enId);
+                let node = new Node(obj.id);
+                node.data = obj;
+                graph.addNode(node);
+                drawNode(node);
+            }
+            for(let i=0;i<addRelIds.length;i++){
+                let relId = addRelIds[i];
+                let obj = getRelation(relId);
+                let ids = obj.entities;
+                let nodestart = graph.getNode(ids[0]);
+                let target_node = graph.getNode(ids[1]);
+
+                if(graph.addEdge(nodestart, target_node,obj)) {
+                    drawEdge(nodestart, target_node,obj);
+                }
+            }
+            if(addEnIds.length>0 || delEnIds.length>0 || addRelIds.length>0 || delRelIds.length>0){
+                //当前实体
+                curEnIds = enIds;
+                curRelIds = relIds;
+                //重新布局位置
+                graph.layout = new Layout.ForceDirected(graph, that.graphLayout);
+                graph.layout.init();
+            }
+        }
+        /**
+         * 获得事件数组
+         * time 2016.10-12 不传则全部
+         */
+        function getEventsByObjIDTime  (entityId,time){
+            let events = [];
+            if(time){
+                let year = time.substring(0,4);
+                let startMonth = time.substring(time.indexOf('.')+1,time.indexOf('-')) -0; 
+                let firstMonth = year + (startMonth<10? '0'+startMonth:startMonth);
+                let centerMonth = year + ((startMonth+1)<10? '0'+(startMonth+1):(startMonth+1));
+                let endMonth = year + ((startMonth+2)<10? '0'+(startMonth+2):(startMonth+2));
+                time = [firstMonth,centerMonth,endMonth];
+            }
+            for(let i=0;i<datas.events.length;i++){
+                let event = datas.events[i];
+                let entities = event.entities;
+                let date = event.date.substring(0,6);
+                
+                //判断包含的实体的事件
+                for(let m=0;m<entities.length;m++){
+                    if(entities[m] === entityId){
+                        if(time){
+                            if(time.indexOf(date)>-1){
+                                events.push(event);
+                            }
+                        }else{
+                            events.push(event);
+                        }
+                        break;
+                    }
+                }
+            }
+            return events;
+        }
+        /**
+         * 自动播放 倒序执行循环时间数组 并滚动滚动条 $('.basetime')
+         *
+         */
+        function autoPlay(){
+            //获得数组
+            let arr = [];
+            $('.basetime').each(function(){
+                arr.push(this);
+            });
+            //反转
+            arr.reverse();
+            let autoPlayIndex = 0;
+
+
+            autoInterval = setInterval(function(){
+                if(autoPlayIndex==arr.length){
+                    clearAutoPlay();
+                    return;
+                }
+                $(arr[autoPlayIndex]).click();
+                //滚动到对应位置
+                $('#time_ul').animate({
+                    scrollTop: $(arr[autoPlayIndex]).offset().top - $('#time_ul').offset().top + $('#time_ul').scrollTop()
+                  }, 1000);
+                autoPlayIndex++;
+            }, duration[3]);
+            
+        }
+        function clearAutoPlay(){
+            clearInterval(autoInterval);
+            autoInterval = null;
+            //清空时间和设置时间，选择全部时间
+            $('.basetime').removeClass("btnbg");
+            currentTime = null;
+            //自动播放按钮样式也要去除
+            setBtnState(false,false,false);
+            BUTTON_STATE = null;
+        }
+        /**
+         * 判断实体和按钮选中后变量的变更
+         * 按钮有选中和取消选中状态，取消选中则恢复状态删除内容
+         * 实体选中变动，会根据按钮状态来变更，没有按钮选中的话
+         */
+        function selectListen(){
+            /*
+            //被选中的对象
+            let selectObj;
+            let selectObj_uuid_save;//选中记忆
+
+            //三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+            let BUTTON_STATE=null;
+            let BUTTON_STATE_SAVE=null;
+            */
+            //对象状态：1对象第一次选中 2对象切换 3选中状态没有改变 4对象没有被选中
+            let objSelectType = 4;
+            //按钮状态：1按钮被选中 2按钮切换 3按钮被还原 4按钮没改变
+            let btnSelectType = 4;
+            //事件状态：1按钮被选中 2按钮切换 3按钮被还原 4按钮没改变
+            let timeSelectType =4;
+            //只管整理时间变动的数据
+            //首次赋值
+            if(currentTime && !currentTime_save){
+                currentTime_save = currentTime;
+                timeSelectType =1;
+            }else if(!currentTime && currentTime_save){
+                timeSelectType =3;//还原对应的状态
+            }else if(currentTime && currentTime_save){
+                if (currentTime == currentTime_save) {
+                    timeSelectType = 4;//按钮没有按
+                }else {
+                    timeSelectType = 2;//按钮切换,切换后要赋值给BUTTON_STATE_SAVE
+                }
+            }
+
+
+            //首次赋值
+            if(selectObj && !selectObj_uuid_save){
+                selectObj_uuid_save = selectObj.object.uuid;
+                objSelectType = 1;
+            }else if(selectObj && selectObj_uuid_save){
+                let uuid = selectObj.object.uuid;
+                if(uuid == selectObj_uuid_save){
+                    objSelectType = 3;
+                }else{
+                    objSelectType = 2;//对象切换了，针对不同的按钮状态处理
+                }
+            }else if(!selectObj && !selectObj_uuid_save){
+                objSelectType = 4;
+            }
+            //按钮被选中
+            if(BUTTON_STATE && !BUTTON_STATE_SAVE){
+                BUTTON_STATE_SAVE = BUTTON_STATE;
+                btnSelectType =1;
+            }else if(!BUTTON_STATE && BUTTON_STATE_SAVE){
+                btnSelectType =3;//还原BUTTON_STATE_SAVE对应的状态
+            }else if(BUTTON_STATE && BUTTON_STATE_SAVE){
+                if (BUTTON_STATE == BUTTON_STATE_SAVE) {
+                    btnSelectType = 4;//按钮没有按
+                }else {
+                    btnSelectType = 2;//按钮切换,切换后要赋值给BUTTON_STATE_SAVE
+                }
+            }
+            //console.log('objSelectType',objSelectType,'btnSelectType',btnSelectType,'BUTTON_STATE',BUTTON_STATE,'BUTTON_STATE_SAVE',BUTTON_STATE_SAVE,'timeSelectType',timeSelectType);
+            //自动播放执行 
+            if(BUTTON_STATE==1){
+                //没有选中实体播放
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //按钮被第一次选中 或 切换至自动播放
+                if(btnSelectType==1 || btnSelectType==2 ){
+                    //从最底层开始自动播放
+                    autoPlay();
+                }
+            }
+            //自动播放还原
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==1) || (btnSelectType==2 && BUTTON_STATE_SAVE==1) ){
+                clearAutoPlay();
+                timeSelectType=3;//执行还原变化
+            }
+            //时间选择改变季度 1 按下按钮 2 切换 3 关闭
+            let isUpdatejdGroup = false;
+            if(timeSelectType==1){
+                jdGroup1.visible = true;
+                isUpdatejdGroup = true;
+            }else if(timeSelectType==2){
+                jdGroup1.visible = true;
+                isUpdatejdGroup = true;
+            }else if(timeSelectType==3){
+                jdGroup1.visible = false;
+            }
+            if(isUpdatejdGroup && currentTime_save && currentTime ){
+                let jdfrom = currentTime_save.substring(5);
+                let jdto = currentTime.substring(5);
+                let z = {
+                    '1-3':mapZValue + TIMELINEH/8,
+                    '4-6':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 1,
+                    '7-9':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 2,
+                    '10-12':mapZValue + TIMELINEH/8 + TIMELINEH/4 * 3,
+                }
+                let zfrom = z[jdfrom];
+                let zto = z[jdto];
+                jdGroup1.traverse(function(obj){
+                    if(obj instanceof THREE.Mesh){
+                        //timeSelectType 只等于2时比较合适做变化  1不合适做
+                        if(timeSelectType==2){
+                             new TWEEN.Tween( obj.position).to( { z: zto }, duration[2] ).easing( TWEEN.Easing.Exponential.InOut ).onComplete(function(){
+                            }).start();
+                        }else if(timeSelectType==1){
+                            //1状态下动画后才显示
+                            
+                            obj.position.z = zto;
+                        }
+                    }
+                }
+                );
+                
+            }
+            //取得需要的事件 当时间改变或实体选中=>事件重绘  实体关系变更
+            if(timeSelectType!=4 || objSelectType==1  || objSelectType==2  ){
+                //先清除事件对象
+                for(var i=eventGroup.children.length-1;i>-1;i--){
+                    let obj = eventGroup.children[i];
+                    eventGroup.remove(obj);
+                }
+                for(var i=eventMapGroup.children.length-1;i>-1;i--){
+                    let obj = eventMapGroup.children[i];
+                    eventMapGroup.remove(obj);
+                }
+                //获得新的事件 ,currentTime null则全部
+                if(selectObj){
+                    let objID = selectObj.object.dataID;
+                    timeEvents = getEventsByObjIDTime(objID,currentTime);
+                }
+                //事件需要重绘切换
+                addEvents(timeEvents);
+
+                /**********关系动态改变*********/
+                changeEntityAndRels();
+            }
+
+            /****事件轨迹执行*****/
+            if(BUTTON_STATE==2){
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //实体被第一次选中 或 实体已经被选中而按钮第一次被选中或切换
+                if(objSelectType==1 || (objSelectType==3 && btnSelectType==1 || btnSelectType==2) ){
+                    //第一次选中,执行状态变更和轨迹绘制
+                    mapState2D();
+                    eventline(timeEvents);
+                }
+                if(objSelectType==2 || timeSelectType!=4){
+                    //实体进行切换，只是画轨迹
+                    eventline(timeEvents);
+                }
+            }
+            /*******事件轨迹还原 按钮被还原或切换*****/
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==2) || (btnSelectType==2 && BUTTON_STATE_SAVE==2) ){
+                mapState3D();
+                //清除轨迹
+            }
+            //团伙分析执行
+            if(BUTTON_STATE==3){
+                if(objSelectType==4){
+                    //alert('请选中实体执行轨迹！');
+                    return;
+                }
+                //第一次被选中或切换
+                if(btnSelectType==1 || btnSelectType==2 ){
+                    //所有的线隐藏
+                    //获得当前的团伙成员
+                    //隐藏非团伙成员
+                    //停止旋转
+                    /*
+                    lineGroup.visible = false;
+                    //
+
+                    for(let i=0;i<nodeGroup.children.length;i++){
+                        let node = nodeGroup.children[i];
+                        if(datas.guns.indexOf(node.dataID)<0){
+                            node.visible = false;
+                        }
+                    }
+                    */
+                    let j=0;
+                    timer=setInterval(function(){
+                        for(let i=0;i<nodeGroup.children.length;i++){
+                            let node = nodeGroup.children[i];
+                            if(datas.guns.indexOf(node.dataID)>-1){
+                                node.visible=j%2?false:true;
+                            }
+                        }
+                        j++;
+                        j>40&&clearInterval(timer);
+                    },80);
+                }
+            }
+            //团伙分析还原
+            if((btnSelectType==3 && BUTTON_STATE_SAVE==3) || (btnSelectType==2 && BUTTON_STATE_SAVE==3) ){
+
+                //所有的线显示
+                //获得当前的团伙成员
+                //显示非团伙成员
+                //开始旋转
+                /*
+                lineGroup.visible = true;
+                for(let i=0;i<nodeGroup.children.length;i++){
+                    let node = nodeGroup.children[i];
+                    if(datas.guns.indexOf(node.dataID)<0){
+                        node.visible = true;
+                    }
+                }
+                */
+                if(typeof(timer)!= 'undefined' && timer){
+                    clearInterval(timer);
+                }
+
+            }
+            
+
+
+            //最后时间赋值
+            currentTime_save = currentTime;
+            //最后选中实体uuid赋值
+            if(objSelectType==2){
+                selectObj_uuid_save = selectObj.object.uuid;
+            }
+            //最后按钮赋值 或 按钮被取消
+            //if(btnSelectType==2 || btnSelectType==3){
+                BUTTON_STATE_SAVE = BUTTON_STATE;
+            //}
+        }
+        //根据resolution设定的渲染
+        let gradLength = 15;//暂定为像素
+        let areaPolygons = [
+            {id:'area1',color:0x00ffff,gradientColor:0xff0000,xy:[[122.118849,30.03499],[122.124598,30.042494],[122.142421,30.050997],[122.165992,30.055498],[122.175191,30.058749],[122.187264,30.044494],[122.209111,30.031488],[122.219747,30.019231],[122.210836,30.007722],[122.211698,29.996463],[122.209398,29.990457],[122.175478,29.999715],[122.158231,30.008473],[122.150182,30.021482],[122.142421,30.025485],[122.125748,30.026735],[122.118849,30.03499]]}
+            //,{id:'area2',color:0x00ffff,gradientColor:0x00ff00,xy:[[122.165992,30.055748],[122.180365,30.083003],[122.177778,30.092003],[122.185827,30.093503],[122.213423,30.079503],[122.227796,30.077003],[122.233545,30.072252],[122.232395,30.066001],[122.232108,30.038492],[122.226358,30.030988],[122.215148,30.023733],[122.209686,30.031238],[122.195313,30.037991],[122.18209,30.051997],[122.165992,30.055748]]}
+            //,{id:'area3',color:0x00ffff,gradientColor:0x00ff00,xy:[[122.168346,29.938027],[122.259757,29.935523],[122.268956,29.890444],[122.164896,29.894452],[122.168346,29.938027]]}
+            //,'area3':{color:0xffffff,gradientColor:0x0000ff}
+        ];
+        function addMapArea(){
+            let effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+            effectCopy.renderToScreen = true;
+            let clearPass = new THREE.ClearPass();
+            let clearMaskPass = new THREE.ClearMaskPass();
+            let renderPass = [];
+            let areaMask = [];
+            let effectColorify = [];
+            let newScene = [];
+            let xs = [];
+            let ys = [];
+            for(let i=0;i<areaPolygons.length;i++){
+                let area = areaPolygons[i];
+
+                let shape= new THREE.Shape();
+                for(let m=0;m<area.xy.length;m++){
+                    let webMercator = LonLat2WebGL(area.xy[m][0], area.xy[m][1]);
+                    let x = webMercator.x;
+                    let y = webMercator.y;
+                    
+                    
+                    xs[m] = x;
+                    ys[m] = y;
+                    if(m==0){
+                        shape.moveTo(x,y);
+                    }else{
+                        shape.lineTo(x,y);
+                    }
+                }
+                let shapeGeometry = new THREE.ShapeGeometry( shape );
+                let shapeMesh = new THREE.Mesh( shapeGeometry, new THREE.MeshBasicMaterial( { color: area.color } ) ) ;
+                console.log('xyz:::::::',shapeMesh.position.x,shapeMesh.position.y,shapeMesh.position.z);
+                newScene[i] = new THREE.Scene();
+                let areaGroup = new THREE.Group();
+                areaGroup.rotation.x = -Math.PI/3;
+                areaGroup.position.set(180,150,0);
+                areaGroup.add(shapeMesh);
+                newScene[i].add(areaGroup);
+                shapeMesh.position.z = mapZValue +1;
+                //rightGroup.add(shapeMesh);
+                //renderPass[i] = new THREE.RenderPass(newScene[i],camera);
+                //renderPass[i].clear =false;
+
+                areaMask[i] = new THREE.MaskPass(newScene[i], camera);
+
+                
+
+                //effectColorify[i] = new THREE.ShaderPass(THREE.ColorifyShader);
+                //effectColorify[i].uniforms["color"].value.setRGB(1, 1, 1);
+
+                //面内部渐变
+                
+                //转换为屏幕坐标
+                for(let m=0;m<xs.length;m++){
+                    let vector3 = new THREE.Vector3(xs[m],ys[m],mapZValue +1);
+                    let sceenxy = position2SceenPosition(vector3,areaGroup,camera);
+                    xs[m] = sceenxy.x;
+                    ys[m] = sceenxy.y;
+                }
+                console.log(xs);
+                console.log(ys);
+                effectColorify[i] = new THREE.ShaderPass( THREE.AreaInnerGlowShader  );//THREE.AreaInnerGlowShader
+                effectColorify[i].uniforms[ "xPoints" ].value = xs;
+                effectColorify[i].uniforms[ "yPoints" ].value = ys;
+                effectColorify[i].uniforms[ "resolution" ].value = {x:window.innerWidth,y:window.innerHeight};
+                effectColorify[i].uniforms[ "inneLength" ].value = 190;//0.3针对的是传递每个点position 和 面的3d坐标
+                effectColorify[i].uniforms[ "brightness" ].value = 4.0;
+                effectColorify[i].uniforms[ "gradient" ].value = 0.5;
+                effectColorify[i].uniforms[ "gradientColor" ].value = new THREE.Color( 0xffff00 );
+                //effectColorify[i].renderToScreen = true;//customer的不能使用这个东西
+                
+                
+                
+            }
+            composer.addPass( clearPass );
+
+            composer.addPass( renderModel );
+            for(let i=0;i<areaPolygons.length;i++){
+                composer.addPass(areaMask[i]);//对此区域的掩膜通道
+                //composer.addPass(renderPass[i]);
+                composer.addPass(effectColorify[i]);//执行颜色着色器
+                composer.addPass(clearMaskPass); //清理掩膜通道
+            }
+            
+            
+
+            composer.addPass(effectCopy);
+            /*
+
+            var x = 200, y = 0;
+
+            var heartShape = new THREE.Shape();
+
+            heartShape.moveTo( x + 5, y + 5 );
+            heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );
+            heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );
+            heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );
+            heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );
+            heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
+            heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
+
+            var geometry = new THREE.ShapeGeometry( heartShape );
+            var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            var mesh = new THREE.Mesh( geometry, material ) ;
+            rightGroup.add(mesh);
+            */
+        }
+        /**
+         * 3D坐标转屏幕坐标
+         * vector 点 x y z
+         * Group 所属的顶级实体
+         * camera 相机
+         */
+        function position2SceenPosition(vector,group,camera){
+            debugger
+            let world_vector = vector.clone();
+            rightGroup.localToWorld(world_vector);
+            //var world_vector = new THREE.Vector3(obj.object.position.x,obj.object.position.y,obj.object.position.z);  
+            //var vector = projector.projectVector(world_vector, camera);  
+            world_vector.project(camera); 
+            var halfWidth = window.innerWidth / 2;  
+            var halfHeight = window.innerHeight / 2;  
+            var result = { 
+                x: Math.round(world_vector.x * halfWidth + halfWidth),  
+                y: Math.round(-world_vector.y * halfHeight + halfHeight)  
+            };
+            return result;
+        }
+        function main() {
+            let position = {coords:{longitude:centerLng,latitude:centerLat}};
+            var lng = position.coords.longitude;
+            var lat = position.coords.latitude;
+            console.log("current position in world", lat, lng);
+            centerLat = lat;
+            centerLng = lng;
+
+            var webMercator = LonLat2WebMercator(lng, lat);
+            var tilePos = WebMercator2Tileimage(webMercator.x,webMercator.y);
+                
+            //以centerLng所在点tile中心点为中心，加载tile
+            loadMap(tilePos.tileinfo.x, tilePos.tileinfo.y);
+            //loadMap2(tilePos.tileinfo.x, tilePos.tileinfo.y);
+            
+            
+            addTimeLine();
+            
+            //addBtns();
+            personImgObj.onload = function(){
+                //addAllGraph();
+                firstAddGraph();
+                addMapArea();
+                setTimeout(
+                    function(){
+                        /*
+                        //清空所有的轨迹
+                        for(var i=0;i<leftGroup.children.length;i++){
+                            let obj = leftGroup.children[i];
+                            leftGroup.remove(obj);
+                        }
+                        graph = new Graph();//{limit: 20}
+                        */
+                        /*
+                        setTimeout(
+                            function(){
+                                    //添加实体和关系
+                                    let obj = { 
+                                        id:'e12',
+                                        type:'人',
+                                        name:'王大麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let node = new Node(obj.id);
+                                    node.data = obj;
+                                    graph.addNode(node);
+                                    drawNode(node);
+                                
+
+                                    let r = {
+                                        id:'r12',
+                                        type:'关系',
+                                        name:'同行',
+                                        entities:['e1','e12']
+                                    };
+                                    let ids = r.entities;
+                                    //let objStart =  getEntity(ids[0]);
+                                    //let objEnd = getEntity(ids[1]);
+                                    let nodestart = graph.getNode(ids[0]);
+                                    let target_node = graph.getNode(ids[1]);
+
+                                    if(graph.addEdge(nodestart, target_node)) {
+                                        drawEdge(nodestart, target_node);
+                                    }
+
+                                    let obj2 = { 
+                                        id:'e13',
+                                        type:'人',
+                                        name:'王二麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let node2 = new Node(obj2.id);
+                                    node2.data = obj2;
+                                    graph.addNode(node2);
+                                    drawNode(node2);
+                                
+
+                                    let r2 = {
+                                        id:'r13',
+                                        type:'关系',
+                                        name:'同行',
+                                        entities:['e12','e13']
+                                    };
+                                    let ids2 = r2.entities;
+                                    //let objStart =  getEntity(ids[0]);
+                                    //let objEnd = getEntity(ids[1]);
+                                    let nodestart2 = graph.getNode(ids2[0]);
+                                    let target_node2 = graph.getNode(ids2[1]);
+
+                                    if(graph.addEdge(nodestart2, target_node2)) {
+                                        drawEdge(nodestart2, target_node2);
+                                    }
+                                */
+                                    /*
+                                    let obj3 = { 
+                                        id:'e1',
+                                        type:'人',
+                                        name:'王二麻子',
+                                        sex:'男',
+                                        relations:['r2','r3'],
+                                        events:['ev2','ev3'],
+                                        position:'122.158572 30.044879',
+                                        is_prevent:'否'
+                                    };
+                                    let edgeIds = graph.removeNode(obj3);
+                                    console.log('edgeIds============',edgeIds);
+                                    for(var i=0;i<leftGroup.children.length;i++){
+                                        let obj = leftGroup.children[i];
+                                        if(obj.dataID==obj3.id){
+                                            leftGroup.remove(obj);
+                                            break;
+                                        }
+                                    }
+                                    if(edgeIds.length>0){
+                                        for(let i=0;i<leftGroup.children.length;i++){
+                                            let obj = leftGroup.children[i];
+                                            for(let m=0;m<edgeIds.length;m++){
+                                                if(obj.dataID==edgeIds[m]){
+                                                    leftGroup.remove(obj);
+                                                    break;
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                                    */
+                                    /*
+                                    let obj4 = { 
+                                        id:'e3'
+                                    };
+
+                                    let edgeIds = graph.removeNode(obj4);
+                                    console.log('edgeIds============',edgeIds);
+                                    for(var i=0;i<leftGroup.children.length;i++){
+                                        let obj = leftGroup.children[i];
+                                        if(obj.dataID==obj4.id){
+                                            leftGroup.remove(obj);
+                                            break;
+                                        }
+                                    }
+                                    if(edgeIds.length>0){
+                                        for(let m=0;m<edgeIds.length;m++){
+                                            for(let i=0;i<leftGroup.children.length;i++){
+                                                let obj = leftGroup.children[i];
+                                                if(obj.dataID===edgeIds[m]){
+                                                    leftGroup.remove(obj);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    console.log(leftGroup.children);
+                                    graph.layout.init();
+                            },2000);
+                            */
+                    }
+                ,10000)
+
+            }
+            
+        }
+        
+        main();
+
+
+        //$$.actionInjections.push(function(){
+
+        function tick() {
+            //stats.begin();
+            leftControls.update();
+            rightControls.update();
+            //cameraControls.update();
+            TWEEN.update();
+            //锁死标签内容
+            bodyDom.lockToScreen();
+
+            // Generate layout if not finished
+            if(typeof(graph.layout)!="undefined" &&typeof(graph.layout.finished)!="undefined" && !graph.layout.finished) {
+              graph.layout.generate();
+            } else {
+                //有一定的完成时间
+                
+            }
+            if(ROTATION.isRotation){
+                //leftGroup.rotation.x +=0.005;
+                leftGroup.rotation.y +=0.01;
+            }
+            // Update position of lines (edges)
+            for(i=0; i<geometries.length; i++) {
+              geometries[i].verticesNeedUpdate = true;
+            }
+            //需要判断是否改变
+            rightGroup.scale.set(SCALE.scale,SCALE.scale,SCALE.scale);
+            leftGroup.scale.set(SCALE.leftscale,SCALE.leftscale,SCALE.leftscale);
+            //stats.end();
+            //监听按钮状态是否改变//三种状态 1 自动播放  2 事件轨迹  3 团伙分析
+            //监听实体选中状态改变
+            selectListen();
+            renderer.clear();
+            composer.render();
+            requestAnimationFrame(tick);
+        }
+        //});
+        // --enable-webgl --ignore-gpu-blacklist --allow-file-access-from-files --disable-web-security
+
+        Array.prototype.unique = function(){
+            let res = [];
+            let json = {};
+            for(let i=0;i<this.length;i++){
+                if(!json[this[i]]){
+                    res.push(this[i]);
+                    json[this[i]]=1;
+                }
+            }
+            return res;
+        }
+
+        tick();
+    </script>
+</html>
