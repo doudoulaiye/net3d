@@ -294,6 +294,81 @@
     <script src="lib/postprocessing/ShaderPass.js"></script>
 
     <script src="lib/shaders/FocusShader.js"></script>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        uniform float time2;
+    
+        void main()
+        {
+        vec3 posChanged = position;
+        posChanged.x = posChanged.x*(abs(sin(time2*1.0)));
+        posChanged.y = posChanged.y*(abs(cos(time2*1.0)));
+        posChanged.z = posChanged.z*(abs(sin(time2*1.0)));
+        //gl_Position = projectionMatrix * modelViewMatrix * vec4(position*(abs(sin(time2)/2.0)+0.5),1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+        }
+    </script>
+
+
+    <script id="fragment-shader-6" type="x-shader/x-fragment">
+       
+
+        precision highp float;
+        uniform float time2;
+        uniform float alpha;
+        uniform vec2 resolution;
+        varying vec2 vUv;
+
+        void main(){
+            vec2 uv = gl_FragCoord.xy / resolution.xy;
+            vec3 color = vec3(0.0,0.0,0.0);
+            vec2 b1 = smoothstep(vec2(0.0), vec2(0.1), uv);
+            vec2 b2 = smoothstep(vec2(0.0), vec2(0.1), 1.0 - uv);
+            vec3 p = (1.0 - vec3(b1.x * b1.y * b2.x * b2.y)) * abs(sin(time2));
+            color += p;
+            gl_FragColor = vec4(color,1.0);
+            gl_FragColor = vec4(uv.x,uv.y,0.0,1.0);
+        }
+/*
+        void main2(void)
+        {
+        vec2 position = vUv;
+        float red = 1.0;
+        float green = 0.25 + sin(time2) * 0.25;
+        float blue = 0.0;
+        vec3 rgb = vec3(red, green, blue);
+        vec4 color = vec4(rgb, alpha);
+        gl_FragColor = color;
+        }
+
+        #define PI 3.14159
+        #define TWO_PI (PI*2.0)
+        #define N 68.5
+
+        void main(void)
+        {
+        vec2 center = (gl_FragCoord.xy);
+        center.x=-10.12*sin(time2/200.0);
+        center.y=-10.12*cos(time2/200.0);
+
+        vec2 v = (gl_FragCoord.xy - resolution/20.0) / min(resolution.y,resolution.x) * 15.0;
+        v.x=v.x-10.0;
+        v.y=v.y-200.0;
+        float col = 0.0;
+
+        for(float i = 0.0; i < N; i++)
+        {
+        float a = i * (TWO_PI/N) * 61.95;
+        col += cos(TWO_PI*(v.y * cos(a) + v.x * sin(a) + sin(time2*0.004)*100.0 ));
+        }
+
+        col /= 5.0;
+
+        gl_FragColor = vec4(col*1.0, -col*1.0,-col*4.0, 1.0);
+        }
+        */
+    </script>
+
     <script>
         let autoInterval;
         let currentTime;
@@ -573,6 +648,9 @@
         rightGroup.add(eventMapGroup);
         rightGroup.add(eventLineGroup);
         rightGroup.add(timeLineGroup);
+
+        var axes2 = new THREE.AxisHelper(50);
+        rightGroup.add(axes2);
         scene.add(rightGroup);
         scene.add(leftGroup);
         
@@ -646,8 +724,8 @@
         */
 
         //创建坐标轴并加入到scene  
-        //var axes = new THREE.AxisHelper(50);
-        //scene.add(axes);
+        var axes = new THREE.AxisHelper(50);
+        scene.add(axes);
 
         bodyDom=new $$.Body();
         bodyDom.distanceFromCamera=20;
@@ -671,7 +749,7 @@
         let composer = new THREE.EffectComposer( renderer );
 
         composer.addPass( renderModel );
-        composer.addPass( effectFocus );
+        //composer.addPass( effectFocus );
         //添加时间轴，
         /*
         //实际地图的宽度和高度
@@ -904,7 +982,7 @@
                 x: x,
                 y: y
             };
-            //console.log('*****************'+x+'*************'+y);
+            console.log('*****************'+x+'*************'+y+'*************'+tilePos.x+'*************'+tilePos.y+'*************'+centerTP.offset.x+'*************'+centerTP.offset.y);
             return result;
         }
 
@@ -2323,6 +2401,88 @@
                 BUTTON_STATE_SAVE = BUTTON_STATE;
             //}
         }
+        let areaPolygons = [
+            {id:'area1',color:0x00ffff,gradientColor:0xff0000,xy:[[122.118849,30.03499],[122.124598,30.042494],[122.142421,30.050997],[122.165992,30.055498],[122.175191,30.058749],[122.187264,30.044494],[122.209111,30.031488],[122.219747,30.019231],[122.210836,30.007722],[122.211698,29.996463],[122.209398,29.990457],[122.175478,29.999715],[122.158231,30.008473],[122.150182,30.021482],[122.142421,30.025485],[122.125748,30.026735],[122.118849,30.03499]]}
+            ,{id:'area2',color:0x00ffff,gradientColor:0x00ff00,xy:[[122.165992,30.055748],[122.180365,30.083003],[122.177778,30.092003],[122.185827,30.093503],[122.213423,30.079503],[122.227796,30.077003],[122.233545,30.072252],[122.232395,30.066001],[122.232108,30.038492],[122.226358,30.030988],[122.215148,30.023733],[122.209686,30.031238],[122.195313,30.037991],[122.18209,30.051997],[122.165992,30.055748]]}
+            ,{id:'area3',color:0x00ffff,gradientColor:0x00ff00,xy:[[122.168346,29.938027],[122.259757,29.935523],[122.268956,29.890444],[122.164896,29.894452],[122.168346,29.938027]]}
+            ,{id:'area4',color:0x00ffff,gradientColor:0x00ff00,xy:[[121.935505,30.198322],[122.363817,30.189832],[122.44488,29.86063],[121.813623,29.900714],[121.935505,30.198322]]}
+            //,'area3':{color:0xffffff,gradientColor:0x0000ff}
+        ];
+        let areaGroup = new THREE.Group();
+        function addMapArea(){
+            for(let i=0;i<areaPolygons.length;i++){
+                let area = areaPolygons[i];
+
+                let shape= new THREE.Shape();
+                for(let m=0;m<area.xy.length;m++){
+                    let webMercator = LonLat2WebGL(area.xy[m][0], area.xy[m][1]);
+                    let x = webMercator.x;
+                    let y = webMercator.y;
+                    if(m==0){
+                        shape.moveTo(x,y);
+                    }else{
+                        shape.lineTo(x,y);
+                    }
+                }
+                let shapeGeometry = new THREE.ShapeGeometry( shape );
+                //let shapeMesh = new THREE.Mesh( shapeGeometry, new THREE.MeshBasicMaterial( { color: area.color } ) ) ;
+                var meshMaterial6 = createMaterial("vertex-shader", "fragment-shader-6");
+                let shapeMesh = new THREE.Mesh( shapeGeometry, meshMaterial6 ) ;
+                console.log('xyz:::::::',shapeMesh.position.x,shapeMesh.position.y,shapeMesh.position.z);
+
+                areaGroup.add(shapeMesh);
+                shapeMesh.position.z = mapZValue +1;
+                
+            }
+            rightGroup.add(areaGroup);
+            
+        }
+        function createMaterial(vertexShader, fragmentShader) {
+            var vertShader = document.getElementById(vertexShader).innerHTML;
+            var fragShader = document.getElementById(fragmentShader).innerHTML;
+
+            //var attributes = {};
+            let uniforms = {
+                time2: { value: 0.2}, //type: 'f',
+                scale: {type: 'f', value: 0.2},
+                alpha: {type: 'f', value: 0.6},
+                resolution: { type: "v2", value: new THREE.Vector2() }
+            };
+
+            uniforms.resolution.value.x = window.innerWidth;
+            uniforms.resolution.value.y = window.innerHeight;
+
+            var meshMaterial = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                //attributes: attributes,
+                vertexShader: vertShader,
+                fragmentShader: fragShader,
+                transparent: true
+
+            });
+            return meshMaterial;
+        }
+        /**
+         * 3D坐标转屏幕坐标
+         * vector 点 x y z
+         * Group 所属的顶级实体
+         * camera 相机
+         */
+        function position2SceenPosition(vector,group,camera){
+            debugger
+            let world_vector = vector.clone();
+            rightGroup.localToWorld(world_vector);
+            //var world_vector = new THREE.Vector3(obj.object.position.x,obj.object.position.y,obj.object.position.z);  
+            //var vector = projector.projectVector(world_vector, camera);  
+            world_vector.project(camera); 
+            var halfWidth = window.innerWidth / 2;  
+            var halfHeight = window.innerHeight / 2;  
+            var result = { 
+                x: Math.round(world_vector.x * halfWidth + halfWidth),  
+                y: Math.round(-world_vector.y * halfHeight + halfHeight)  
+            };
+            return result;
+        }
         function main() {
             let position = {coords:{longitude:centerLng,latitude:centerLat}};
             var lng = position.coords.longitude;
@@ -2344,7 +2504,7 @@
             personImgObj.onload = function(){
                 //addAllGraph();
                 firstAddGraph();
-                
+                addMapArea();
                 setTimeout(
                     function(){
                         /*
@@ -2505,6 +2665,14 @@
             TWEEN.update();
             //锁死标签内容
             bodyDom.lockToScreen();
+            debugger
+            for (let i=0;i<areaGroup.children.length;i++){
+                let area  = areaGroup.children[i];
+                debugger
+                //.materials
+                area.material.uniforms.time2.value += 0.01;
+            }
+            
             // Generate layout if not finished
             if(typeof(graph.layout)!="undefined" &&typeof(graph.layout.finished)!="undefined" && !graph.layout.finished) {
               graph.layout.generate();
@@ -2548,4 +2716,6 @@
 
         tick();
     </script>
+    
+
 </html>
